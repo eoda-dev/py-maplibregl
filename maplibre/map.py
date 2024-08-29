@@ -93,14 +93,16 @@ class Map(object):
 
     Args:
         map_options (MapOptions): Map options.
+        sources (dict): Sources to be added to the map. Keys are source IDs.
+        layers (list): Layers to be added to the map.
+        controls (list): Controls to be added to the map.
         **kwargs: Keyword arguments that are appended to the `MapOptions` object.
 
     Examples:
         >>> from maplibre.map import Map, MapOptions
-
         >>> map_options = MapOptions(center=(9.5, 51.31667), zoom=8)
-        >>> map = Map(map_options)
-        >>> dict(map)
+        >>> m = Map(map_options)
+        >>> dict(m)
         {'mapOptions': {'center': (9.5, 51.31667), 'style': 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json', 'zoom': 8}, 'calls': []}
     """
 
