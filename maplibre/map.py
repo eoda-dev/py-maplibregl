@@ -10,7 +10,12 @@ from pydantic import ConfigDict, Field, field_validator
 from ._core import MapLibreBaseModel
 from ._templates import html_template, js_template
 from ._utils import get_temp_filename, read_internal_file
-from .basemaps import Carto, construct_carto_basemap_url
+from .basemaps import (
+    Carto,
+    Maptiler,
+    construct_carto_basemap_url,
+    construct_maptiler_basemap_url,
+)
 from .controls import Control, ControlPosition, Marker
 from .layer import Layer
 from .plugins import MapboxDrawOptions
@@ -67,13 +72,18 @@ class MapOptions(MapLibreBaseModel):
     min_zoom: int = Field(None, serialization_alias="minZoom")
     pitch: Union[int, float] = None
     scroll_zoom: bool = Field(None, serialization_alias="scrollZoom")
-    style: Union[str, Carto, dict] = construct_carto_basemap_url(Carto.DARK_MATTER)
+    style: Union[str, Carto, Maptiler, dict] = construct_carto_basemap_url(
+        Carto.DARK_MATTER
+    )
     zoom: Union[int, float] = None
 
     @field_validator("style")
     def validate_style(cls, v):
         if isinstance(v, Carto):
             return construct_carto_basemap_url(v)
+
+        if isinstance(v, Maptiler):
+            return construct_maptiler_basemap_url(v)
 
         return v
 

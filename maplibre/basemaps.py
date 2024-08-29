@@ -3,6 +3,7 @@ from __future__ import annotations
 from enum import Enum
 
 from .layer import Layer, LayerType
+from .settings import settings
 
 
 class Carto(Enum):
@@ -59,3 +60,30 @@ def background(color: str = "black", opacity: float = 1.0) -> dict:
         paint={"background-color": color, "background-opacity": opacity},
     )
     return construct_basemap_style(layers=[bg_layer])
+
+
+class Maptiler(Enum):
+    AQUARELLE = "aquarelle"
+    BACKDROP = "backdrop"
+    BASIC = "basic"
+    BRIGHT = "bright"
+    DATAVIZ = "dataviz"
+    LANDSCAPE = "landscape"
+    OCEAN = "ocean"
+    OPEN_STREET_MAP = "openstreetmap"
+    OUTDOOR = "outdoor"
+    SATELLITE = "satellite"
+    STREETS = "streets"
+    TONER = "toner"
+    TOPO = "topo"
+    WINTER = "winter"
+
+
+def construct_maptiler_basemap_url(style_name: str | Maptiler = "aquarelle") -> str:
+    maptiler_api_key = settings.maptiler_api_key
+    if isinstance(style_name, Maptiler):
+        style_name = Maptiler(style_name).value
+
+    return (
+        f"https://api.maptiler.com/maps/{style_name}/style.json?key={maptiler_api_key}"
+    )
