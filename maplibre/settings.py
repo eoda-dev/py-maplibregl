@@ -32,7 +32,7 @@ class Settings(BaseModel):
         return os.environ.get(self.maptiler_api_key_env_var)
 
     @property
-    def paint_probs(self) -> dict:
+    def paint_props(self) -> dict:
         return dict(
             fill={
                 "fill-color": self.fill_color,
