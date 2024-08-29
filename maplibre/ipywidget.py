@@ -47,15 +47,18 @@ class MapWidget(AnyWidget, Map):
         sources: dict = None,
         layers: list = None,
         controls: list = None,
+        height: int | str = 400,
         **kwargs,
     ) -> None:
         self.calls = []
-        AnyWidget.__init__(self, **kwargs)
+        AnyWidget.__init__(self, height=height, **kwargs)
         Map.__init__(self, map_options, sources, layers, controls, **kwargs)
 
+    """
     @traitlets.default("height")
     def _default_height(self):
         return "400px"
+    """
 
     @traitlets.validate("height")
     def _validate_height(self, proposal):
