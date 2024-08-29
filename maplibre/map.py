@@ -325,10 +325,9 @@ class Map(object):
 
         Examples:
             >>> from maplibre import Map
-
-            >>> map = Map()
+            >>> m = Map()
             >>> with open("/tmp/map.html", "w") as f:
-            ...     f.write(map.to_html(style="height: 800px;") # doctest: +SKIP
+            ...     f.write(m.to_html(style="height: 800px;") # doctest: +SKIP
         """
         js_lib = read_internal_file("srcjs", "pywidget.js")
         js_snippet = Template(js_template).render(data=json.dumps(self.to_dict()))
@@ -388,7 +387,7 @@ class Map(object):
         """Add Deck.GL layers to the layer stack
 
         Args:
-            layers (list[dict]): A list of dictionaries containing the Deck.GL layers to be added.
+            layers (list[dict | "pydeck.Layer"]): A list of dictionaries containing the Deck.GL layers to be added.
             tooltip (str | dict): Either a single mustache template string applied to all layers
                 or a dictionary where keys are layer ids and values are mustache template strings.
         """
@@ -401,7 +400,7 @@ class Map(object):
         """Update Deck.GL layers
 
         Args:
-            layers (list[dict]): A list of dictionaries containing the Deck.GL layers to be updated.
+            layers (list[dict | "pydeck.Layer"]): A list of dictionaries containing the Deck.GL layers to be updated.
                 New layers will be added. Missing layers will be removed.
             tooltip (str | dict): Must be set to keep tooltip even if it did not change.
         """
