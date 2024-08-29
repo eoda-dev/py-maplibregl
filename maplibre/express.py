@@ -38,8 +38,8 @@ def path_is_geojson_url(path: str) -> bool:
 
 # TODO: Rename to Layer (and import maplibre.Layer as BaseLayer) or MXLayer
 class SimpleLayer(Layer):
-    # sf: Union[SimpleFeatures, "gpd.GeoDataFrame"] = Field(exclude=True)
-    sf: SimpleFeatures = Field(exclude=True)
+    sf: Union[SimpleFeatures, gpd.GeoDataFrame, str] = Field(exclude=True)
+    # sf: SimpleFeatures = Field(exclude=True)
 
     """
     @field_validator("sf")
@@ -68,6 +68,9 @@ class SimpleLayer(Layer):
     """
 
     def model_post_init(self, __context) -> None:
+        if not isinstance(self.sf, SimpleFeatures):
+            self.sf = SimpleFeatures(self.sf)
+
         sf_path = self.sf.path
         if path_is_geojson_url(sf_path):
             self.source = GeoJSONSource(data=sf_path)
@@ -148,7 +151,8 @@ def _create_prop_key(layer_type: str, prop: str) -> str:
 def fill(data: gpd.GeoDataFrame | str, **kwargs) -> SimpleLayer:
     return SimpleLayer(
         type=LayerType.FILL,
-        sf=SimpleFeatures(data),
+        # sf=SimpleFeatures(data),
+        sf=data,
         paint=settings.paint_props[LayerType.FILL.value],
         **kwargs,
     )
@@ -157,7 +161,8 @@ def fill(data: gpd.GeoDataFrame | str, **kwargs) -> SimpleLayer:
 def circle(data: gpd.GeoDataFrame | str, **kwargs) -> SimpleLayer:
     return SimpleLayer(
         type=LayerType.CIRCLE,
-        sf=SimpleFeatures(data),
+        # sf=SimpleFeatures(data),
+        sf=data,
         paint=settings.paint_props[LayerType.CIRCLE.value],
         **kwargs,
     )
@@ -166,7 +171,8 @@ def circle(data: gpd.GeoDataFrame | str, **kwargs) -> SimpleLayer:
 def line(data: gpd.GeoDataFrame | str, **kwargs) -> SimpleLayer:
     return SimpleLayer(
         type=LayerType.LINE,
-        sf=SimpleFeatures(data),
+        # sf=SimpleFeatures(data),
+        sf=data,
         paint=settings.paint_props[LayerType.LINE.value],
         **kwargs,
     )
