@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any, Union
 
 from pydantic import Field, field_validator, model_validator
+from typing_extensions import Self
 
 from maplibre.colors import color_brewer
 from maplibre.controls import NavigationControl
@@ -50,6 +51,7 @@ class SimpleLayer(Layer):
     """
 
     # TODO: Use 'model_after_init'
+    """
     @model_validator(mode="before")
     def validate_this(cls, data: Any) -> Any:
         sf_path = data["sf"].path
@@ -63,6 +65,18 @@ class SimpleLayer(Layer):
             data["paint"] = {f"{layer_type}-color": settings.fallback_color}
 
         return data
+    """
+
+    def model_post_init(self, __context) -> None:
+        sf_path = self.sf.path
+        if path_is_geojson_url(sf_path):
+            self.source = GeoJSONSource(data=sf_path)
+        else:
+            self.source = self.sf.to_source()
+
+        if self.paint is None:
+            layer_type = LayerType(self.type).value
+            self.paint = {f"{layer_type}-color": settings.fallback_color}
 
     def _set_paint_property(self, prop, value):
         layer_type = LayerType(self.type).value
