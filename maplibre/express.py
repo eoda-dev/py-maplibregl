@@ -98,6 +98,7 @@ class SimpleLayer(Layer):
     ) -> SimpleLayer:
         if stops is None and n is None:
             pass
+
         expr = color_step_expr(column, stops, cmap)
         self._set_paint_property("color", expr)
         return self
@@ -134,20 +135,25 @@ def fill(data: gpd.GeoDataFrame | str, **kwargs) -> SimpleLayer:
     return SimpleLayer(
         type=LayerType.FILL,
         sf=SimpleFeatures(data),
-        paint=settings.paint_probs[LayerType.FILL.value],
+        paint=settings.paint_props[LayerType.FILL.value],
         **kwargs,
     )
 
 
 def circle(data: gpd.GeoDataFrame | str, **kwargs) -> SimpleLayer:
-    return SimpleLayer(type=LayerType.CIRCLE, sf=SimpleFeatures(data), **kwargs)
+    return SimpleLayer(
+        type=LayerType.CIRCLE,
+        sf=SimpleFeatures(data),
+        paint=settings.paint_props[LayerType.CIRCLE.value],
+        **kwargs,
+    )
 
 
 def line(data: gpd.GeoDataFrame | str, **kwargs) -> SimpleLayer:
     return SimpleLayer(
         type=LayerType.LINE,
         sf=SimpleFeatures(data),
-        paint=settings.paint_probs[LayerType.LINE.value],
+        paint=settings.paint_props[LayerType.LINE.value],
         **kwargs,
     )
 
