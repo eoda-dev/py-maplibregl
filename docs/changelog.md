@@ -2,6 +2,8 @@
 
 ## maplibre v0.2.7 (unreleased)
 
+* Add `basemaps.Maptiler`
+
 * Add `maplibre.__future__`
 
 * Add `Map.fit_bounds`
