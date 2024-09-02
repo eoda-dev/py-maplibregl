@@ -85,7 +85,6 @@ class ControlPosition(Enum):
     BOTTOM_RIGHT = "bottom-right"
 
 
-# TODO: Add position attribute but exclude it from model_dump
 class Control(MapLibreBaseModel):
     position: Union[ControlPosition, str] = Field(
         ControlPosition.TOP_RIGHT, exclude=True
@@ -113,8 +112,8 @@ class FullscreenControl(Control):
         >>> from maplibre import Map
         >>> from maplibre.controls import FullscreenControl, ControlPosition
 
-        >>> map = Map()
-        >>> map.add_control(FullscreenControl(), ControlPosition.BOTTOM_LEFT)
+        >>> m = Map()
+        >>> m.add_control(FullscreenControl(), ControlPosition.BOTTOM_LEFT)
     """
 
     # _name: str = ControlType.FULLSCREEN.value

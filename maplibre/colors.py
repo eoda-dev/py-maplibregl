@@ -7,8 +7,6 @@ except ImportError as e:
     branca_color_brewer = None
 
 CMAPS_JSON = "https://raw.githubusercontent.com/python-visualization/branca/main/branca/_schemes.json"
-# FALLBACK_COLOR = "#000000"
-DEFAULT_CMAP = "viridis"
 
 
 def color_brewer(cmap: str, n: int) -> list:
