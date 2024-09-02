@@ -5,6 +5,8 @@ from enum import Enum
 from .layer import Layer, LayerType
 from .settings import settings
 
+MAPLIBRE_DEMO_TILES = "https://demotiles.maplibre.org/style.json"
+
 
 class Carto(Enum):
     """Carto basemap styles
@@ -21,7 +23,7 @@ class Carto(Enum):
         >>> from maplibre import Map, MapOptions
         >>> from maplibre.basemaps import Carto
 
-        >>> map = Map(MapOptions(style=Carto.DARK_MATTER))
+        >>> m = Map(MapOptions(style=Carto.DARK_MATTER))
     """
 
     DARK_MATTER = "dark-matter"
