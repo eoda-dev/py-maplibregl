@@ -12,6 +12,9 @@ class Settings(BaseModel):
     fill_opacity: Optional[float] = 0.5
     fill_outline_color: Optional[str] = "#FFFFFF"
 
+    fill_extrusion_color: Optional[str] = "#3B9AB2"
+    fill_extrusion_opacity: Optional[float] = 1.0
+
     line_color: Optional[str] = "#F21A00"
     line_opacity: Optional[float] = 1.0
     line_width: Optional[float] = 1.0
@@ -38,6 +41,10 @@ class Settings(BaseModel):
                 "fill-color": self.fill_color,
                 "fill-opacity": self.fill_opacity,
                 "fill-outline-color": self.fill_outline_color,
+            },
+            fill_extrusion={
+                "fill-extrusion-color": self.fill_extrusion_color,
+                "fill-extrusion-opacity": self.fill_extrusion_opacity,
             },
             line={
                 "line-color": self.line_color,

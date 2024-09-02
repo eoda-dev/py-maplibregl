@@ -13,6 +13,7 @@ from maplibre.expressions import (
     color_quantile_step_expr,
     color_step_expr,
     geometry_type_filter,
+    get_column,
     interpolate,
 )
 from maplibre.layer import Layer, LayerType
@@ -133,10 +134,13 @@ class SimpleLayer(Layer):
         map_options: MapOptions = MapOptions(),
         controls: list = None,
         tooltip: bool = True,
+        fit_bounds: bool = True,
         **kwargs,
     ) -> Map:
         controls = controls or [NavigationControl()]
-        map_options.bounds = self.sf.bounds
+        if fit_bounds:
+            map_options.bounds = self.sf.bounds
+
         m = Map(map_options, layers=[self], controls=controls, **kwargs)
         if tooltip:
             m.add_tooltip(self.id)
@@ -178,11 +182,27 @@ def line(data: gpd.GeoDataFrame | str, **kwargs) -> SimpleLayer:
     )
 
 
-def fill_extrusion(data: gpd.GeoDataFrame | str, **kwargs) -> SimpleLayer:
-    pass
+def fill_extrusion(
+    data: gpd.GeoDataFrame | str,
+    fill_extrusion_base: int | float | list = None,
+    fill_extrusion_height: int | float | list = None,
+    **kwargs,
+) -> SimpleLayer:
+    if "paint" not in kwargs:
+        kwargs["paint"] = settings.paint_props[
+            LayerType.FILL_EXTRUSION.value.replace("-", "_")
+        ]
+
+    if fill_extrusion_base is not None:
+        kwargs["paint"]["fill-extrusion-base"] = fill_extrusion_base
+
+    if fill_extrusion_height is not None:
+        kwargs["paint"]["fill-extrusion-height"] = fill_extrusion_height
+
+    return SimpleLayer(type=LayerType.FILL_EXTRUSION, sf=data, **kwargs)
 
 
-# TODO: Add default layers to settings
+# TODO: Use default layers from settings
 def fill_line_circle(source_id: str, colors: list = None) -> list:
     if colors is not None:
         assert len(colors) == 3
