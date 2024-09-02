@@ -247,9 +247,9 @@ class Map(object):
             template (str): A mustache template. If supplied, `prop` is ignored.
 
         Examples:
-            >>> map = Map()
+            >>> m = Map()
             >>> # ...
-            >>> map.add_tooltip("test-layer", template="Name: {{ name }}")
+            >>> m.add_tooltip("test-layer", template="Name: {{ name }}")
         """
         self.add_call("addTooltip", layer_id, prop, template)
 
@@ -312,7 +312,9 @@ class Map(object):
         **kwargs,
     ) -> None:
         kwargs["animate"] = animate
-        bounds = tuple(bounds or data.total_bounds)
+        if data is not None:
+            bounds = tuple(data.total_bounds)
+
         self.add_call("fitBounds", bounds, kwargs)
 
     def to_html(self, title: str = "My Awesome Map", **kwargs) -> str:

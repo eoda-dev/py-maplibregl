@@ -79,6 +79,7 @@ class Layer(MapLibreBaseModel):
     source: Union[str, Source, dict, GeoDataFrame, None] = None
     source_layer: Optional[str] = Field(None, serialization_alias="source-layer")
 
+    # TODO: Use model_post_init and set bounds if source is a GeoDataFrame
     @field_validator("source")
     def validate_source(cls, v):
         if GeoDataFrame is not None and isinstance(v, GeoDataFrame):
