@@ -1,11 +1,11 @@
 from maplibre import express as mx
-from maplibre.config import settings
+from maplibre.config import options
 from maplibre.expressions import interpolate
 
-settings.fallback_color = "#ffffff"
-settings.fill_outline_color = "yellow"
-settings.fill_opacity = 1
-settings.cmap = "YlOrRd"
+options.fallback_color = "#ffffff"
+options.fill_outline_color = "yellow"
+options.fill_opacity = 1
+options.cmap = "YlOrRd"
 
 # data = "https://docs.maptiler.com/sdk-js/assets/Mean_age_of_women_at_first_marriage_in_2019.geojson"
 # data = "https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_urban_areas.geojson"

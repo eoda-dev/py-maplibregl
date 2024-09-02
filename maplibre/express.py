@@ -6,11 +6,16 @@ from pydantic import Field
 from typing_extensions import Self
 
 from maplibre.colors import color_brewer
-from maplibre.config import settings
+from maplibre.config import options
 from maplibre.controls import NavigationControl
-from maplibre.expressions import (GeometryType, color_match_expr,
-                                  color_quantile_step_expr, color_step_expr,
-                                  geometry_type_filter, interpolate)
+from maplibre.expressions import (
+    GeometryType,
+    color_match_expr,
+    color_quantile_step_expr,
+    color_step_expr,
+    geometry_type_filter,
+    interpolate,
+)
 from maplibre.layer import Layer, LayerType
 from maplibre.map import Map, MapOptions
 from maplibre.sources import GeoJSONSource, SimpleFeatures
@@ -45,7 +50,7 @@ class SimpleLayer(Layer):
 
         if self.paint is None:
             layer_type = LayerType(self.type).value
-            self.paint = {f"{layer_type}-color": settings.fallback_color}
+            self.paint = {f"{layer_type}-color": options.fallback_color}
 
     def _set_paint_property(self, prop, value):
         layer_type = LayerType(self.type).value
@@ -59,7 +64,7 @@ class SimpleLayer(Layer):
         self._set_paint_property("opacity", value)
         return self
 
-    def color_category(self, column: str, cmap: str = settings.cmap) -> Self:
+    def color_category(self, column: str, cmap: str = options.cmap) -> Self:
         expr = color_match_expr(column, categories=self.sf.data[column], cmap=cmap)
         self._set_paint_property("color", expr)
         return self
@@ -68,7 +73,7 @@ class SimpleLayer(Layer):
         self,
         column: str,
         probs: list = [0.1, 0.25, 0.5, 0.75],
-        cmap: str = settings.cmap,
+        cmap: str = options.cmap,
     ) -> Self:
         expr = color_quantile_step_expr(
             column, probs, values=self.sf.data[column], cmap=cmap
@@ -77,7 +82,7 @@ class SimpleLayer(Layer):
         return self
 
     def color_bin(
-        self, column: str, stops: list = None, n: int = None, cmap=settings.cmap
+        self, column: str, stops: list = None, n: int = None, cmap=options.cmap
     ) -> Self:
         if stops is None and n is None:
             pass
@@ -119,7 +124,7 @@ def _create_prop_key(layer_type: str, prop: str) -> str:
 
 def fill(data: gpd.GeoDataFrame | str, **kwargs) -> SimpleLayer:
     if "paint" not in kwargs:
-        kwargs["paint"] = settings.paint_props[LayerType.FILL.value]
+        kwargs["paint"] = options.paint_props[LayerType.FILL.value]
 
     return SimpleLayer(
         type=LayerType.FILL,
@@ -130,7 +135,7 @@ def fill(data: gpd.GeoDataFrame | str, **kwargs) -> SimpleLayer:
 
 def circle(data: gpd.GeoDataFrame | str, **kwargs) -> SimpleLayer:
     if "paint" not in kwargs:
-        kwargs["paint"] = settings.paint_props[LayerType.CIRCLE.value]
+        kwargs["paint"] = options.paint_props[LayerType.CIRCLE.value]
 
     return SimpleLayer(
         type=LayerType.CIRCLE,
@@ -141,7 +146,7 @@ def circle(data: gpd.GeoDataFrame | str, **kwargs) -> SimpleLayer:
 
 def line(data: gpd.GeoDataFrame | str, **kwargs) -> SimpleLayer:
     if "paint" not in kwargs:
-        kwargs["paint"] = settings.paint_props[LayerType.LINE.value]
+        kwargs["paint"] = options.paint_props[LayerType.LINE.value]
 
     return SimpleLayer(
         type=LayerType.LINE,
@@ -157,7 +162,7 @@ def fill_extrusion(
     **kwargs,
 ) -> SimpleLayer:
     if "paint" not in kwargs:
-        kwargs["paint"] = settings.paint_props[
+        kwargs["paint"] = options.paint_props[
             LayerType.FILL_EXTRUSION.value.replace("-", "_")
         ]
 
@@ -175,7 +180,7 @@ def fill_line_circle(source_id: str, colors: list = None) -> list:
     if colors is not None:
         assert len(colors) == 3
     else:
-        colors = color_brewer(settings.cmap, 3)
+        colors = color_brewer(options.cmap, 3)
 
     fill_color, line_color, circle_color = colors
 
@@ -184,7 +189,7 @@ def fill_line_circle(source_id: str, colors: list = None) -> list:
         source=source_id,
         filter=geometry_type_filter(GeometryType.POLYGON),
     ).set_paint_props(
-        fill_color=fill_color, fill_outline_color=settings.fill_outline_color
+        fill_color=fill_color, fill_outline_color=options.fill_outline_color
     )
 
     line_layer = Layer(

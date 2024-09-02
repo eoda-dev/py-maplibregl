@@ -1,5 +1,5 @@
 from maplibre import express as mx
-from maplibre.config import settings
+from maplibre.config import options
 from maplibre.expressions import interpolate
 
 data = "https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson"

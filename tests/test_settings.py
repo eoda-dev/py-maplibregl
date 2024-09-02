@@ -1,6 +1,6 @@
 import os
 
-from maplibre.config import settings
+from maplibre.config import options
 
 
 def test_maptiler_api_key():
@@ -8,7 +8,7 @@ def test_maptiler_api_key():
     os.environ["MAPTILER_API_KEY"] = "test"
 
     # Act
-    maptiler_api_key = settings.maptiler_api_key
+    maptiler_api_key = options.maptiler_api_key
 
     # Assert
     assert maptiler_api_key == "test"

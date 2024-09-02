@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 
-from .config import settings
+from .config import options
 from .layer import Layer, LayerType
 
 MAPLIBRE_DEMO_TILES = "https://demotiles.maplibre.org/style.json"
@@ -82,7 +82,7 @@ class MapTiler(Enum):
 
 
 def construct_maptiler_basemap_url(style_name: str | MapTiler = "aquarelle") -> str:
-    maptiler_api_key = settings.maptiler_api_key
+    maptiler_api_key = options.maptiler_api_key
     if isinstance(style_name, MapTiler):
         style_name = MapTiler(style_name).value
 
