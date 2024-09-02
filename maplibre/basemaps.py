@@ -62,7 +62,7 @@ def background(color: str = "black", opacity: float = 1.0) -> dict:
     return construct_basemap_style(layers=[bg_layer])
 
 
-class Maptiler(Enum):
+class MapTiler(Enum):
     AQUARELLE = "aquarelle"
     BACKDROP = "backdrop"
     BASIC = "basic"
@@ -79,10 +79,10 @@ class Maptiler(Enum):
     WINTER = "winter"
 
 
-def construct_maptiler_basemap_url(style_name: str | Maptiler = "aquarelle") -> str:
+def construct_maptiler_basemap_url(style_name: str | MapTiler = "aquarelle") -> str:
     maptiler_api_key = settings.maptiler_api_key
-    if isinstance(style_name, Maptiler):
-        style_name = Maptiler(style_name).value
+    if isinstance(style_name, MapTiler):
+        style_name = MapTiler(style_name).value
 
     return (
         f"https://api.maptiler.com/maps/{style_name}/style.json?key={maptiler_api_key}"

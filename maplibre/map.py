@@ -12,7 +12,7 @@ from ._templates import html_template, js_template
 from ._utils import get_temp_filename, read_internal_file
 from .basemaps import (
     Carto,
-    Maptiler,
+    MapTiler,
     construct_carto_basemap_url,
     construct_maptiler_basemap_url,
 )
@@ -72,7 +72,7 @@ class MapOptions(MapLibreBaseModel):
     min_zoom: int = Field(None, serialization_alias="minZoom")
     pitch: Union[int, float] = None
     scroll_zoom: bool = Field(None, serialization_alias="scrollZoom")
-    style: Union[str, Carto, Maptiler, dict] = construct_carto_basemap_url(
+    style: Union[str, Carto, MapTiler, dict] = construct_carto_basemap_url(
         Carto.DARK_MATTER
     )
     zoom: Union[int, float] = None
@@ -82,7 +82,7 @@ class MapOptions(MapLibreBaseModel):
         if isinstance(v, Carto):
             return construct_carto_basemap_url(v)
 
-        if isinstance(v, Maptiler):
+        if isinstance(v, MapTiler):
             return construct_maptiler_basemap_url(v)
 
         return v
