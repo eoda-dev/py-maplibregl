@@ -1,3 +1,4 @@
+from .config import options
 from .controls import ControlPosition, ControlType
 from .layer import Layer, LayerType
 from .map import Map, MapOptions
