@@ -10,12 +10,8 @@ from pydantic import ConfigDict, Field, field_validator
 from ._core import MapLibreBaseModel
 from ._templates import html_template, js_template
 from ._utils import get_temp_filename, read_internal_file
-from .basemaps import (
-    Carto,
-    MapTiler,
-    construct_carto_basemap_url,
-    construct_maptiler_basemap_url,
-)
+from .basemaps import (Carto, MapTiler, construct_carto_basemap_url,
+                       construct_maptiler_basemap_url)
 from .controls import Control, ControlPosition, Marker
 from .layer import Layer
 from .plugins import MapboxDrawOptions
@@ -311,6 +307,7 @@ class Map(object):
         animate=False,
         **kwargs,
     ) -> None:
+        """Pan and zoom the map to contain its visible area within the specified geographical bounds"""
         kwargs["animate"] = animate
         if data is not None:
             bounds = tuple(data.total_bounds)
