@@ -3,8 +3,12 @@ html_template = """<!DOCTYPE html>
 <meta charset="UTF-8">
 <title>{{ title|default('My MapLibre Map')}}</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<!--
 <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css"/>
+-->
+<script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css"/>
 {% for header in headers|default([]) -%}
 {{ header }}
 {% endfor -%}
