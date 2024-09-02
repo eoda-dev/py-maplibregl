@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import Any, Union
+from typing import Union
 
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field
 from typing_extensions import Self
 
 from maplibre.colors import color_brewer
@@ -13,7 +13,6 @@ from maplibre.expressions import (
     color_quantile_step_expr,
     color_step_expr,
     geometry_type_filter,
-    get_column,
     interpolate,
 )
 from maplibre.layer import Layer, LayerType
@@ -28,7 +27,6 @@ except ImportError as e:
     gpd = None
 
 
-# ---------------
 def path_is_geojson_url(path: str) -> bool:
     if path is None:
         return False
@@ -37,36 +35,8 @@ def path_is_geojson_url(path: str) -> bool:
     return path.startswith("http") and path.endswith("json")
 
 
-# TODO: Rename to Layer (and import maplibre.Layer as BaseLayer) or MXLayer
 class SimpleLayer(Layer):
     sf: Union[SimpleFeatures, gpd.GeoDataFrame, str] = Field(exclude=True)
-    # sf: SimpleFeatures = Field(exclude=True)
-
-    """
-    @field_validator("sf")
-    def validate_sf(cls, v):
-        if gpd is not None and isinstance(v, gpd.GeoDataFrame):
-            return SimpleFeatures(v)
-
-        return v
-    """
-
-    # TODO: Use 'model_after_init'
-    """
-    @model_validator(mode="before")
-    def validate_this(cls, data: Any) -> Any:
-        sf_path = data["sf"].path
-        if path_is_geojson_url(sf_path):
-            data["source"] = GeoJSONSource(data=sf_path)
-        else:
-            data["source"] = data["sf"].to_source()
-
-        if "paint" not in data:
-            layer_type = LayerType(data["type"]).value
-            data["paint"] = {f"{layer_type}-color": settings.fallback_color}
-
-        return data
-    """
 
     def model_post_init(self, __context) -> None:
         if not isinstance(self.sf, SimpleFeatures):
@@ -86,15 +56,15 @@ class SimpleLayer(Layer):
         layer_type = LayerType(self.type).value
         self.paint[f"{layer_type}-{prop}"] = value
 
-    def color(self, value: str | list) -> SimpleLayer:
+    def color(self, value: str | list) -> Self:
         self._set_paint_property("color", value)
         return self
 
-    def opacity(self, value: float) -> SimpleLayer:
+    def opacity(self, value: float) -> Self:
         self._set_paint_property("opacity", value)
         return self
 
-    def color_category(self, column: str, cmap: str = settings.cmap) -> SimpleLayer:
+    def color_category(self, column: str, cmap: str = settings.cmap) -> Self:
         expr = color_match_expr(column, categories=self.sf.data[column], cmap=cmap)
         self._set_paint_property("color", expr)
         return self
@@ -104,7 +74,7 @@ class SimpleLayer(Layer):
         column: str,
         probs: list = [0.1, 0.25, 0.5, 0.75],
         cmap: str = settings.cmap,
-    ) -> SimpleLayer:
+    ) -> Self:
         expr = color_quantile_step_expr(
             column, probs, values=self.sf.data[column], cmap=cmap
         )
@@ -113,7 +83,7 @@ class SimpleLayer(Layer):
 
     def color_bin(
         self, column: str, stops: list = None, n: int = None, cmap=settings.cmap
-    ) -> SimpleLayer:
+    ) -> Self:
         if stops is None and n is None:
             pass
 
@@ -123,7 +93,7 @@ class SimpleLayer(Layer):
 
     def interpolate_color(
         self, column: str, stops=None, colors=("yellow", "red")
-    ) -> SimpleLayer:
+    ) -> Self:
         stops = stops or [f(self.sf.data[column]) for f in [min, max]]
         expr = interpolate(column, stops, colors)
         self._set_paint_property("color", expr)
@@ -153,31 +123,34 @@ def _create_prop_key(layer_type: str, prop: str) -> str:
 
 
 def fill(data: gpd.GeoDataFrame | str, **kwargs) -> SimpleLayer:
+    if "paint" not in kwargs:
+        kwargs["paint"] = settings.paint_props[LayerType.FILL.value]
+
     return SimpleLayer(
         type=LayerType.FILL,
-        # sf=SimpleFeatures(data),
         sf=data,
-        paint=settings.paint_props[LayerType.FILL.value],
         **kwargs,
     )
 
 
 def circle(data: gpd.GeoDataFrame | str, **kwargs) -> SimpleLayer:
+    if "paint" not in kwargs:
+        kwargs["paint"] = settings.paint_props[LayerType.CIRCLE.value]
+
     return SimpleLayer(
         type=LayerType.CIRCLE,
-        # sf=SimpleFeatures(data),
         sf=data,
-        paint=settings.paint_props[LayerType.CIRCLE.value],
         **kwargs,
     )
 
 
 def line(data: gpd.GeoDataFrame | str, **kwargs) -> SimpleLayer:
+    if "paint" not in kwargs:
+        kwargs["paint"] = settings.paint_props[LayerType.LINE.value]
+
     return SimpleLayer(
         type=LayerType.LINE,
-        # sf=SimpleFeatures(data),
         sf=data,
-        paint=settings.paint_props[LayerType.LINE.value],
         **kwargs,
     )
 
