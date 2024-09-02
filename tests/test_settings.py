@@ -1,6 +1,6 @@
 import os
 
-from maplibre.settings import settings
+from maplibre.config import settings
 
 
 def test_maptiler_api_key():

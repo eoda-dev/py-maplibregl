@@ -1,6 +1,6 @@
 import maplibre.express as mx
+from maplibre.config import settings
 from maplibre.layer import Layer
-from maplibre.settings import settings
 from maplibre.sources import SimpleFeatures
 
 

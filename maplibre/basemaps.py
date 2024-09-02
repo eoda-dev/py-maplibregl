@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from enum import Enum
 
+from .config import settings
 from .layer import Layer, LayerType
-from .settings import settings
 
 MAPLIBRE_DEMO_TILES = "https://demotiles.maplibre.org/style.json"
 

@@ -1,6 +1,6 @@
 from maplibre import express as mx
+from maplibre.config import settings
 from maplibre.expressions import get_column, interpolate
-from maplibre.settings import settings
 
 settings.fallback_color = "#ffffff"
 settings.fill_extrusion_color = "yellow"

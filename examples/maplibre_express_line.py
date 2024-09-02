@@ -1,6 +1,6 @@
 from maplibre import express as mx
+from maplibre.config import settings
 from maplibre.expressions import interpolate
-from maplibre.settings import settings
 
 settings.line_width = 2
 settings.line_color = "green"

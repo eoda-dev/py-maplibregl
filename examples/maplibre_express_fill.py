@@ -1,6 +1,6 @@
 from maplibre import express as mx
+from maplibre.config import settings
 from maplibre.expressions import interpolate
-from maplibre.settings import settings
 
 settings.fallback_color = "#ffffff"
 settings.fill_outline_color = "yellow"

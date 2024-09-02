@@ -1,6 +1,6 @@
 from maplibre import express as mx
 from maplibre.__future__ import datasets
-from maplibre.settings import settings
+from maplibre.config import settings
 
 settings.fallback_color = "steelblue"
 

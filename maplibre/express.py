@@ -6,18 +6,13 @@ from pydantic import Field
 from typing_extensions import Self
 
 from maplibre.colors import color_brewer
+from maplibre.config import settings
 from maplibre.controls import NavigationControl
-from maplibre.expressions import (
-    GeometryType,
-    color_match_expr,
-    color_quantile_step_expr,
-    color_step_expr,
-    geometry_type_filter,
-    interpolate,
-)
+from maplibre.expressions import (GeometryType, color_match_expr,
+                                  color_quantile_step_expr, color_step_expr,
+                                  geometry_type_filter, interpolate)
 from maplibre.layer import Layer, LayerType
 from maplibre.map import Map, MapOptions
-from maplibre.settings import settings
 from maplibre.sources import GeoJSONSource, SimpleFeatures
 
 try:
