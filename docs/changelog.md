@@ -2,7 +2,7 @@
 
 ## maplibre v0.2.7 (unreleased)
 
-* Add `basemaps.Maptiler`
+* Add `basemaps.MapTiler`
 
 * Add `maplibre.__future__`
 

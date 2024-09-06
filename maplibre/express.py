@@ -35,6 +35,7 @@ def path_is_geojson_url(path: str) -> bool:
     return path.startswith("http") and path.endswith("json")
 
 
+# TODO: Maybe rename to DataLayer?
 class SimpleLayer(Layer):
     sf: Union[SimpleFeatures, gpd.GeoDataFrame, str] = Field(exclude=True)
 
@@ -48,6 +49,7 @@ class SimpleLayer(Layer):
         else:
             self.source = self.sf.to_source()
 
+        # TODO: Use layer paint properties from options
         if self.paint is None:
             layer_type = LayerType(self.type).value
             self.paint = {f"{layer_type}-color": options.fallback_color}
