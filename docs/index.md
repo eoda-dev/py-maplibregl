@@ -1,6 +1,6 @@
 # MapLibre for Python
 
-[MapLibre for Python](https://github.com/eodaGmbH/py-maplibregl) provides Python bindings for [MapLibre GL JS](https://github.com/maplibre/maplibre-gl-js).
+[MapLibre for Python](https://github.com/eoda-dev/py-maplibregl) provides Python bindings for [MapLibre GL JS](https://github.com/maplibre/maplibre-gl-js).
 
 It integrates seamlessly into [Shiny for Python](https://github.com/posit-dev/py-shiny) and [Jupyter](https://jupyter.org/).
 
@@ -13,7 +13,7 @@ pip install maplibre
 pip install "maplibre[all]"
 
 # Dev
-pip install git+https://github.com/eodaGmbH/py-maplibregl@dev
+pip install git+https://github.com/eoda-dev/py-maplibregl@dev
 ```
 
 ## Basic usage
