@@ -1,5 +1,3 @@
-import webbrowser
-
 from maplibre import Layer, LayerType, Map, MapOptions
 from maplibre.sources import GeoJSONSource
 
@@ -23,9 +21,4 @@ m.add_layer(
     )
 )
 
-temp_file = "/tmp/pymaplibregl.html"
-
-with open(temp_file, "w") as f:
-    f.write(m.to_html(style="height: 800px;"))
-
-webbrowser.open(temp_file)
+m.save(preview=True)
