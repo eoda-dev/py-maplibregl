@@ -36,6 +36,7 @@ conda install -c conda-forge maplibre
 from maplibre import Map, MapOptions
 
 m = Map(MapOptions(center=(-123.1256, 49.24658), zoom=9))
+m.save(preview=True)
 ```
 
 ## Documentation
