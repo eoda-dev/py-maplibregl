@@ -58,12 +58,4 @@ poetry run pytest --ignore=maplibre/ipywidget.py --doctest-modules maplibre
 
 ### JavaScript
 
-```bash
-npm install
-
-npm run prettier
-
-npm run build
-
-npm run build-ipywidget
-```
+See [maplibre-bindings](https://github.com/eoda-dev/maplibre-bindings)
