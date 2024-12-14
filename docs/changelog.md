@@ -1,6 +1,6 @@
 # Changelog for MapLibre for Python
 
-## maplibre v0.2.7 (unreleased)
+## maplibre v0.2.7
 
 * Add `basemaps.MapTiler`
 
