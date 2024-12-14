@@ -6,11 +6,7 @@ from pathlib import Path
 import traitlets
 from anywidget import AnyWidget
 
-# from .controls import Control, ControlPosition
-# from .layer import Layer
 from .map import Map, MapOptions
-
-# from .sources import Source
 
 
 class MapWidget(AnyWidget, Map):
@@ -31,7 +27,8 @@ class MapWidget(AnyWidget, Map):
     # _css = join(Path(__file__).parent, "srcjs", "maplibre-gl.css")
     _css = join(Path(__file__).parent, "srcjs", "ipywidget.css")
     _use_message_queue = True
-    _rendered = traitlets.Bool(False, config=True).tag(sync=True)
+    # _rendered = traitlets.Bool(False, config=True).tag(sync=True)
+    _rendered = traitlets.Bool(False).tag(config=True).tag(sync=True)
     map_options = traitlets.Dict().tag(sync=True)
     calls = traitlets.List().tag(sync=True)
     height = traitlets.Union([traitlets.Int(), traitlets.Unicode()]).tag(sync=True)
@@ -44,14 +41,24 @@ class MapWidget(AnyWidget, Map):
     draw_features_selected = traitlets.List().tag(sync=True)
     draw_feature_collection_all = traitlets.Dict().tag(sync=True)
 
-    def __init__(self, map_options=MapOptions(), **kwargs) -> None:
+    def __init__(
+        self,
+        map_options=MapOptions(),
+        sources: dict = None,
+        layers: list = None,
+        controls: list = None,
+        height: int | str = 400,
+        **kwargs,
+    ) -> None:
         self.calls = []
-        AnyWidget.__init__(self, **kwargs)
-        Map.__init__(self, map_options, **kwargs)
+        AnyWidget.__init__(self, height=height, **kwargs)
+        Map.__init__(self, map_options, sources, layers, controls, **kwargs)
 
+    """
     @traitlets.default("height")
     def _default_height(self):
         return "400px"
+    """
 
     @traitlets.validate("height")
     def _validate_height(self, proposal):

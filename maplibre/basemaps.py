@@ -2,7 +2,10 @@ from __future__ import annotations
 
 from enum import Enum
 
+from .config import options
 from .layer import Layer, LayerType
+
+MAPLIBRE_DEMO_TILES = "https://demotiles.maplibre.org/style.json"
 
 
 class Carto(Enum):
@@ -20,7 +23,7 @@ class Carto(Enum):
         >>> from maplibre import Map, MapOptions
         >>> from maplibre.basemaps import Carto
 
-        >>> map = Map(MapOptions(style=Carto.DARK_MATTER))
+        >>> m = Map(MapOptions(style=Carto.DARK_MATTER))
     """
 
     DARK_MATTER = "dark-matter"
@@ -59,3 +62,30 @@ def background(color: str = "black", opacity: float = 1.0) -> dict:
         paint={"background-color": color, "background-opacity": opacity},
     )
     return construct_basemap_style(layers=[bg_layer])
+
+
+class MapTiler(Enum):
+    AQUARELLE = "aquarelle"
+    BACKDROP = "backdrop"
+    BASIC = "basic"
+    BRIGHT = "bright"
+    DATAVIZ = "dataviz"
+    LANDSCAPE = "landscape"
+    OCEAN = "ocean"
+    OPEN_STREET_MAP = "openstreetmap"
+    OUTDOOR = "outdoor"
+    SATELLITE = "satellite"
+    STREETS = "streets"
+    TONER = "toner"
+    TOPO = "topo"
+    WINTER = "winter"
+
+
+def construct_maptiler_basemap_url(style_name: str | MapTiler = "aquarelle") -> str:
+    maptiler_api_key = options.maptiler_api_key
+    if isinstance(style_name, MapTiler):
+        style_name = MapTiler(style_name).value
+
+    return (
+        f"https://api.maptiler.com/maps/{style_name}/style.json?key={maptiler_api_key}"
+    )
