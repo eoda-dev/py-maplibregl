@@ -1,4 +1,4 @@
-Use `MapWidget` in your [Juyper](https://jupyter.org/) Notebook:
+Use `MapWidget` in your [Jupyter](https://jupyter.org/) Notebook:
 
 ```python
 import ipywidgets as widgets
