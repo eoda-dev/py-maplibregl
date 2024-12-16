@@ -15,6 +15,7 @@ nav:
       - Layers: layers.md
       - Deck.GL Layers: deckgl.md
       - Shiny: shiny.md
+      - Shiny Express: shiny_express.md
       - Jupyter: jupyter.md
       - Streamlit: streamlit.md
       - Changelog: changelog.md
