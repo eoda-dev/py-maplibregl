@@ -24,5 +24,5 @@ ui.div("Move map to change view state.")
 
 
 @render.code
-def views_tate():
+def view_state():
     return json.dumps(input.mapgl_view_state(), indent=2)
