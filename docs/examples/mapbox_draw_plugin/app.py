@@ -64,14 +64,30 @@ def maplibre():
 @render.code
 def selected_features():
     obj = input.maplibre_draw_features_selected()
+    obj["event"] = "selected"
     print(obj)
-    return json.dumps(obj["features"], indent=2) if obj else "Pick some features!"
+    return json.dumps(obj["features"], indent=2)
 
 
 @render.code
-def on_feature_created():
+def on_features_created():
     obj = input.maplibre_draw_features_created()
-    return json.dumps(obj["features"], indent=2)
+    obj["event"] = "created"
+    return json.dumps(obj, indent=2)
+
+
+@render.code
+def on_features_deleted():
+    obj = input.maplibre_draw_features_deleted()
+    obj["event"] = "deleted"
+    return json.dumps(obj, indent=2)
+
+
+@render.code
+def on_features_updated():
+    obj = input.maplibre_draw_features_updated()
+    obj["event"] = "updated"
+    return json.dumps(obj, indent=2)
 
 
 if __name__ == "__main__":
