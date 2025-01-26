@@ -28,6 +28,7 @@ mkdocstrings = { extras = ["python"], version = "^0.24.0" }
 mkdocs-material = "^9.5.3"
 geopandas = "^0.14.2"
 pmtiles = "*"
+marimo = "^0.10.17"
 
 [tool.poetry.extras]
 all = ["pandas", "geopandas", "anywidget", "traitlets"]
