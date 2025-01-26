@@ -19,12 +19,18 @@ It integrates seamlessly into [Shiny for Python](https://github.com/posit-dev/py
 # Stable
 pip install maplibre
 
+pip install "maplibre[ipywidget]" # ipywidget backend
+
 pip install "maplibre[all]"
+
+uv add maplibre
 
 # Dev
 pip install git+https://github.com/eoda-dev/py-maplibregl@dev
 
 pip install "maplibre[all] @ git+https://github.com/eoda-dev/py-maplibregl@dev"
+
+uv add "git+https://github.com/eoda-dev/py-maplibregl@feature/dev[all]"
 
 # Conda
 conda install -c conda-forge maplibre
