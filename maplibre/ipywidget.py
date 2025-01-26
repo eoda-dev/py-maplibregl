@@ -6,7 +6,7 @@ from pathlib import Path
 import traitlets
 from anywidget import AnyWidget
 
-from .map import Map, MapOptions
+from maplibre.map import Map, MapOptions
 
 
 class MapWidget(AnyWidget, Map):
@@ -24,10 +24,8 @@ class MapWidget(AnyWidget, Map):
     """
 
     _esm = join(Path(__file__).parent, "srcjs", "ipywidget.js")
-    # _css = join(Path(__file__).parent, "srcjs", "maplibre-gl.css")
     _css = join(Path(__file__).parent, "srcjs", "ipywidget.css")
     _use_message_queue = True
-    # _rendered = traitlets.Bool(False, config=True).tag(sync=True)
     _rendered = traitlets.Bool(False).tag(config=True).tag(sync=True)
     map_options = traitlets.Dict().tag(sync=True)
     calls = traitlets.List().tag(sync=True)
@@ -53,12 +51,6 @@ class MapWidget(AnyWidget, Map):
         self.calls = []
         AnyWidget.__init__(self, height=height, **kwargs)
         Map.__init__(self, map_options, sources, layers, controls, **kwargs)
-
-    """
-    @traitlets.default("height")
-    def _default_height(self):
-        return "400px"
-    """
 
     @traitlets.validate("height")
     def _validate_height(self, proposal):
