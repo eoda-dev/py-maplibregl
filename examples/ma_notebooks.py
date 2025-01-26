@@ -83,6 +83,30 @@ def _(m, mo):
 
 
 @app.cell
+def _(m):
+    m.add_mapbox_draw()
+    return
+
+
+@app.cell
+def _(m):
+    m.draw_features_created
+    return
+
+
+@app.cell
+def _(m):
+    m.draw_features_updated
+    return
+
+
+@app.cell
+def _(m):
+    m.draw_feature_collection_all
+    return
+
+
+@app.cell
 def _():
     return
 
