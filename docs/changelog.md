@@ -1,5 +1,13 @@
 # Changelog for MapLibre for Python
 
+## maplibre v0.2.9 (unreleased)
+
+* Make `anywidget` dependency optional
+* Add Mapbox Draw Ipywidget callbacks for
+  * `draw.create`
+  * `draw.update`
+  * `draw.delete`
+
 ## maplibre v0.2.8
 
 * Add Mapbox Draw Shiny callbacks for

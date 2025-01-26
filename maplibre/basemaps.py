@@ -38,9 +38,7 @@ def construct_carto_basemap_url(style_name: str | Carto = "dark-matter") -> str:
     return f"https://basemaps.cartocdn.com/gl/{Carto(style_name).value}-gl-style/style.json"
 
 
-def construct_basemap_style(
-    name: str = "nice-style", sources: dict = {}, layers: list = []
-) -> dict:
+def construct_basemap_style(name: str = "nice-style", sources: dict = {}, layers: list = []) -> dict:
     """Construct a basemap style
 
     Args:
@@ -48,9 +46,7 @@ def construct_basemap_style(
         sources (dict): The sources to be used for the basemap style.
         layers (list): The layers to be used for the basemap style.
     """
-    layers = [
-        layer.to_dict() if isinstance(layer, Layer) else layer for layer in layers
-    ]
+    layers = [layer.to_dict() if isinstance(layer, Layer) else layer for layer in layers]
     return {"name": name, "version": 8, "sources": sources, "layers": layers}
 
 
@@ -65,6 +61,8 @@ def background(color: str = "black", opacity: float = 1.0) -> dict:
 
 
 class MapTiler(Enum):
+    """MapTiler basemap styles"""
+
     AQUARELLE = "aquarelle"
     BACKDROP = "backdrop"
     BASIC = "basic"
@@ -86,6 +84,4 @@ def construct_maptiler_basemap_url(style_name: str | MapTiler = "aquarelle") -> 
     if isinstance(style_name, MapTiler):
         style_name = MapTiler(style_name).value
 
-    return (
-        f"https://api.maptiler.com/maps/{style_name}/style.json?key={maptiler_api_key}"
-    )
+    return f"https://api.maptiler.com/maps/{style_name}/style.json?key={maptiler_api_key}"
