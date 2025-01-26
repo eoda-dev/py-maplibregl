@@ -4,7 +4,6 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -22,9 +21,8 @@ jobs:
       - name: Install Poetry and pytest
         run: pip install poetry pytest
       - name: Install package
-        run: poetry install
+        run: poetry install -E ipywidget
       - name: Test package
         run: |
           poetry run pytest
           poetry run pytest --doctest-modules maplibre --ignore maplibre/ipywidget.py
-
