@@ -38,6 +38,9 @@ class MapWidget(AnyWidget, Map):
     # Interactions MapboxDraw plugin
     draw_features_selected = traitlets.List().tag(sync=True)
     draw_feature_collection_all = traitlets.Dict().tag(sync=True)
+    draw_features_created = traitlets.List().tag(sync=True)
+    draw_features_updated = traitlets.List().tag(sync=True)
+    draw_features_deleted = traitlets.List().tag(sync=True)
 
     def __init__(
         self,
