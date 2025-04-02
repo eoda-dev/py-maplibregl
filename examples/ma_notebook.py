@@ -180,7 +180,6 @@ def _(Layer, LayerType, Map, MapOptions, NavigationControl):
         m = Map(map_options)
         m.add_control(NavigationControl())
         return m
-
     return (
         PMTILES_URL,
         construct_basemap_style,
