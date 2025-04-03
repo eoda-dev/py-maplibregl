@@ -11,6 +11,7 @@ def _():
     from maplibre.sources import GeoJSONSource
     from maplibre.ipywidget import MapWidget as Map
     from maplibre.controls import NavigationControl, ScaleControl
+    Map._use_message_queue = False
     return (
         GeoJSONSource,
         Layer,
@@ -195,6 +196,12 @@ def _(create_map):
     m2 = create_map()
     m2
     return (m2,)
+
+
+@app.cell
+def _(m):
+    m._message_queue
+    return
 
 
 @app.cell
