@@ -1,3 +1,5 @@
+import warnings
+
 from .config import options
 from .controls import ControlPosition, ControlType
 from .layer import Layer, LayerType
@@ -11,5 +13,11 @@ try:
     from .ui import output_maplibregl
 
     render_maplibregl = MapLibreRenderer
-except ImportError as e:
-    pass
+# except ImportError as e:
+except Exception as e:
+    MapContext = None
+    MapLibreRenderer = None
+    output_maplibregl = None
+    render_maplibregl = None
+    warnings.warn("Shiny modules 'MapContext', 'output_maplibregl' and 'render_maplibregl' are not available. Please install 'maplibre[shiny]' if you need them.")
+    # warnings.warn(e)
