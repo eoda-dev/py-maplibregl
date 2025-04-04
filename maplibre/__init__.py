@@ -23,7 +23,7 @@ except Exception as e:
     logging.warning(
         (
             "Shiny modules 'MapContext', 'output_maplibregl' and 'render_maplibregl' are not available. Please install 'maplibre[shiny]' if you need them.\n"
-            "In a future release the import from root will be disabled."
+            "In a future release the import of Shiny modules from root will be disabled."
         )
     )
     # warnings.warn(e)
