@@ -21,7 +21,9 @@ jobs:
       - name: Install Poetry and pytest
         run: pip install poetry pytest
       - name: Install package
-        run: poetry install -E ipywidget
+        run: |
+          poetry lock
+          poetry install -E ipywidget -E shiny
       - name: Test package
         run: |
           poetry run pytest
