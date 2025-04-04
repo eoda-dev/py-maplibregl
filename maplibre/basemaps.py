@@ -85,3 +85,13 @@ def construct_maptiler_basemap_url(style_name: str | MapTiler = "aquarelle") -> 
         style_name = MapTiler(style_name).value
 
     return f"https://api.maptiler.com/maps/{style_name}/style.json?key={maptiler_api_key}"
+
+
+class OpenFreeMap(Enum):
+    POSITRON = "positron"
+    LIBERTY = "liberty"
+    BRIGHT = "bright"
+
+
+def construct_openfreemap_basemap_url(style_name: str | OpenFreeMap = OpenFreeMap.LIBERTY) -> str:
+    return f"https://tiles.openfreemap.org/styles/{OpenFreeMap(style_name).value}"
