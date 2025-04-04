@@ -1,4 +1,5 @@
-import warnings
+# import warnings
+import logging
 
 from .config import options
 from .controls import ControlPosition, ControlType
@@ -19,5 +20,10 @@ except Exception as e:
     MapLibreRenderer = None
     output_maplibregl = None
     render_maplibregl = None
-    warnings.warn("Shiny modules 'MapContext', 'output_maplibregl' and 'render_maplibregl' are not available. Please install 'maplibre[shiny]' if you need them.")
+    logging.warning(
+        (
+            "Shiny modules 'MapContext', 'output_maplibregl' and 'render_maplibregl' are not available. Please install 'maplibre[shiny]' if you need them.\n"
+            "In a future release the import from root will be disabled."
+        )
+    )
     # warnings.warn(e)
