@@ -567,7 +567,7 @@ name = "htmltools"
 version = "0.6.0"
 description = "Tools for HTML generation and output."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.9"
 files = [
     {file = "htmltools-0.6.0-py3-none-any.whl", hash = "sha256:072a274ff5e2851e0acce13fc5bb2bbdbbad8268dc8b123f881c05012ce7dce0"},
@@ -2830,11 +2830,12 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 type = ["pytest-mypy"]
 
 [extras]
-all = ["anywidget", "geopandas", "pandas", "traitlets"]
+all = ["anywidget", "geopandas", "pandas", "shiny", "traitlets"]
 anywidget = ["anywidget", "traitlets"]
 ipywidget = ["anywidget", "traitlets"]
+shiny = ["shiny"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<4"
-content-hash = "2653f7968ba25433144bc35fc4224dd8370bf9e790dd93457d0e6930c5df6407"
+content-hash = "855a9eea45d202abaf4b3e74ad325dacb16c34d1174ef718f0a2fe1a7f5cf2a1"
