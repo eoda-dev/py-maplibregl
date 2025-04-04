@@ -3,8 +3,14 @@ from __future__ import annotations
 from os.path import join
 from pathlib import Path
 
-import traitlets
-from anywidget import AnyWidget
+try:
+    import traitlets
+    from anywidget import AnyWidget
+except ImportError as e:
+    traitlets = None
+    AnyWidget = None
+    print(e)
+    print("Please install 'maplibre[anywidget]'")
 
 from maplibre.map import Map, MapOptions
 
