@@ -1,5 +1,6 @@
 import logging
 
+logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
@@ -22,11 +23,10 @@ except ImportError as e:
     MapLibreRenderer = None
     output_maplibregl = None
     render_maplibregl = None
+    logger.warning(e)
     logger.warning(
         (
             "Shiny modules 'MapContext', 'output_maplibregl' and 'render_maplibregl' are not available. Please install 'maplibre[shiny]' if you need them.\n"
             "In a future release the import of Shiny modules from root will be disabled."
         )
     )
-    # warnings.warn(e)
-    print(e)
