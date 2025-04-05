@@ -1,7 +1,12 @@
 from __future__ import annotations
 
+import logging
 from os.path import join
 from pathlib import Path
+
+logging.basicConfig()
+logger = logging.getLogger(__name__)
+
 
 try:
     import traitlets
@@ -9,8 +14,10 @@ try:
 except ImportError as e:
     traitlets = None
     AnyWidget = None
-    print(e)
-    print("Please install 'maplibre[anywidget]'")
+    logger.warning(e)
+    logger.warning(
+        "Please install 'maplibre[anywidget]' if you want to use maplibre in 'marimo' or 'jupyter' notebooks."
+    )
 
 from maplibre.map import Map, MapOptions
 
@@ -18,7 +25,7 @@ from maplibre.map import Map, MapOptions
 class MapWidget(AnyWidget, Map):
     """MapWidget
 
-    Use this class to display and update maps in Jupyter Notebooks.
+    Use this class to display and update maps in Marimo or Jupyter Notebooks.
 
     See `maplibre.Map` for available methods.
 
