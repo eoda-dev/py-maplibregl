@@ -12,12 +12,10 @@ try:
     import traitlets
     from anywidget import AnyWidget
 except ImportError as e:
-    traitlets = None
-    AnyWidget = None
-    logger.warning(e)
-    logger.warning(
-        "Please install 'maplibre[anywidget]' if you want to use maplibre in 'marimo' or 'jupyter' notebooks."
-    )
+    # traitlets = None
+    # AnyWidget = None
+    logger.error(e)
+    logger.error("Please install 'maplibre[anywidget]' if you want to use maplibre in 'marimo' or 'jupyter' notebooks.")
 
 from maplibre.map import Map, MapOptions
 
