@@ -8,11 +8,17 @@ It integrates seamlessly into [Shiny for Python](https://github.com/posit-dev/py
 
 ```bash
 # Stable
-pip install maplibre
+pip install maplibre # minimal
 
 pip install "maplibre[all]"
 
-# Dev
+pip install "maplibre[shiny]" # shiny bindings
+
+pip install "maplibre[ipywidget]" # marimo and jupyter bindings
+
+uv add "maplibre[all]"
+
+# Unstable
 pip install git+https://github.com/eoda-dev/py-maplibregl@dev
 ```
 
