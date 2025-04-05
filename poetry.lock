@@ -2830,12 +2830,12 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 type = ["pytest-mypy"]
 
 [extras]
-all = ["anywidget", "geopandas", "pandas", "shiny", "traitlets"]
+all = ["anywidget", "geopandas", "htmltools", "pandas", "shiny", "traitlets"]
 anywidget = ["anywidget", "traitlets"]
 ipywidget = ["anywidget", "traitlets"]
-shiny = ["shiny"]
+shiny = ["htmltools", "shiny"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<4"
-content-hash = "855a9eea45d202abaf4b3e74ad325dacb16c34d1174ef718f0a2fe1a7f5cf2a1"
+content-hash = "1dbff61645cd27c9adfec35b2da9c598c9fa40d3c73309134b93c51d07739bb0"

@@ -61,7 +61,16 @@ def background(color: str = "black", opacity: float = 1.0) -> dict:
 
 
 class MapTiler(Enum):
-    """MapTiler basemap styles"""
+    """MapTiler basemap styles
+
+    Examples:
+        >>> import os
+        >>> from maplibre import Map, MapOptions
+        >>> from maplibre.basemaps import MapTiler
+
+        >>> os.environ["MAPTILER_API_KEY"] = "your-api-key"
+        >>> m = Map(MapOptions(style=MapTiler.AQUARELLE))
+    """
 
     AQUARELLE = "aquarelle"
     BACKDROP = "backdrop"
