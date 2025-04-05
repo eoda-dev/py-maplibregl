@@ -34,7 +34,7 @@ pip install git+https://github.com/eoda-dev/py-maplibregl@dev
 
 pip install "maplibre[all] @ git+https://github.com/eoda-dev/py-maplibregl@dev"
 
-uv add "git+https://github.com/eoda-dev/py-maplibregl@feature/dev[all]"
+uv add "git+https://github.com/eoda-dev/py-maplibregl@dev[all]"
 
 # Conda
 conda install -c conda-forge maplibre
