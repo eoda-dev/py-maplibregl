@@ -1,7 +1,10 @@
 # Changelog for MapLibre for Python
 
-## maplibre v0.2.9 (unreleased)
+## maplibre v0.3.0 (unreleased)
 
+* Add 3d-buildings example
+* Add `basemaps.OpenFreeMap`
+* Make `shiny` and `htmltools` dependency optional
 * Make `anywidget` dependency optional
 * Add Mapbox Draw Ipywidget callbacks for
   * `draw.create`

@@ -88,6 +88,20 @@ def construct_maptiler_basemap_url(style_name: str | MapTiler = "aquarelle") -> 
 
 
 class OpenFreeMap(Enum):
+    """OpenFreeMap basemap styles
+
+    Attributes:
+        POSITRON: positron
+        LIBERTY: liberty
+        BRIGHT: bright
+
+    Examples:
+        >>> from maplibre import Map, MapOptions
+        >>> from maplibre.basemaps import OpenFreeMap
+
+        >>> m = Map(MapOptions(style=OpenFreeMap.LIBERTY))
+    """
+
     POSITRON = "positron"
     LIBERTY = "liberty"
     BRIGHT = "bright"
