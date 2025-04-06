@@ -1,6 +1,6 @@
 # Changelog for MapLibre for Python
 
-## maplibre v0.3.0 (unreleased)
+## maplibre v0.3.0
 
 * Add 3d-buildings example
 * Add `basemaps.OpenFreeMap`
