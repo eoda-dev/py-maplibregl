@@ -10,8 +10,14 @@ from pydantic import ConfigDict, Field, field_validator
 from ._core import MapLibreBaseModel
 from ._templates import html_template, js_template
 from ._utils import get_temp_filename, read_internal_file
-from .basemaps import (Carto, MapTiler, construct_carto_basemap_url,
-                       construct_maptiler_basemap_url)
+from .basemaps import (
+    Carto,
+    MapTiler,
+    OpenFreeMap,
+    construct_carto_basemap_url,
+    construct_maptiler_basemap_url,
+    construct_openfreemap_basemap_url,
+)
 from .controls import Control, ControlPosition, Marker
 from .layer import Layer
 from .plugins import MapboxDrawOptions
@@ -43,9 +49,7 @@ class MapOptions(MapLibreBaseModel):
         See [MapOptions](https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/MapOptions) for more details.
     """
 
-    model_config = ConfigDict(
-        validate_assignment=True, extra="forbid", use_enum_values=False
-    )
+    model_config = ConfigDict(validate_assignment=True, extra="forbid", use_enum_values=False)
     antialias: bool = None
     attribution_control: bool = Field(None, serialization_alias="attributionControl")
     bearing: Union[int, float] = None
@@ -68,9 +72,7 @@ class MapOptions(MapLibreBaseModel):
     min_zoom: int = Field(None, serialization_alias="minZoom")
     pitch: Union[int, float] = None
     scroll_zoom: bool = Field(None, serialization_alias="scrollZoom")
-    style: Union[str, Carto, MapTiler, dict] = construct_carto_basemap_url(
-        Carto.DARK_MATTER
-    )
+    style: Union[str, Carto, MapTiler, OpenFreeMap, dict] = construct_carto_basemap_url(Carto.DARK_MATTER)
     zoom: Union[int, float] = None
 
     @field_validator("style")
@@ -80,6 +82,9 @@ class MapOptions(MapLibreBaseModel):
 
         if isinstance(v, MapTiler):
             return construct_maptiler_basemap_url(v)
+
+        if isinstance(v, OpenFreeMap):
+            return construct_openfreemap_basemap_url(v)
 
         return v
 
@@ -232,9 +237,7 @@ class Map(object):
         """
         self.add_call("addPopup", layer_id, prop, template)
 
-    def add_tooltip(
-        self, layer_id: str, prop: str = None, template: str = None
-    ) -> None:
+    def add_tooltip(self, layer_id: str, prop: str = None, template: str = None) -> None:
         """Add a tooltip to the map
 
         Args:
@@ -334,9 +337,7 @@ class Map(object):
         headers = [f"<style>{css}</style>"]
 
         # Deck.GL headers
-        add_deckgl_headers = "addDeckOverlay" in [
-            item[0] for item in self._message_queue
-        ]
+        add_deckgl_headers = "addDeckOverlay" in [item[0] for item in self._message_queue]
         # TODO: Set version in constants
         deckgl_headers = (
             [
@@ -350,9 +351,7 @@ class Map(object):
         )
 
         # Mapbox Draw headers
-        add_mapbox_draw_headers = "addMapboxDraw" in [
-            item[0] for item in self._message_queue
-        ]
+        add_mapbox_draw_headers = "addMapboxDraw" in [item[0] for item in self._message_queue]
         # TODO: Set version in constants
         mapbox_draw_headers = (
             [
@@ -380,9 +379,7 @@ class Map(object):
     # -------------------------
     # Plugins
     # -------------------------
-    def add_deck_layers(
-        self, layers: list[dict | "pydeck.Layer"], tooltip: str | dict = None
-    ) -> None:
+    def add_deck_layers(self, layers: list[dict | "pydeck.Layer"], tooltip: str | dict = None) -> None:
         """Add Deck.GL layers to the layer stack
 
         Args:
@@ -393,9 +390,7 @@ class Map(object):
         layers = parse_deck_layers(layers)
         self.add_call("addDeckOverlay", layers, tooltip)
 
-    def set_deck_layers(
-        self, layers: list[dict | "pydeck.Layer"], tooltip: str | dict = None
-    ) -> None:
+    def set_deck_layers(self, layers: list[dict | "pydeck.Layer"], tooltip: str | dict = None) -> None:
         """Update Deck.GL layers
 
         Args:
@@ -426,9 +421,7 @@ class Map(object):
         if isinstance(options, MapboxDrawOptions):
             options = options.to_dict()
 
-        self.add_call(
-            "addMapboxDraw", options or {}, ControlPosition(position).value, geojson
-        )
+        self.add_call("addMapboxDraw", options or {}, ControlPosition(position).value, geojson)
 
 
 def save_map(m: Map, filename: str = None, preview=True, **kwargs) -> str:

@@ -3,6 +3,7 @@ from maplibre.basemaps import (
     background,
     construct_basemap_style,
     construct_carto_basemap_url,
+    OpenFreeMap, construct_openfreemap_basemap_url
 )
 
 
@@ -27,3 +28,13 @@ def test_background_style():
 
     # Assert
     assert style["layers"][0]["paint"]["background-color"] == color
+
+def test_openfreemap_style() -> None:
+    positron = OpenFreeMap.POSITRON
+    liberty = "liberty"
+
+    style_url = construct_openfreemap_basemap_url(positron)
+    print(style_url)
+
+    assert style_url == "https://tiles.openfreemap.org/styles/positron"
+    assert construct_openfreemap_basemap_url(liberty) == "https://tiles.openfreemap.org/styles/liberty"

@@ -11,20 +11,30 @@
 MapLibre for Python provides Python bindings for [MapLibre GL JS](https://github.com/maplibre/maplibre-gl-js).
 Furthermore, [Deck.GL Layers](https://deck.gl/docs/api-reference/layers) can be mixed with [MapLibre Layers](https://maplibre.org/maplibre-style-spec/layers/).
 
-It integrates seamlessly into [Shiny for Python](https://github.com/posit-dev/py-shiny) and [Jupyter](https://jupyter.org/).
+It integrates seamlessly into [Shiny for Python](https://github.com/posit-dev/py-shiny), [Marimo](https://marimo.io/) and [Jupyter](https://jupyter.org/).
 
 ## Installation
 
 ```bash
 # Stable
-pip install maplibre
+pip install maplibre # minimal
+
+pip install "maplibre[shiny]" # shiny bindings
+
+pip install "maplibre[ipywidget]" # marimo and jupyter bindings
 
 pip install "maplibre[all]"
 
-# Dev
+uv add maplibre
+
+uv add "maplibre[all]"
+
+# Unstable
 pip install git+https://github.com/eoda-dev/py-maplibregl@dev
 
 pip install "maplibre[all] @ git+https://github.com/eoda-dev/py-maplibregl@dev"
+
+uv add "git+https://github.com/eoda-dev/py-maplibregl@dev[all]"
 
 # Conda
 conda install -c conda-forge maplibre
