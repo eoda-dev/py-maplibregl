@@ -153,6 +153,10 @@ class ScaleControl(Control):
     unit: Literal["imperial", "metric", "nautical"] = "metric"
 
 
+class GlobeControl(Control):
+    """Globe control"""
+    ...
+
 # -------------------------
 # Custom controls
 # -------------------------
