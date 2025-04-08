@@ -11,9 +11,9 @@ from maplibre.sources import GeoJSONSource
 data = "https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson"
 layer_id = "earthquakes"
 
-layer = Layer(
-    id=layer_id, type=LayerType.CIRCLE, source=GeoJSONSource(data=data)
-).set_paint_props(circle_color="yellow")
+layer = Layer(id=layer_id, type=LayerType.CIRCLE, source=GeoJSONSource(data=data)).set_paint_props(
+    circle_color="yellow"
+)
 
 m = Map(MapOptions(style=Carto.POSITRON))
 m.add_control(NavigationControl())

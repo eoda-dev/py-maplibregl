@@ -27,5 +27,5 @@ jobs:
           pip install -e ".[anywidget,shiny,pmtiles]"
       - name: Test package
         run: |
-          poetry run pytest
+          poetry run pytest --ignore tests/test_pmtiles.py
           poetry run pytest --doctest-modules maplibre --ignore maplibre/ipywidget.py

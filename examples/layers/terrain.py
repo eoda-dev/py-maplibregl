@@ -1,7 +1,7 @@
 # See https://maplibre.org/maplibre-gl-js/docs/examples/3d-terrain/
 #
 from maplibre import Map, MapOptions, Layer, LayerType
-from maplibre.sources import SourceType, RasterTileSource
+from maplibre.sources import SourceType, RasterTileSource, RasterDEMSource
 from maplibre.basemaps import construct_basemap_style
 from maplibre.controls import NavigationControl, TerrainControl, GlobeControl
 
@@ -13,17 +13,11 @@ style = construct_basemap_style(
             attribution="&copy; OpenStreetMap Contributors",
             max_zoom=19,
         ),
-        hillshade=dict(
-            type=SourceType.RASTER_DEM.value,
-            url="https://demotiles.maplibre.org/terrain-tiles/tiles.json",
-            tileSize=256,
-        ),
+        hillshade=RasterDEMSource(url="https://demotiles.maplibre.org/terrain-tiles/tiles.json", tile_size=256),
     ),
     layers=[
         Layer(type=LayerType.RASTER, source="osm"),
-        Layer(type=LayerType.HILLSHADE, source="hillshade").set_paint_props(
-            hillshade_shadow_color="#473B24"
-        ),
+        Layer(type=LayerType.HILLSHADE, source="hillshade").set_paint_props(hillshade_shadow_color="#473B24"),
     ],
 )
 
