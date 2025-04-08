@@ -322,6 +322,10 @@ class Map(object):
         """Set the projection of the map"""
         self.add_call("setProjection", dict(type=type))
 
+    def set_terrain(self, source: str, exaggeration: int |float = 1) -> None:
+        """Load a 3d terrain mesh based on a 'raster-dem' source"""
+        self.add_call("setTerrain", dict(source=source, exaggeration=exaggeration))
+
     def to_html(self, title: str = "My Awesome Map", **kwargs) -> str:
         """Render to html
 

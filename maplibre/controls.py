@@ -160,7 +160,7 @@ class GlobeControl(Control):
 class TerrainControl(Control):
     """Terrain control"""
     source: str
-    exaggeration: int = 1
+    exaggeration: Union[int, float] = 1
 
 # -------------------------
 # Custom controls

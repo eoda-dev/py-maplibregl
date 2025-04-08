@@ -27,8 +27,6 @@ style = construct_basemap_style(
     ],
 )
 
-style["terrain"] = dict(source="hillshade", exaggeration = 1)
-
 map_options = MapOptions(
     style=style,
     zoom=12,
@@ -38,4 +36,5 @@ map_options = MapOptions(
 )
 
 m = Map(map_options, controls=[NavigationControl(), TerrainControl(source="hillshade"), GlobeControl()])
+m.set_terrain("hillshade")
 m.save(preview=True)
