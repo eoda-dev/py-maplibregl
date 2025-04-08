@@ -1,5 +1,10 @@
 # Changelog for MapLibre for Python
 
+## maplibre v0.3.1
+
+* Switch to [MapLibre GL JS v5.3.0](https://github.com/maplibre/maplibre-gl-js/releases/tag/v5.3.0)
+* Add `Map.set_projection` and `GlobeControl` to swicth between _globe_ and _mercator_ projection
+
 ## maplibre v0.3.0
 
 * Add 3d-buildings example
