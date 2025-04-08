@@ -6,12 +6,12 @@
 [![Conda package](https://img.shields.io/conda/vn/conda-forge/maplibre.svg)](https://anaconda.org/conda-forge/maplibre)
 [![Build status](https://img.shields.io/github/actions/workflow/status/eoda-dev/py-maplibregl/pytest.yml?branch=main)](https://img.shields.io/github/actions/workflow/status/eoda-dev/py-maplibregl/pytest.yml?branch=main)
 [![License](https://img.shields.io/github/license/eoda-dev/py-maplibregl)](https://img.shields.io/github/license/eoda-dev/py-maplibregl)
-[![MapLibre](https://img.shields.io/badge/MapLibre.GL-v3.6.2-blue.svg)](https://github.com/maplibre/maplibre-gl-js/releases/tag/v3.6.2)
+[![MapLibre GL JS](https://img.shields.io/badge/MapLibre.GL-v5.3.0-blue.svg)](https://github.com/maplibre/maplibre-gl-js/releases/tag/v5.3.0)
 
 MapLibre for Python provides Python bindings for [MapLibre GL JS](https://github.com/maplibre/maplibre-gl-js).
 Furthermore, [Deck.GL Layers](https://deck.gl/docs/api-reference/layers) can be mixed with [MapLibre Layers](https://maplibre.org/maplibre-style-spec/layers/).
 
-It integrates seamlessly into [Shiny for Python](https://github.com/posit-dev/py-shiny), [Marimo](https://marimo.io/) and [Jupyter](https://jupyter.org/).
+It integrates seamlessly into [Shiny for Python](https://github.com/posit-dev/py-shiny), [Marimo](https://marimo.io/), [Jupyter](https://jupyter.org/) and[JupyterLite](https://github.com/jupyter-widgets-contrib/anywidget-lite).
 
 ## Installation
 

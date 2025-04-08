@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import webbrowser
-from typing import Union
+from typing_extensions import Union, Literal
 
 from jinja2 import Template
 from pydantic import ConfigDict, Field, field_validator
@@ -22,6 +22,7 @@ from .controls import Control, ControlPosition, Marker
 from .layer import Layer
 from .plugins import MapboxDrawOptions
 from .sources import SimpleFeatures, Source
+from .projection import ProjectionType
 
 try:
     from geopandas import GeoDataFrame
@@ -316,6 +317,10 @@ class Map(object):
             bounds = tuple(data.total_bounds)
 
         self.add_call("fitBounds", bounds, kwargs)
+
+    def set_projection(self, type: str | ProjectionType | list = ProjectionType.GLOBE) -> None:
+        """Set the projection of the map"""
+        self.add_call("setProjection", dict(type=type))
 
     def to_html(self, title: str = "My Awesome Map", **kwargs) -> str:
         """Render to html
