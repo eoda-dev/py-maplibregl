@@ -19,12 +19,12 @@ jobs:
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
       - name: Install Poetry and pytest
-        run: pip install poetry pytest
+        run: pip install poetry pytest geopandas
       - name: Install package
         run: |
           # poetry lock
           # poetry install -E ipywidget -E shiny
-          pip install -e ".[anywidget,shiny]"
+          pip install -e ".[anywidget,shiny,pmtiles]"
       - name: Test package
         run: |
           poetry run pytest
