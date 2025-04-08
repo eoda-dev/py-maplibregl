@@ -157,6 +157,11 @@ class GlobeControl(Control):
     """Globe control"""
     ...
 
+class TerrainControl(Control):
+    """Terrain control"""
+    source: str
+    exaggeration: int = 1
+
 # -------------------------
 # Custom controls
 # -------------------------

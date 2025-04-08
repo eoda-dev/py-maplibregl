@@ -1,6 +1,11 @@
 from maplibre import Layer, LayerType, Map, MapOptions
 from maplibre.basemaps import Carto
-from maplibre.controls import NavigationControl, ScaleControl, ControlPosition, GlobeControl
+from maplibre.controls import (
+    NavigationControl,
+    ScaleControl,
+    ControlPosition,
+    GlobeControl,
+)
 from maplibre.sources import GeoJSONSource
 
 data = "https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson"
