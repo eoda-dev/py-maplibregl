@@ -1,9 +1,12 @@
-# See https://maplibre.org/maplibre-gl-js/docs/examples/3d-terrain/
+# See
+# - https://maplibre.org/maplibre-gl-js/docs/examples/3d-terrain/
+# - https://maplibre.org/maplibre-gl-js/docs/examples/sky-with-fog-and-terrain/
 #
 from maplibre import Map, MapOptions, Layer, LayerType
-from maplibre.sources import SourceType, RasterTileSource, RasterDEMSource
+from maplibre.sources import RasterTileSource, RasterDEMSource
 from maplibre.basemaps import construct_basemap_style
 from maplibre.controls import NavigationControl, TerrainControl, GlobeControl
+from maplibre.sky import Sky
 
 style = construct_basemap_style(
     sources=dict(
@@ -13,6 +16,8 @@ style = construct_basemap_style(
             attribution="&copy; OpenStreetMap Contributors",
             max_zoom=19,
         ),
+        # Use a different source for terrain and hillshade layers, to improve render quality
+        terrain=RasterDEMSource(url="https://demotiles.maplibre.org/terrain-tiles/tiles.json", tile_size=256),
         hillshade=RasterDEMSource(url="https://demotiles.maplibre.org/terrain-tiles/tiles.json", tile_size=256),
     ),
     layers=[
@@ -24,11 +29,15 @@ style = construct_basemap_style(
 map_options = MapOptions(
     style=style,
     zoom=12,
-    center=(11.39085, 47.27574),
-    pitch=70,
+    # center=(11.39085, 47.27574),
+    center=(11.2953, 47.5479),
+    pitch=77,
     hash=True,
+    max_zoom=18,
+    max_pitch=85
 )
 
-m = Map(map_options, controls=[NavigationControl(), TerrainControl(source="hillshade"), GlobeControl()])
-m.set_terrain("hillshade")
+m = Map(map_options, controls=[NavigationControl(), TerrainControl(source="terrain"), GlobeControl()])
+m.set_terrain("terrain")
+m.set_sky(Sky(sky_color="steelblue", horizon_color="orange", fog_color="grey"))
 m.save(preview=True)

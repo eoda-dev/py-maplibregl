@@ -23,6 +23,7 @@ from .layer import Layer
 from .plugins import MapboxDrawOptions
 from .sources import SimpleFeatures, Source
 from .projection import ProjectionType
+from .sky import Sky
 
 try:
     from geopandas import GeoDataFrame
@@ -197,7 +198,7 @@ class Map(object):
 
         self.add_call("addSource", id, source)
 
-    def add_layer(self, layer: [Layer | dict], before_id: str = None) -> None:
+    def add_layer(self, layer: Layer | dict, before_id: str = None) -> None:
         """Add a layer to the map
 
         Args:
@@ -322,9 +323,15 @@ class Map(object):
         """Set the projection of the map"""
         self.add_call("setProjection", dict(type=type))
 
-    def set_terrain(self, source: str, exaggeration: int |float = 1) -> None:
+    def set_terrain(self, source: str, exaggeration: int | float = 1) -> None:
         """Load a 3d terrain mesh based on a 'raster-dem' source"""
         self.add_call("setTerrain", dict(source=source, exaggeration=exaggeration))
+
+    def set_sky(self, sky: Sky | dict) -> None:
+        if isinstance(sky, Sky):
+            sky = sky.to_dict()
+
+        self.add_call("setSky", sky)
 
     def to_html(self, title: str = "My Awesome Map", **kwargs) -> str:
         """Render to html
