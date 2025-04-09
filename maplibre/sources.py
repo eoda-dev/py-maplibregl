@@ -94,6 +94,9 @@ class RasterTileSource(Source):
         return SourceType.RASTER.value
 
 
+class RasterSource(RasterTileSource): ...
+
+
 class RasterDEMSource(Source):
     url: str = None
     tiles: list = None
