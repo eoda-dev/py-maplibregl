@@ -419,6 +419,21 @@ files = [
 ]
 
 [[package]]
+name = "eval-type-backport"
+version = "0.2.2"
+description = "Like `typing._eval_type`, but lets older Python versions use newer typing features."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "eval_type_backport-0.2.2-py3-none-any.whl", hash = "sha256:cb6ad7c393517f476f96d456d0412ea80f0a8cf96f6892834cd9340149111b0a"},
+    {file = "eval_type_backport-0.2.2.tar.gz", hash = "sha256:f0576b4cf01ebb5bd358d02314d31846af5e07678387486e2c798af0e7d849c1"},
+]
+
+[package.extras]
+tests = ["pytest"]
+
+[[package]]
 name = "exceptiongroup"
 version = "1.2.2"
 description = "Backport of PEP 654 (exception groups)"
@@ -2830,12 +2845,13 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 type = ["pytest-mypy"]
 
 [extras]
-all = ["anywidget", "geopandas", "htmltools", "pandas", "shiny", "traitlets"]
+all = ["anywidget", "geopandas", "htmltools", "pandas", "pmtiles", "shiny", "traitlets"]
 anywidget = ["anywidget", "traitlets"]
 ipywidget = ["anywidget", "traitlets"]
+pmtiles = ["pmtiles"]
 shiny = ["htmltools", "shiny"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<4"
-content-hash = "2e80dafdb2652b37172456577e061d671da449c12f4f9fe21179e8e304755163"
+content-hash = "2737a0b961bc73e4162fa67e2fa4c29682a394a721895004cab5bf69429023a6"

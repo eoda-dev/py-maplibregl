@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import webbrowser
-from typing_extensions import Union, Literal
+from typing_extensions import Union
 
 from jinja2 import Template
 from pydantic import ConfigDict, Field, field_validator
@@ -23,6 +23,8 @@ from .layer import Layer
 from .plugins import MapboxDrawOptions
 from .sources import SimpleFeatures, Source
 from .projection import ProjectionType
+from .sky import Sky
+from .light import Light
 
 try:
     from geopandas import GeoDataFrame
@@ -197,7 +199,7 @@ class Map(object):
 
         self.add_call("addSource", id, source)
 
-    def add_layer(self, layer: [Layer | dict], before_id: str = None) -> None:
+    def add_layer(self, layer: Layer | dict, before_id: str = None) -> None:
         """Add a layer to the map
 
         Args:
@@ -321,6 +323,24 @@ class Map(object):
     def set_projection(self, type: str | ProjectionType | list = ProjectionType.GLOBE) -> None:
         """Set the projection of the map"""
         self.add_call("setProjection", dict(type=type))
+
+    def set_terrain(self, source: str, exaggeration: int | float = 1) -> None:
+        """Load a 3d terrain mesh based on a 'raster-dem' source"""
+        self.add_call("setTerrain", dict(source=source, exaggeration=exaggeration))
+
+    def set_sky(self, sky: Sky | dict) -> None:
+        """Set sky"""
+        if isinstance(sky, Sky):
+            sky = sky.to_dict()
+
+        self.add_call("setSky", sky)
+
+    def set_light(self, light: Light | dict) -> None:
+        """Set light"""
+        if isinstance(light, Light):
+            light = light.to_dict()
+
+        self.add_call("setLight", light)
 
     def to_html(self, title: str = "My Awesome Map", **kwargs) -> str:
         """Render to html
