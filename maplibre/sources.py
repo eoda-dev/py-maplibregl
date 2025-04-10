@@ -4,7 +4,7 @@ from enum import Enum
 from typing_extensions import Optional, Union, Literal
 from uuid import uuid4
 
-from pydantic import Field, computed_field, field_validator
+from pydantic import Field, computed_field
 
 from ._core import MapLibreBaseModel
 from .utils import geopandas_to_geojson
@@ -152,6 +152,9 @@ class VectorTileSource(Source):
     @property
     def type(self) -> str:
         return SourceType.VECTOR.value
+
+
+class VectorSource(VectorTileSource): ...
 
 
 class SimpleFeatures(object):
