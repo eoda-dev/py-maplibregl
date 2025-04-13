@@ -2,9 +2,10 @@
 
 from maplibre import Map, MapOptions, Layer, LayerType
 from maplibre.sources import RasterSource
-from maplibre.basemaps import construct_basemap_style
+from maplibre.basemaps import construct_basemap_style, Basemap
 
-style = construct_basemap_style(
+# style = construct_basemap_style(
+style = Basemap(
     sources={
         "raster-tiles": RasterSource(
             tiles=["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"],
@@ -21,7 +22,7 @@ style = construct_basemap_style(
             max_zoom=20,
         )
     ],
-)
+).to_dict()
 
 map_options = MapOptions(style=style, center=(-74.5, 40), zoom=2)
 

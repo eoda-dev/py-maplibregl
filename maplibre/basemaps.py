@@ -2,10 +2,33 @@ from __future__ import annotations
 
 from enum import Enum
 
+from pydantic import BaseModel, computed_field
+
 from .config import options
 from .layer import Layer, LayerType
 
+# from .sources import Source
+
 MAPLIBRE_DEMO_TILES = "https://demotiles.maplibre.org/style.json"
+
+
+class Basemap(BaseModel):
+    _version = 8
+
+    sources: dict  # [str, dict]
+    layers: list[Layer | dict]
+    name: str = "nice-style"
+    # version: int = 8
+    sky: dict = None
+    terrain: dict = None
+    # light: dict = None
+
+    @computed_field
+    def version(self) -> int:
+        return self._version
+
+    def to_dict(self) -> dict:
+        return self.model_dump(exclude_none=True, by_alias=True)
 
 
 class Carto(Enum):
