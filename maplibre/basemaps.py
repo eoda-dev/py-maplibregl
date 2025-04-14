@@ -3,22 +3,12 @@ from __future__ import annotations
 from enum import Enum
 
 from pydantic import BaseModel, computed_field, field_validator
-from typing_extensions import Union
 
 from .config import options
 from .layer import Layer, LayerType
 from .sky import Sky
-from .sources import GeoJSONSource, RasterDEMSource, RasterSource, RasterTileSource, VectorSource, VectorTileSource
 from .terrain import Terrain
-
-AnySource = Union[
-    GeoJSONSource,
-    RasterDEMSource,
-    RasterSource,
-    RasterTileSource,
-    VectorSource,
-    VectorTileSource,
-]
+from .types import SourceT
 
 MAPLIBRE_DEMO_TILES = "https://demotiles.maplibre.org/style.json"
 
@@ -26,7 +16,7 @@ MAPLIBRE_DEMO_TILES = "https://demotiles.maplibre.org/style.json"
 class Basemap(BaseModel):
     _version = 8
 
-    sources: dict[str, dict | AnySource] | None = None
+    sources: dict[str, dict | SourceT] | None = None
     layers: list[Layer | dict]
     name: str = "nice-style"
     sky: dict | Sky | None = None
@@ -132,6 +122,8 @@ def construct_maptiler_basemap_url(
     style_name: str | MapTiler = "aquarelle",
 ) -> str:
     maptiler_api_key = options.maptiler_api_key
+
+    # TODO: If is not needed here, see OpenFreeMap
     if isinstance(style_name, MapTiler):
         style_name = MapTiler(style_name).value
 
