@@ -49,6 +49,10 @@ class BasemapStyle(BaseModel):
     def to_dict(self) -> dict:
         return self.model_dump(exclude_none=True, by_alias=True)
 
+    @property
+    def symbol_layers(self) -> list[str]:
+        return [layer["id"] for layer in self.to_dict()["layers"] if layer["type"] == "symbol"]
+
     @classmethod
     def from_url(cls, url: str) -> BasemapStyle:
         import requests as req
