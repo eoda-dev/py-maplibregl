@@ -2,10 +2,10 @@
 
 from maplibre import Map, MapOptions, Layer, LayerType
 from maplibre.sources import RasterSource
-from maplibre.basemaps import construct_basemap_style, Basemap
+from maplibre.basemaps import construct_basemap_style, BasemapStyle
 
 # style = construct_basemap_style(
-style = Basemap(
+style = BasemapStyle(
     sources={
         "raster-tiles": RasterSource(
             tiles=["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"],

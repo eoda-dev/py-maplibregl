@@ -1,5 +1,5 @@
 from maplibre.basemaps import (
-    Basemap,
+    BasemapStyle,
     Carto,
     OpenFreeMap,
     background,
@@ -44,7 +44,7 @@ def test_openfreemap_style() -> None:
 
 def test_basemap_class() -> None:
     # Act
-    basemap = Basemap(
+    basemap = BasemapStyle(
         sources={
             "osm": RasterSource(
                 tiles=["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"],

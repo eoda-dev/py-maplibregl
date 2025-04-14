@@ -6,6 +6,7 @@ from pydantic import BaseModel, computed_field, field_validator
 
 from .config import options
 from .layer import Layer, LayerType
+from .light import Light
 from .sky import Sky
 from .terrain import Terrain
 from .types import SourceT
@@ -13,15 +14,21 @@ from .types import SourceT
 MAPLIBRE_DEMO_TILES = "https://demotiles.maplibre.org/style.json"
 
 
-class Basemap(BaseModel):
+class BasemapStyle(BaseModel):
     _version = 8
 
     sources: dict[str, dict | SourceT] | None = None
     layers: list[Layer | dict]
-    name: str = "nice-style"
+    name: str = "my-basemap-style"
     sky: dict | Sky | None = None
     terrain: dict | Terrain | None = None
-    # light: dict = None
+    light: dict | Light | None = None
+    glyphs: str | None = None
+    sprite: str | None = None
+    center: tuple[float, float] | list[float, float] | None = None
+    zoom: int | float | None = None
+    bearing: int | float | None = None
+    pitch: int | float | None = None
 
     @field_validator("sky")
     def validate_sky(cls, v):
@@ -36,6 +43,15 @@ class Basemap(BaseModel):
 
     def to_dict(self) -> dict:
         return self.model_dump(exclude_none=True, by_alias=True)
+
+    @classmethod
+    def from_url(cls, url: str) -> BasemapStyle:
+        import requests as req
+
+        resp = req.get(url)
+        data = resp.json()
+        resp.close()
+        return cls(**data)
 
 
 class Carto(Enum):

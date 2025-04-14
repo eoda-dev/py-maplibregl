@@ -32,6 +32,7 @@ geopandas = "^0.14.2"
 pmtiles = "*"
 marimo = "^0.10.17"
 griffe = "0.44.0"
+requests = "^2.32.3"
 
 [tool.poetry.extras]
 all = [
