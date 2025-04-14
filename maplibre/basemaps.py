@@ -2,12 +2,23 @@ from __future__ import annotations
 
 from enum import Enum
 
-from pydantic import BaseModel, computed_field
+from pydantic import BaseModel, computed_field, field_validator
+from typing_extensions import Union
 
 from .config import options
 from .layer import Layer, LayerType
+from .sky import Sky
+from .sources import GeoJSONSource, RasterDEMSource, RasterSource, RasterTileSource, VectorSource, VectorTileSource
+from .terrain import Terrain
 
-# from .sources import Source
+AnySource = Union[
+    GeoJSONSource,
+    RasterDEMSource,
+    RasterSource,
+    RasterTileSource,
+    VectorSource,
+    VectorTileSource,
+]
 
 MAPLIBRE_DEMO_TILES = "https://demotiles.maplibre.org/style.json"
 
@@ -15,13 +26,20 @@ MAPLIBRE_DEMO_TILES = "https://demotiles.maplibre.org/style.json"
 class Basemap(BaseModel):
     _version = 8
 
-    sources: dict  # [str, dict]
+    sources: dict[str, dict | AnySource] | None = None
     layers: list[Layer | dict]
     name: str = "nice-style"
     # version: int = 8
-    sky: dict = None
-    terrain: dict = None
+    sky: dict | Sky | None = None
+    terrain: dict | Terrain | None = None
     # light: dict = None
+
+    @field_validator("sky")
+    def validate_sky(cls, v):
+        if isinstance(v, Sky):
+            v = v.to_dict()
+
+        return v
 
     @computed_field
     def version(self) -> int:
@@ -111,7 +129,9 @@ class MapTiler(Enum):
     WINTER = "winter"
 
 
-def construct_maptiler_basemap_url(style_name: str | MapTiler = "aquarelle") -> str:
+def construct_maptiler_basemap_url(
+    style_name: str | MapTiler = "aquarelle",
+) -> str:
     maptiler_api_key = options.maptiler_api_key
     if isinstance(style_name, MapTiler):
         style_name = MapTiler(style_name).value
@@ -139,5 +159,7 @@ class OpenFreeMap(Enum):
     BRIGHT = "bright"
 
 
-def construct_openfreemap_basemap_url(style_name: str | OpenFreeMap = OpenFreeMap.LIBERTY) -> str:
+def construct_openfreemap_basemap_url(
+    style_name: str | OpenFreeMap = OpenFreeMap.LIBERTY,
+) -> str:
     return f"https://tiles.openfreemap.org/styles/{OpenFreeMap(style_name).value}"

@@ -28,8 +28,7 @@ class SourceType(Enum):
     VIDEO = "video"
 
 
-class Source(MapLibreBaseModel):
-    pass
+class Source(MapLibreBaseModel): ...
 
 
 class GeoJSONSource(Source):

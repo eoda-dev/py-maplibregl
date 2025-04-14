@@ -25,6 +25,7 @@ from .sources import SimpleFeatures, Source
 from .projection import ProjectionType
 from .sky import Sky
 from .light import Light
+from .terrain import Terrain
 
 try:
     from geopandas import GeoDataFrame
@@ -326,7 +327,7 @@ class Map(object):
 
     def set_terrain(self, source: str, exaggeration: int | float = 1) -> None:
         """Load a 3d terrain mesh based on a 'raster-dem' source"""
-        self.add_call("setTerrain", dict(source=source, exaggeration=exaggeration))
+        self.add_call("setTerrain", Terrain(source=source, exaggeration=exaggeration).to_dict())
 
     def set_sky(self, sky: Sky | dict) -> None:
         """Set sky"""
