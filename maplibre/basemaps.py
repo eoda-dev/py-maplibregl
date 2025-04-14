@@ -62,6 +62,10 @@ class BasemapStyle(BaseModel):
         resp.close()
         return cls(**data)
 
+    @staticmethod
+    def carto_url(style_name: str | Carto) -> str:
+        return f"https://basemaps.cartocdn.com/gl/{Carto(style_name).value}-gl-style/style.json"
+
 
 class Carto(Enum):
     """Carto basemap styles
@@ -148,12 +152,7 @@ def construct_maptiler_basemap_url(
     style_name: str | MapTiler = "aquarelle",
 ) -> str:
     maptiler_api_key = options.maptiler_api_key
-
-    # TODO: If is not needed here, see OpenFreeMap
-    if isinstance(style_name, MapTiler):
-        style_name = MapTiler(style_name).value
-
-    return f"https://api.maptiler.com/maps/{style_name}/style.json?key={maptiler_api_key}"
+    return f"https://api.maptiler.com/maps/{MapTiler(style_name).value}/style.json?key={maptiler_api_key}"
 
 
 class OpenFreeMap(Enum):
