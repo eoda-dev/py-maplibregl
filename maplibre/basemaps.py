@@ -15,11 +15,16 @@ MAPLIBRE_DEMO_TILES = "https://demotiles.maplibre.org/style.json"
 
 
 class BasemapStyle(BaseModel):
+    """Basemap style
+
+    See also https://maplibre.org/maplibre-style-spec/root/.
+    """
+
     _version = 8
 
     sources: dict[str, dict | SourceT] | None = None
     layers: list[Layer | dict]
-    name: str = "my-basemap-style"
+    name: str = "my-basemap"
     sky: dict | Sky | None = None
     terrain: dict | Terrain | None = None
     light: dict | Light | None = None
@@ -80,20 +85,21 @@ class Carto(Enum):
     VOYAGER_NOLABELS = "voyager-nolabels"
 
 
-def construct_carto_basemap_url(style_name: str | Carto = "dark-matter") -> str:
+def construct_carto_basemap_url(style_name: str | Carto = Carto.DARK_MATTER) -> str:
     return f"https://basemaps.cartocdn.com/gl/{Carto(style_name).value}-gl-style/style.json"
 
 
-def construct_basemap_style(name: str = "nice-style", sources: dict = {}, layers: list = []) -> dict:
+def construct_basemap_style(layers: list, sources: dict | None = None, name: str = "my-basemap", **kwargs) -> dict:
     """Construct a basemap style
 
     Args:
-        name (str): The name of the basemap style.
-        sources (dict): The sources to be used for the basemap style.
         layers (list): The layers to be used for the basemap style.
+        sources (dict): The sources to be used for the basemap style.
+        name (str): The name of the basemap style.
+        **kwargs (any): ...
     """
     layers = [layer.to_dict() if isinstance(layer, Layer) else layer for layer in layers]
-    return {"name": name, "version": 8, "sources": sources, "layers": layers}
+    return dict(name=name, version=8, sources=sources or dict(), layers=layers) | kwargs
 
 
 def background(color: str = "black", opacity: float = 1.0) -> dict:

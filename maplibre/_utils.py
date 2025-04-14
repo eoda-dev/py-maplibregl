@@ -23,12 +23,11 @@ def get_temp_filename(file_extension: str = ".html") -> str:
     return get_output_dir() + os.sep + str(uuid4()).replace("-", "") + file_extension
 
 
-def get_internal_file_path(*args):
-    # print(os.path.dirname(__file__))
+def get_internal_file_path(*args) -> str:
     return os.path.join(os.path.dirname(__file__), *args)
 
 
-def read_internal_file(*args):
+def read_internal_file(*args) -> str:
     with open(get_internal_file_path(*args)) as f:
         content = f.read()
 

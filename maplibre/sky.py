@@ -5,6 +5,11 @@ from ._utils import fix_keys
 
 
 class Sky(MapLibreBaseModel):
+    """Sky configuration
+
+    See also https://maplibre.org/maplibre-style-spec/sky/.
+    """
+
     sky_color: str | list = "#88C6FC"
     sky_horizon_blend: float = 0.8
     horizon_color: str | list = "#ffffff"
