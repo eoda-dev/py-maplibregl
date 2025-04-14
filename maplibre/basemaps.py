@@ -29,7 +29,6 @@ class Basemap(BaseModel):
     sources: dict[str, dict | AnySource] | None = None
     layers: list[Layer | dict]
     name: str = "nice-style"
-    # version: int = 8
     sky: dict | Sky | None = None
     terrain: dict | Terrain | None = None
     # light: dict = None
@@ -37,7 +36,7 @@ class Basemap(BaseModel):
     @field_validator("sky")
     def validate_sky(cls, v):
         if isinstance(v, Sky):
-            v = v.to_dict()
+            return v.to_dict()
 
         return v
 

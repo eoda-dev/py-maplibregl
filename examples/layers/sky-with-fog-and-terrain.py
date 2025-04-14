@@ -28,7 +28,7 @@ style = Basemap(
     ],
     sky=Sky(sky_color="steelblue", horizon_color="orange", fog_color="grey"),
     terrain=Terrain(source="terrain")
-).to_dict()
+)
 
 map_options = MapOptions(
     style=style,
