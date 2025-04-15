@@ -1,4 +1,7 @@
 import logging
+import importlib.metadata
+
+__version__ = importlib.metadata.version(__package__)
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
