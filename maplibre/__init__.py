@@ -1,5 +1,5 @@
-import logging
 import importlib.metadata
+import logging
 
 __version__ = importlib.metadata.version(__package__)
 
@@ -19,16 +19,9 @@ from .map import Map, MapOptions
 try:
     from .mapcontext import MapContext
     from .renderer import MapLibreRenderer
-
-    # from .renderer import MapLibreRenderer as render_maplibregl
     from .ui import output_maplibregl
 
     render_maplibregl = MapLibreRenderer
 except ImportError as e:
-    # except Exception as e:
-    MapContext = None
-    MapLibreRenderer = None
-    output_maplibregl = None
-    render_maplibregl = None
     logger.warning(e)
     logger.warning(WARNING_MESSAGE)
