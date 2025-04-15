@@ -13,7 +13,8 @@ from maplibre.sources import RasterSource, RasterTileSource
 
 def test_carto_basemaps() -> None:
     # Act
-    basemap_url = construct_carto_basemap_url(Carto.DARK_MATTER)
+    # basemap_url = construct_carto_basemap_url(Carto.DARK_MATTER)
+    basemap_url = BasemapStyle.carto_url(Carto.DARK_MATTER)
 
     # Assert
     assert basemap_url == "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
