@@ -55,13 +55,14 @@ class MapOptions(MapLibreBaseModel):
     """
 
     model_config = ConfigDict(validate_assignment=True, extra="forbid", use_enum_values=False)
+
     antialias: bool = None
     attribution_control: bool = Field(None, serialization_alias="attributionControl")
     bearing: Union[int, float] = None
     bearing_snap: int = Field(None, serialization_alias="bearingSnap")
     bounds: tuple = None
     box_zoom: bool = Field(None, serialization_alias="boxZoom")
-    center: tuple = None
+    center: tuple[float, float] = None
     click_tolerance: int = Field(None, serialization_alias="clickTolerance")
     custom_attribution: bool = Field(None, serialization_alias="customAttribution")
     double_click_zoom: bool = Field(None, serialization_alias="doubleClickZoom")
@@ -93,7 +94,7 @@ class MapOptions(MapLibreBaseModel):
 
         if isinstance(v, BasemapStyle):
             return v.to_dict()
-        
+
         return v
 
 

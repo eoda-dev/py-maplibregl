@@ -55,13 +55,14 @@ class MapWidget(AnyWidget, Map):
 
     def __init__(
         self,
-        map_options=MapOptions(),
-        sources: dict = None,
-        layers: list = None,
-        controls: list = None,
+        map_options: MapOptions = MapOptions(),
+        sources: dict | None = None,
+        layers: list | None = None,
+        controls: list | None = None,
         height: int | str = 400,
         **kwargs,
     ) -> None:
+        self._rendered = False
         self.calls = []
         AnyWidget.__init__(self, height=height, **kwargs)
         Map.__init__(self, map_options, sources, layers, controls, **kwargs)
