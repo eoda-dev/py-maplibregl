@@ -2,12 +2,14 @@
 
 ## maplibre v0.3.2
 
-* Add `Sky` (#135), `Light` (#137) and `Terrain` (#134) style specification
+* Add `Sky` (#135), `Light` (#137) and `Terrain` (#134) style specifications
 * Add `TerrainControl`
 * Add `RasterDEMSource`
 * Add `RasterSource` as alias for `RasterTileSource`
 * Add `VectorSource` as alias for `VectorTileSource`
 * Add `BasemapStyle` as successor to `construct_basemap_style`
+* Add `BasemapStyle.symbol_layers` to get symbol layers from style
+* Add `BasemapStyle.carto_url` etc as successors to `construct_carto_basemap_url` etc
 
 ## maplibre v0.3.1
 
