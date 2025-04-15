@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import webbrowser
-from typing_extensions import Union, Literal
+from typing_extensions import Union
 
 from jinja2 import Template
 from pydantic import ConfigDict, Field, field_validator
@@ -11,6 +11,7 @@ from ._core import MapLibreBaseModel
 from ._templates import html_template, js_template
 from ._utils import get_temp_filename, read_internal_file
 from .basemaps import (
+    BasemapStyle,
     Carto,
     MapTiler,
     OpenFreeMap,
@@ -23,6 +24,9 @@ from .layer import Layer
 from .plugins import MapboxDrawOptions
 from .sources import SimpleFeatures, Source
 from .projection import ProjectionType
+from .sky import Sky
+from .light import Light
+from .terrain import Terrain
 
 try:
     from geopandas import GeoDataFrame
@@ -51,13 +55,14 @@ class MapOptions(MapLibreBaseModel):
     """
 
     model_config = ConfigDict(validate_assignment=True, extra="forbid", use_enum_values=False)
+
     antialias: bool = None
     attribution_control: bool = Field(None, serialization_alias="attributionControl")
     bearing: Union[int, float] = None
     bearing_snap: int = Field(None, serialization_alias="bearingSnap")
     bounds: tuple = None
     box_zoom: bool = Field(None, serialization_alias="boxZoom")
-    center: tuple = None
+    center: tuple[float, float] = None
     click_tolerance: int = Field(None, serialization_alias="clickTolerance")
     custom_attribution: bool = Field(None, serialization_alias="customAttribution")
     double_click_zoom: bool = Field(None, serialization_alias="doubleClickZoom")
@@ -73,7 +78,7 @@ class MapOptions(MapLibreBaseModel):
     min_zoom: int = Field(None, serialization_alias="minZoom")
     pitch: Union[int, float] = None
     scroll_zoom: bool = Field(None, serialization_alias="scrollZoom")
-    style: Union[str, Carto, MapTiler, OpenFreeMap, dict] = construct_carto_basemap_url(Carto.DARK_MATTER)
+    style: Union[str, Carto, MapTiler, OpenFreeMap, dict, BasemapStyle] = construct_carto_basemap_url(Carto.DARK_MATTER)
     zoom: Union[int, float] = None
 
     @field_validator("style")
@@ -86,6 +91,9 @@ class MapOptions(MapLibreBaseModel):
 
         if isinstance(v, OpenFreeMap):
             return construct_openfreemap_basemap_url(v)
+
+        if isinstance(v, BasemapStyle):
+            return v.to_dict()
 
         return v
 
@@ -166,7 +174,7 @@ class Map(object):
     def add_control(
         self,
         control: Control,
-        position: [str | ControlPosition] = None,
+        position: str | ControlPosition = None,
     ) -> None:
         """Add a control to the map
 
@@ -182,7 +190,7 @@ class Map(object):
             ControlPosition(position).value,
         )
 
-    def add_source(self, id: str, source: [Source | dict | GeoDataFrame]) -> None:
+    def add_source(self, id: str, source: Source | dict | GeoDataFrame) -> None:
         """Add a source to the map
 
         Args:
@@ -197,7 +205,7 @@ class Map(object):
 
         self.add_call("addSource", id, source)
 
-    def add_layer(self, layer: [Layer | dict], before_id: str = None) -> None:
+    def add_layer(self, layer: Layer | dict, before_id: str = None) -> None:
         """Add a layer to the map
 
         Args:
@@ -321,6 +329,24 @@ class Map(object):
     def set_projection(self, type: str | ProjectionType | list = ProjectionType.GLOBE) -> None:
         """Set the projection of the map"""
         self.add_call("setProjection", dict(type=type))
+
+    def set_terrain(self, source: str, exaggeration: int | float = 1) -> None:
+        """Load a 3d terrain mesh based on a 'raster-dem' source"""
+        self.add_call("setTerrain", Terrain(source=source, exaggeration=exaggeration).to_dict())
+
+    def set_sky(self, sky: Sky | dict) -> None:
+        """Set sky"""
+        if isinstance(sky, Sky):
+            sky = sky.to_dict()
+
+        self.add_call("setSky", sky)
+
+    def set_light(self, light: Light | dict) -> None:
+        """Set light"""
+        if isinstance(light, Light):
+            light = light.to_dict()
+
+        self.add_call("setLight", light)
 
     def to_html(self, title: str = "My Awesome Map", **kwargs) -> str:
         """Render to html

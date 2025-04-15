@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Optional, Union
+from typing_extensions import Optional, Union, Literal
 from uuid import uuid4
 
-from pydantic import Field, computed_field, field_validator
+from pydantic import Field, computed_field
 
 from ._core import MapLibreBaseModel
 from .utils import geopandas_to_geojson
@@ -28,8 +28,7 @@ class SourceType(Enum):
     VIDEO = "video"
 
 
-class Source(MapLibreBaseModel):
-    pass
+class Source(MapLibreBaseModel): ...
 
 
 class GeoJSONSource(Source):
@@ -47,12 +46,8 @@ class GeoJSONSource(Source):
     buffer: Optional[int] = None
     cluster: Optional[bool] = None
     cluster_max_zoom: Optional[int] = Field(None, serialization_alias="clusterMaxZoom")
-    cluster_min_points: Optional[int] = Field(
-        None, serialization_alias="clusterMinPoints"
-    )
-    cluster_properties: Optional[dict] = Field(
-        None, serialization_alias="clusterProperties"
-    )
+    cluster_min_points: Optional[int] = Field(None, serialization_alias="clusterMinPoints")
+    cluster_properties: Optional[dict] = Field(None, serialization_alias="clusterProperties")
     cluster_radius: Optional[int] = Field(None, serialization_alias="clusterRadius")
     filter: Optional[list] = None
     generate_id: Optional[bool] = Field(None, serialization_alias="generateId")
@@ -98,6 +93,29 @@ class RasterTileSource(Source):
         return SourceType.RASTER.value
 
 
+class RasterSource(RasterTileSource): ...
+
+
+class RasterDEMSource(Source):
+    url: str = None
+    tiles: list = None
+    bounds: Union[tuple, list] = None
+    max_zoom: int = Field(None, serialization_alias="maxzoom")
+    min_zoom: int = Field(None, serialization_alias="minzoom")
+    tile_size: int = Field(None, serialization_alias="tileSize")
+    attribution: str = None
+    encoding: Literal["terrarium", "mapbox", "custom"] = "mapbox"
+    red_factor: Union[int, float] = Field(None, serialization_alias="redFactor")
+    blue_factor: Union[int, float] = Field(None, serialization_alias="blueFactor")
+    green_factor: Union[int, float] = Field(None, serialization_alias="greenFactor")
+    base_shift: Union[int, float] = Field(None, serialization_alias="baseShift")
+
+    @computed_field
+    @property
+    def type(self) -> str:
+        return SourceType.RASTER_DEM.value
+
+
 class VectorTileSource(Source):
     """Vector tile source
 
@@ -133,6 +151,9 @@ class VectorTileSource(Source):
     @property
     def type(self) -> str:
         return SourceType.VECTOR.value
+
+
+class VectorSource(VectorTileSource): ...
 
 
 class SimpleFeatures(object):

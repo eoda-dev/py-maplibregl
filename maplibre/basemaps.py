@@ -1,11 +1,87 @@
 from __future__ import annotations
 
+import warnings
+
 from enum import Enum
+
+from pydantic import BaseModel, computed_field, field_validator
 
 from .config import options
 from .layer import Layer, LayerType
+from .light import Light
+from .sky import Sky
+from .terrain import Terrain
+from .types import SourceT
 
 MAPLIBRE_DEMO_TILES = "https://demotiles.maplibre.org/style.json"
+
+
+class BasemapStyle(BaseModel):
+    """Basemap style
+
+    See also https://maplibre.org/maplibre-style-spec/root/.
+    """
+
+    _version = 8
+
+    sources: dict[str, dict | SourceT] | None = None
+    layers: list[Layer | dict]
+    name: str = "my-basemap"
+    sky: dict | Sky | None = None
+    terrain: dict | Terrain | None = None
+    light: dict | Light | None = None
+    glyphs: str | None = None
+    sprite: str | None = None
+    center: tuple[float, float] | list[float, float] | None = None
+    zoom: int | float | None = None
+    bearing: int | float | None = None
+    pitch: int | float | None = None
+
+    # Obsolete because now alias is used
+    """
+    @field_validator("sky")
+    def validate_sky(cls, v):
+        if isinstance(v, Sky):
+            return v.to_dict()
+
+        return v
+    """
+
+    @computed_field
+    def version(self) -> int:
+        return self._version
+
+    def to_dict(self) -> dict:
+        return self.model_dump(exclude_none=True, by_alias=True)
+
+    @property
+    def symbol_layers(self) -> list[str]:
+        return [layer["id"] for layer in self.to_dict()["layers"] if layer["type"] == "symbol"]
+
+    @classmethod
+    def from_url(cls, url: str) -> BasemapStyle:
+        import requests as req
+
+        resp = req.get(url)
+        data = resp.json()
+        resp.close()
+        return cls(**data)
+
+    @staticmethod
+    def carto_url(style_name: str | Carto) -> str:
+        return f"https://basemaps.cartocdn.com/gl/{Carto(style_name).value}-gl-style/style.json"
+        # return construct_carto_basemap_url(style_name)
+
+    @staticmethod
+    def openfreemap_url(style_name: str | OpenFreeMap) -> str:
+        return f"https://tiles.openfreemap.org/styles/{OpenFreeMap(style_name).value}"
+        # return construct_openfreemap_basemap_url(style_name)
+
+    @staticmethod
+    def maptiler_url(style_name: str | MapTiler) -> str:
+        maptiler_api_key = options.maptiler_api_key
+        return f"https://api.maptiler.com/maps/{MapTiler(style_name).value}/style.json?key={maptiler_api_key}"
+        # return construct_maptiler_basemap_url(style_name)
 
 
 class Carto(Enum):
@@ -34,20 +110,22 @@ class Carto(Enum):
     VOYAGER_NOLABELS = "voyager-nolabels"
 
 
-def construct_carto_basemap_url(style_name: str | Carto = "dark-matter") -> str:
+def construct_carto_basemap_url(style_name: str | Carto = Carto.DARK_MATTER) -> str:
+    # warnings.warn("Use 'BasemapStyle.carto_url' instead", DeprecationWarning)
     return f"https://basemaps.cartocdn.com/gl/{Carto(style_name).value}-gl-style/style.json"
 
 
-def construct_basemap_style(name: str = "nice-style", sources: dict = {}, layers: list = []) -> dict:
+def construct_basemap_style(layers: list, sources: dict | None = None, name: str = "my-basemap", **kwargs) -> dict:
     """Construct a basemap style
 
     Args:
-        name (str): The name of the basemap style.
-        sources (dict): The sources to be used for the basemap style.
         layers (list): The layers to be used for the basemap style.
+        sources (dict): The sources to be used for the basemap style.
+        name (str): The name of the basemap style.
+        **kwargs (any): ...
     """
     layers = [layer.to_dict() if isinstance(layer, Layer) else layer for layer in layers]
-    return {"name": name, "version": 8, "sources": sources, "layers": layers}
+    return dict(name=name, version=8, sources=sources or dict(), layers=layers) | kwargs
 
 
 def background(color: str = "black", opacity: float = 1.0) -> dict:
@@ -88,12 +166,11 @@ class MapTiler(Enum):
     WINTER = "winter"
 
 
-def construct_maptiler_basemap_url(style_name: str | MapTiler = "aquarelle") -> str:
+def construct_maptiler_basemap_url(
+    style_name: str | MapTiler = "aquarelle",
+) -> str:
     maptiler_api_key = options.maptiler_api_key
-    if isinstance(style_name, MapTiler):
-        style_name = MapTiler(style_name).value
-
-    return f"https://api.maptiler.com/maps/{style_name}/style.json?key={maptiler_api_key}"
+    return f"https://api.maptiler.com/maps/{MapTiler(style_name).value}/style.json?key={maptiler_api_key}"
 
 
 class OpenFreeMap(Enum):
@@ -116,5 +193,7 @@ class OpenFreeMap(Enum):
     BRIGHT = "bright"
 
 
-def construct_openfreemap_basemap_url(style_name: str | OpenFreeMap = OpenFreeMap.LIBERTY) -> str:
+def construct_openfreemap_basemap_url(
+    style_name: str | OpenFreeMap = OpenFreeMap.LIBERTY,
+) -> str:
     return f"https://tiles.openfreemap.org/styles/{OpenFreeMap(style_name).value}"
