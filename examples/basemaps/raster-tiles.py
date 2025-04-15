@@ -2,9 +2,8 @@
 
 from maplibre import Map, MapOptions, Layer, LayerType
 from maplibre.sources import RasterSource
-from maplibre.basemaps import construct_basemap_style, BasemapStyle
+from maplibre.basemaps import BasemapStyle
 
-# style = construct_basemap_style(
 style = BasemapStyle(
     sources={
         "raster-tiles": RasterSource(
@@ -22,7 +21,7 @@ style = BasemapStyle(
             max_zoom=20,
         )
     ],
-).to_dict()
+)
 
 map_options = MapOptions(style=style, center=(-74.5, 40), zoom=2)
 
