@@ -9,7 +9,8 @@ from ._core import MapLibreBaseModel
 class Light(MapLibreBaseModel):
     """Light configuration
 
-    See also https://maplibre.org/maplibre-style-spec/light/.
+    Note:
+        See  [maplibre-style-spec/light](https://maplibre.org/maplibre-style-spec/light/) for more details.
     """
 
     anchor: Literal["map", "viewport"] = "map"

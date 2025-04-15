@@ -19,7 +19,8 @@ MAPLIBRE_DEMO_TILES = "https://demotiles.maplibre.org/style.json"
 class BasemapStyle(BaseModel):
     """Basemap style
 
-    See also https://maplibre.org/maplibre-style-spec/root/.
+    Note:
+        See [maplibre-style-spec/root](https://maplibre.org/maplibre-style-spec/root/) for more details.
     """
 
     _version = 8
@@ -36,16 +37,6 @@ class BasemapStyle(BaseModel):
     zoom: int | float | None = None
     bearing: int | float | None = None
     pitch: int | float | None = None
-
-    # Obsolete because now alias is used
-    """
-    @field_validator("sky")
-    def validate_sky(cls, v):
-        if isinstance(v, Sky):
-            return v.to_dict()
-
-        return v
-    """
 
     @computed_field
     def version(self) -> int:

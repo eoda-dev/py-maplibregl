@@ -97,6 +97,8 @@ class RasterSource(RasterTileSource): ...
 
 
 class RasterDEMSource(Source):
+    """Raster DEM Source"""
+
     url: str = None
     tiles: list = None
     bounds: Union[tuple, list] = None

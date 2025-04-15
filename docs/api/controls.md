@@ -18,6 +18,10 @@
 
 ::: maplibre.controls.GeolocateControl
 
+::: maplibre.controls.GlobeControl
+
+::: maplibre.controls.TerrainControl
+
 ::: maplibre.controls.InfoBoxControl
 
 ::: maplibre.controls.LayerSwitcherControl

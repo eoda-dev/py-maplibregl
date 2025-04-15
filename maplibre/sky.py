@@ -8,7 +8,8 @@ from ._utils import fix_keys
 class Sky(MapLibreBaseModel):
     """Sky configuration
 
-    See also https://maplibre.org/maplibre-style-spec/sky/.
+    Note:
+        See [maplibre-style-spec/sky](https://maplibre.org/maplibre-style-spec/sky/) for more details.
     """
 
     sky_color: str | list | None = Field("#88C6FC", serialization_alias="sky-color")
