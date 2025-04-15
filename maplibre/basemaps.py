@@ -37,12 +37,15 @@ class BasemapStyle(BaseModel):
     bearing: int | float | None = None
     pitch: int | float | None = None
 
+    # Obsolete because now alias is used
+    """
     @field_validator("sky")
     def validate_sky(cls, v):
         if isinstance(v, Sky):
             return v.to_dict()
 
         return v
+    """
 
     @computed_field
     def version(self) -> int:

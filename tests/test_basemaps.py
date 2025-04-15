@@ -8,6 +8,7 @@ from maplibre.basemaps import (
     construct_openfreemap_basemap_url,
 )
 from maplibre.layer import Layer, LayerType
+from maplibre.sky import Sky
 from maplibre.sources import RasterSource, RasterTileSource
 
 
@@ -55,6 +56,7 @@ def test_basemap_class() -> None:
             )
         },
         layers=[Layer(id="osm-tiles", type=LayerType.RASTER, source="osm")],
+        sky=Sky(),
     )
 
     # Assert
