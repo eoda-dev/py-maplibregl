@@ -2,17 +2,22 @@ from __future__ import annotations
 
 import json
 from enum import Enum
+from typing import TYPE_CHECKING
 
-try:
-    from pandas import DataFrame
-except ImportError:
-    DataFrame = None
-
-
-try:
+if TYPE_CHECKING:
     from geopandas import GeoDataFrame
-except ImportError:
-    GeoDataFrame = None
+    from pandas import DataFrame
+
+# try:
+#    from pandas import DataFrame
+# except ImportError:
+#    ... # DataFrame = None
+
+
+# try:
+#    from geopandas import GeoDataFrame
+# except ImportError:
+#    ... # GeoDataFrame = None
 
 
 class GeometryType(str, Enum):
@@ -21,12 +26,12 @@ class GeometryType(str, Enum):
     POLYGON = "Polygon"
 
 
-def geopandas_to_geojson(df: GeoDataFrame) -> dict:
+def geopandas_to_geojson(df: "GeoDataFrame") -> dict:
     return json.loads(df.to_json())
 
 
 def df_to_geojson(
-    df: DataFrame,
+    df: "DataFrame",
     coordinates: str | list = ["lng", "lat"],
     geometry_type: str | GeometryType = GeometryType.POINT,
     properties: list = [],

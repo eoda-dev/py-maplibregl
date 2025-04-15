@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
+import importlib.metadata
+
 from htmltools import HTMLDependency, Tag
 from shiny import ui
 from shiny.module import resolve_id
 
-from ._constants import __version__, _shiny_output_class
+from ._constants import _shiny_output_class
 
-MAPLIBREGL_VERSION = "3.6.2"
+MAPLIBREGL_VERSION = "5.3.0"
 
 maplibregl_dep = HTMLDependency(
     "maplibregl",
@@ -21,7 +23,7 @@ maplibregl_dep = HTMLDependency(
 
 pymaplibregl_dep = HTMLDependency(
     "pymaplibregl",
-    version=__version__,
+    version=importlib.metadata.version(__package__),
     source={"package": "maplibre", "subdir": "srcjs"},
     script={"src": "pywidget.js", "type": "module"},
     stylesheet={"href": "pywidget.css"},
