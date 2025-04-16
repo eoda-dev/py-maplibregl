@@ -172,9 +172,18 @@ class GeocodingControl(Control):
     """MapTiler Geocoding Control"""
 
     api_key: str = Field(options.maptiler_api_key, serialization_alias="apiKey")
+    api_url: str | None = Field(None, serialization_alias="apiUrl")
+    bbox: tuple[float, float, float, float] | None = None
+    clear_button_title : str | None = Field("clear", serialization_alias="clearButtonTitle")
+    clear_list_on_pick: bool | None = Field(False, serialization_alias="clearListOnPick")
+    clear_on_blur: bool | None = Field(False, serialization_alias="clearOnBlur")
+    collapsed: bool | None = False
     country: str | None = None
+    debounce_search: int | None = Field(200, serialization_alias="debounceSearch")
+    enable_reverse: Literal["always", "button", "never"] | None = Field("never", serialization_alias="enableReverse")
     fuzzy_match: bool | None = Field(True, serialization_alias="fuzzyMatch")
     limit: int | None = 5
+    marker_on_selected: bool | None = Field(True, serialization_alias="markerOnSelected")
     min_length: int | None = Field(2, serialization_alias="minLength")
     placeholder: str | None = "Search"
 
