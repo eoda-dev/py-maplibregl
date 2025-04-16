@@ -2,6 +2,7 @@
 
 See also https://docs.mapbox.com/mapbox-gl-js/api/markers/
 """
+from __future__ import annotations
 
 from enum import Enum
 from typing import Literal, Optional, Union
@@ -9,6 +10,7 @@ from typing import Literal, Optional, Union
 from pydantic import Field
 
 from ._core import MapLibreBaseModel
+from .config import options
 
 
 class PopupOptions(MapLibreBaseModel):
@@ -86,9 +88,7 @@ class ControlPosition(Enum):
 
 
 class Control(MapLibreBaseModel):
-    position: Union[ControlPosition, str] = Field(
-        ControlPosition.TOP_RIGHT, exclude=True
-    )
+    position: Union[ControlPosition, str] = Field(ControlPosition.TOP_RIGHT, exclude=True)
 
     @property
     def type(self):
@@ -100,9 +100,7 @@ class AttributionControl(Control):
 
     # _name: str = ControlType.ATTRIBUTION.value
     compact: bool = None
-    custom_attribution: Union[str, list] = Field(
-        None, serialization_alias="customAttribution"
-    )
+    custom_attribution: Union[str, list] = Field(None, serialization_alias="customAttribution")
 
 
 class FullscreenControl(Control):
@@ -155,12 +153,31 @@ class ScaleControl(Control):
 
 class GlobeControl(Control):
     """Globe control"""
+
     ...
+
 
 class TerrainControl(Control):
     """Terrain control"""
+
     source: str
     exaggeration: Union[int, float] = 1
+
+
+# -------------------------
+# Plugins
+# -------------------------
+# https://docs.maptiler.com/sdk-js/modules/geocoding/api/api-reference/
+class GeocodingControl(Control):
+    """MapTiler Geocoding Control"""
+
+    api_key: str = Field(options.maptiler_api_key, serialization_alias="apiKey")
+    country: str | None = None
+    fuzzy_match: bool | None = Field(True, serialization_alias="fuzzyMatch")
+    limit: int | None = 5
+    min_length: int | None = Field(2, serialization_alias="minLength")
+    placeholder: str | None = "Search"
+
 
 # -------------------------
 # Custom controls
