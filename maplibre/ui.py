@@ -12,6 +12,8 @@ from ._constants import _shiny_output_class
 
 MAPLIBREGL_VERSION = "5.3.0"
 
+# TODO: Obsolete, now included in maplibregl-bindings
+"""
 maplibregl_dep = HTMLDependency(
     "maplibregl",
     version=MAPLIBREGL_VERSION,
@@ -20,7 +22,9 @@ maplibregl_dep = HTMLDependency(
     stylesheet={"href": "maplibre-gl.css"},
     all_files=False,
 )
+"""
 
+# TODO: Rename to maplibregl-bindings
 pymaplibregl_dep = HTMLDependency(
     "pymaplibregl",
     version=importlib.metadata.version(__package__),
@@ -31,12 +35,12 @@ pymaplibregl_dep = HTMLDependency(
 )
 
 
-def output_maplibregl(id_: str, height: [int | str] = 200) -> Tag:
+def output_maplibregl(id_: str, height: int | str = 200) -> Tag:
     if isinstance(height, int):
         height = f"{height}px"
 
     return ui.div(
-        maplibregl_dep,
+        # maplibregl_dep,
         pymaplibregl_dep,
         # Use resolve_id so that our component will work in a module
         id=resolve_id(id_),

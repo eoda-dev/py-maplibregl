@@ -1,12 +1,14 @@
-# MAPLIBRE_JS_VERSION = "5.3.0"
+# MAPLIBRE_JS_VERSION = "5.3.1"
 
 html_template = """<!DOCTYPE html>
 <html lang="en">
 <meta charset="UTF-8">
 <title>{{ title|default('My MapLibre Map')}}</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<!--
 <script src="https://unpkg.com/maplibre-gl@{{ maplibre_version|default('5.3.0')}}/dist/maplibre-gl.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@{{ maplibre_version|default('5.3.0')}}/dist/maplibre-gl.css"/>
+-->
 {% for header in headers|default([]) -%}
 {{ header }}
 {% endfor -%}
