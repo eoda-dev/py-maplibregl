@@ -5,6 +5,7 @@
 * Switch to [MapLibre GL JS v5.3.1](https://github.com/maplibre/maplibre-gl-js/releases/tag/v5.3.1) 
 * Bundle `maplibregl-js` with bindings
 * Add [MapTiler Geocoding Control](https://docs.maptiler.com/sdk-js/modules/geocoding/api/usage/maplibre-gl-js/) (#138): `maplibre.controls.MapTilerGeocodingControl`
+** Add `Map.base_layers` property
 
 ## maplibre v0.3.2
 
