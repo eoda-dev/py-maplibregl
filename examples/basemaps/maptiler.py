@@ -8,7 +8,7 @@ from maplibre.basemaps import BasemapStyle, MapTiler
 from maplibre.config import options
 from maplibre.controls import (
     ControlPosition,
-    GeocodingControl,
+    MapTilerGeocodingControl,
     GlobeControl,
     NavigationControl,
 )
@@ -31,7 +31,7 @@ m = Map(
     controls=[
         NavigationControl(),
         GlobeControl(),
-        GeocodingControl(position=ControlPosition.TOP_LEFT),
+        MapTilerGeocodingControl(position=ControlPosition.TOP_LEFT),
     ],
 )
 # m.set_light(light)

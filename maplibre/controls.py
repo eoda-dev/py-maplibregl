@@ -168,7 +168,7 @@ class TerrainControl(Control):
 # Plugins
 # -------------------------
 # https://docs.maptiler.com/sdk-js/modules/geocoding/api/api-reference/
-class GeocodingControl(Control):
+class MapTilerGeocodingControl(Control):
     """MapTiler Geocoding Control"""
 
     api_key: str = Field(options.maptiler_api_key, serialization_alias="apiKey")
