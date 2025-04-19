@@ -1,4 +1,4 @@
-__version__ = "0.3.0"
+# __version__ = "0.3.0"
 _shiny_output_class = "shiny-maplibregl-output"
 
 # TODO: Remove from here

@@ -2,14 +2,18 @@
 
 from __future__ import annotations
 
+import importlib.metadata
+
 from htmltools import HTMLDependency, Tag
 from shiny import ui
 from shiny.module import resolve_id
 
-from ._constants import __version__, _shiny_output_class
+from ._constants import _shiny_output_class
 
-MAPLIBREGL_VERSION = "3.6.2"
+MAPLIBREGL_VERSION = "5.3.0"
 
+# TODO: Obsolete, now included in maplibregl-bindings
+"""
 maplibregl_dep = HTMLDependency(
     "maplibregl",
     version=MAPLIBREGL_VERSION,
@@ -18,10 +22,12 @@ maplibregl_dep = HTMLDependency(
     stylesheet={"href": "maplibre-gl.css"},
     all_files=False,
 )
+"""
 
+# TODO: Rename to maplibregl-bindings
 pymaplibregl_dep = HTMLDependency(
     "pymaplibregl",
-    version=__version__,
+    version=importlib.metadata.version(__package__),
     source={"package": "maplibre", "subdir": "srcjs"},
     script={"src": "pywidget.js", "type": "module"},
     stylesheet={"href": "pywidget.css"},
@@ -29,12 +35,12 @@ pymaplibregl_dep = HTMLDependency(
 )
 
 
-def output_maplibregl(id_: str, height: [int | str] = 200) -> Tag:
+def output_maplibregl(id_: str, height: int | str = 200) -> Tag:
     if isinstance(height, int):
         height = f"{height}px"
 
     return ui.div(
-        maplibregl_dep,
+        # maplibregl_dep,
         pymaplibregl_dep,
         # Use resolve_id so that our component will work in a module
         id=resolve_id(id_),

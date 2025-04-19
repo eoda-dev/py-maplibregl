@@ -1,5 +1,12 @@
 # Changelog for MapLibre for Python
 
+## maplibre v0.3.3 (unreleased)
+
+* Switch to [MapLibre GL JS v5.3.1](https://github.com/maplibre/maplibre-gl-js/releases/tag/v5.3.1) 
+* Bundle `maplibregl-js` with bindings
+* Add [MapTiler Geocoding Control](https://docs.maptiler.com/sdk-js/modules/geocoding/api/usage/maplibre-gl-js/) (#138): `maplibre.controls.MapTilerGeocodingControl`
+** Add `Map.base_layers` property
+
 ## maplibre v0.3.2
 
 * Add `Sky` (#135), `Light` (#137) and `Terrain` (#134) style specifications
@@ -14,7 +21,7 @@
 ## maplibre v0.3.1
 
 * Switch to [MapLibre GL JS v5.3.0](https://github.com/maplibre/maplibre-gl-js/releases/tag/v5.3.0)
-* Add `Map.set_projection` and `GlobeControl` to swicth between _globe_ and _mercator_ projection
+* Add `Map.set_projection` and `GlobeControl` to switch between _globe_ and _mercator_ projection
 
 ## maplibre v0.3.0
 

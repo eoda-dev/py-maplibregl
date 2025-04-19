@@ -4,15 +4,10 @@ import json
 from enum import Enum
 
 try:
-    from pandas import DataFrame
-except ImportError:
-    DataFrame = None
-
-
-try:
-    from geopandas import GeoDataFrame
-except ImportError:
-    GeoDataFrame = None
+    import geopandas as gpd
+    import pandas as pd
+except ImportError as e:
+    ...
 
 
 class GeometryType(str, Enum):
@@ -21,12 +16,12 @@ class GeometryType(str, Enum):
     POLYGON = "Polygon"
 
 
-def geopandas_to_geojson(df: GeoDataFrame) -> dict:
+def geopandas_to_geojson(df: gpd.GeoDataFrame) -> dict:
     return json.loads(df.to_json())
 
 
 def df_to_geojson(
-    df: DataFrame,
+    df: pd.DataFrame,
     coordinates: str | list = ["lng", "lat"],
     geometry_type: str | GeometryType = GeometryType.POINT,
     properties: list = [],
@@ -35,7 +30,7 @@ def df_to_geojson(
     for _, row in df.iterrows():
         feature = {
             "type": "Feature",
-            "properties": {},
+            "properties": dict(),
             "geometry": {"type": GeometryType(geometry_type).value, "coordinates": []},
         }
         feature["geometry"]["coordinates"] = list(row[coordinates])

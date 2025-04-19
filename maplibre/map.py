@@ -142,6 +142,16 @@ class Map(object):
     def to_dict(self) -> dict:
         return {"mapOptions": self.map_options, "calls": self._message_queue}
 
+    @property
+    def base_layers(self) -> list:
+        style = self.map_options["style"]
+        if isinstance(style, str) and style.startswith("http"):
+            style = BasemapStyle.from_url(style)
+        else:
+            style = BasemapStyle(**style)
+
+        return style.layers
+
     """
     @property
     def sources(self) -> list:
