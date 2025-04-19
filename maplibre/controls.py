@@ -173,7 +173,7 @@ class MapTilerGeocodingControl(Control):
     """MapTiler Geocoding Control
 
     Note:
-        See [maptiler-geocoding-api-reference](https://docs.maptiler.com/sdk-js/modules/geocoding/api/api-reference/).
+        See [maptiler-geocoding-api-reference](https://docs.maptiler.com/sdk-js/modules/geocoding/api/api-reference/) for details.
     """
 
     api_key: str = Field(options.maptiler_api_key, serialization_alias="apiKey")
