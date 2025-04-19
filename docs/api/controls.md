@@ -22,6 +22,8 @@
 
 ::: maplibre.controls.TerrainControl
 
+::: maplibre.controls.MapTilerGeocodingControl
+
 ::: maplibre.controls.InfoBoxControl
 
 ::: maplibre.controls.LayerSwitcherControl

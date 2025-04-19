@@ -7,7 +7,7 @@ class Terrain(MapLibreBaseModel):
     """Terrain configuration
 
     Note:
-        See [maplibre-style-spec/terrain](https://maplibre.org/maplibre-style-spec/terrain/) for more details.
+        See [maplibre-style-spec/terrain](https://maplibre.org/maplibre-style-spec/terrain/) for details.
     """
 
     source: str

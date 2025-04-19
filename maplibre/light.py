@@ -10,7 +10,7 @@ class Light(MapLibreBaseModel):
     """Light configuration
 
     Note:
-        See  [maplibre-style-spec/light](https://maplibre.org/maplibre-style-spec/light/) for more details.
+        See  [maplibre-style-spec/light](https://maplibre.org/maplibre-style-spec/light/) for details.
     """
 
     anchor: Literal["map", "viewport"] = "map"

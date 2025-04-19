@@ -2,6 +2,7 @@
 
 See also https://docs.mapbox.com/mapbox-gl-js/api/markers/
 """
+
 from __future__ import annotations
 
 from enum import Enum
@@ -169,12 +170,16 @@ class TerrainControl(Control):
 # -------------------------
 # https://docs.maptiler.com/sdk-js/modules/geocoding/api/api-reference/
 class MapTilerGeocodingControl(Control):
-    """MapTiler Geocoding Control"""
+    """MapTiler Geocoding Control
+
+    Note:
+        See [maptiler-geocoding-api-reference](https://docs.maptiler.com/sdk-js/modules/geocoding/api/api-reference/).
+    """
 
     api_key: str = Field(options.maptiler_api_key, serialization_alias="apiKey")
     api_url: str | None = Field(None, serialization_alias="apiUrl")
     bbox: tuple[float, float, float, float] | None = None
-    clear_button_title : str | None = Field("clear", serialization_alias="clearButtonTitle")
+    clear_button_title: str | None = Field("clear", serialization_alias="clearButtonTitle")
     clear_list_on_pick: bool | None = Field(False, serialization_alias="clearListOnPick")
     clear_on_blur: bool | None = Field(False, serialization_alias="clearOnBlur")
     collapsed: bool | None = False

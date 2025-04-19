@@ -9,7 +9,7 @@ class Sky(MapLibreBaseModel):
     """Sky configuration
 
     Note:
-        See [maplibre-style-spec/sky](https://maplibre.org/maplibre-style-spec/sky/) for more details.
+        See [maplibre-style-spec/sky](https://maplibre.org/maplibre-style-spec/sky/) for details.
     """
 
     sky_color: str | list | None = Field("#88C6FC", serialization_alias="sky-color")

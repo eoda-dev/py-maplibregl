@@ -51,7 +51,7 @@ class MapOptions(MapLibreBaseModel):
     """Map options
 
     Note:
-        See [MapOptions](https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/MapOptions) for more details.
+        See [MapOptions](https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/MapOptions) for details.
     """
 
     model_config = ConfigDict(validate_assignment=True, extra="forbid", use_enum_values=False)
