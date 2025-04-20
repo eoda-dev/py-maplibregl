@@ -9,6 +9,7 @@ from maplibre.config import options
 from maplibre.controls import (
     ControlPosition,
     MapTilerGeocodingControl,
+    GeocodingControl,
     GlobeControl,
     NavigationControl,
 )
@@ -31,7 +32,13 @@ m = Map(
     controls=[
         NavigationControl(),
         GlobeControl(),
-        MapTilerGeocodingControl(position=ControlPosition.TOP_LEFT),
+        MapTilerGeocodingControl(
+            collapsed=True,
+            show_place_type="always",
+            country="de",
+            position=ControlPosition.TOP_LEFT
+        ),
+        # GeocodingControl(collapsed=True, position=ControlPosition.TOP_LEFT)
     ],
 )
 # m.set_light(light)

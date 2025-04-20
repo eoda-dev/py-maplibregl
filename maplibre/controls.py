@@ -186,11 +186,54 @@ class MapTilerGeocodingControl(Control):
     country: str | None = None
     debounce_search: int | None = Field(200, serialization_alias="debounceSearch")
     enable_reverse: Literal["always", "button", "never"] | None = Field("never", serialization_alias="enableReverse")
+    error_message: str | None = None
+    fly_to: bool | dict | None = Field(True, serialization_alias="flyTo")
+    fly_to_selected: bool | None = Field(False, serialization_alias="flyToSelected")
+    icons_base_url: str | None = Field(None, serialization_alias="iconsBaseUrl")
+    keep_list_open: bool | None = Field(None, serialization_alias="keepListOpen")
     fuzzy_match: bool | None = Field(True, serialization_alias="fuzzyMatch")
+    language: str | None = None
     limit: int | None = 5
+    marker: bool | None = True
     marker_on_selected: bool | None = Field(True, serialization_alias="markerOnSelected")
     min_length: int | None = Field(2, serialization_alias="minLength")
+    no_results_message: str | None = Field(None, serialization_alias="noResultsMessage")
     placeholder: str | None = "Search"
+    proximity: list | None = None
+    reverse_active: bool | None = Field(False, serialization_alias="reverseActive")
+    reverseButtonTitle: str | None = Field(None, serialization_alias="reverseButtonTitle")
+    select_first: bool | None = Field(True, serialization_alias="selectFirst")
+    show_place_type: Literal["never", "always", "if-needed"] | None = Field(
+        "if-needed", serialization_alias="showPlaceType"
+    )
+    show_results_while_typing: bool = Field(True, serialization_alias="showResultsWhileTyping")
+    zoom: float | None = None
+
+
+class GeocodingControl(Control):
+    """MapLibre geocoder control
+
+    Note:
+        See [maplibre-gl-geocoder-options](https://maplibre.org/maplibre-gl-geocoder/types/MaplibreGeocoderOptions.html) for details.
+    """
+
+    bbox: tuple[float, float, float, float] | None = None
+    collapsed: bool | None = False
+    countries: str | None = None
+    debounce_search: int | None = Field(200, serialization_alias="debounceSearch")
+    enable_event_logging: bool | None = Field(False, serialization_alias="enableEventLogging")
+    fly_to: bool | dict | None = Field(True, serialization_alias="flyTo")
+    language: str | None = None
+    limit: int | None = 5
+    marker: bool | None = True
+    placeholder: str | None = "Search"
+    popup: bool | None = False
+    proximity: dict | None = None
+    reverse_geocode: bool | None = Field(False, serialization_alias="reverseGeocode")
+    show_result_markers: bool | None = Field(True, serialization_alias="showResultMarkers")
+    show_results_while_typing: bool = Field(True, serialization_alias="showResultsWhileTyping")
+    track_proximity: bool = Field(True, serialization_alias="trackProximity")
+    zoom: float | None = 16
 
 
 # -------------------------
