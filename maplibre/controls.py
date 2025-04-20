@@ -1,6 +1,7 @@
 """ Markers and controls
 
-See also https://docs.mapbox.com/mapbox-gl-js/api/markers/
+Note:
+    See also [markers-and-controls](https://docs.mapbox.com/mapbox-gl-js/api/markers/).
 """
 
 from __future__ import annotations
@@ -8,7 +9,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import Literal, Optional, Union
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from ._core import MapLibreBaseModel
 from .config import options
@@ -17,53 +18,54 @@ from .config import options
 class PopupOptions(MapLibreBaseModel):
     """Popup options"""
 
-    anchor: str = None
-    close_button: bool = Field(False, serialization_alias="closeButton")
-    close_on_click: bool = Field(None, serialization_alias="closeOnClick")
-    close_on_move: bool = Field(None, serialization_alias="closeOnMove")
-    max_width: int = Field(None, serialization_alias="maxWidth")
-    offset: Union[int, list, dict] = None
+    anchor: str | None = None
+    close_button: bool | None = Field(False, serialization_alias="closeButton")
+    close_on_click: bool | None = Field(None, serialization_alias="closeOnClick")
+    close_on_move: bool | None = Field(None, serialization_alias="closeOnMove")
+    max_width: int | None = Field(None, serialization_alias="maxWidth")
+    offset: int | list | dict | None = None
 
 
 class Popup(MapLibreBaseModel):
     """Popup
 
     Attributes:
-        text: The Text of the popup.
+        text (str): The Text of the popup.
         options (PopupOptions | dict): Popup options.
     """
 
     text: str
-    options: Union[PopupOptions, dict] = {}
+    options: Union[PopupOptions, dict] = dict()
 
 
 class MarkerOptions(MapLibreBaseModel):
     """Marker options"""
 
-    anchor: str = None
-    color: str = None
-    draggable: bool = None
-    offset: Union[tuple, list] = None
-    pitch_alignment: str = Field(None, serialization_alias="pitchAlignment")
-    rotation: int = None
-    rotation_alignment: str = Field(None, serialization_alias="rotationAlignment")
-    scale: int = None
+    anchor: str | None = None
+    color: str | None = None
+    draggable: bool | None = None
+    offset: tuple | list | None = None
+    pitch_alignment: str | None = Field(None, serialization_alias="pitchAlignment")
+    rotation: int | None = None
+    rotation_alignment: str | None = Field(None, serialization_alias="rotationAlignment")
+    scale: int | None = None
 
 
 class Marker(MapLibreBaseModel):
     """Marker
 
     Attributes:
-        lng_lat (tuple |list): **Required.** The longitude and latitude of the marker.
+        lng_lat (tuple | list): **Required.** The longitude and latitude of the marker.
         popup (Popup | dict): The Popup that is displayed when a user clicks on the marker.
         options (MarkerOptions | dict): Marker options.
     """
 
     lng_lat: Union[tuple, list] = Field(None, serialization_alias="lngLat")
     popup: Union[Popup, dict] = None
-    options: Union[MarkerOptions, dict] = {}
+    options: Union[MarkerOptions, dict] = dict()
 
 
+# TODO: Add missing control types
 class ControlType(Enum):
     NAVIGATION = "NavigationControl"
     SCALE = "ScaleControl"
@@ -162,7 +164,7 @@ class TerrainControl(Control):
     """Terrain control"""
 
     source: str
-    exaggeration: Union[int, float] = 1
+    exaggeration: int | float | None = 1
 
 
 # -------------------------
@@ -170,13 +172,13 @@ class TerrainControl(Control):
 # -------------------------
 # https://docs.maptiler.com/sdk-js/modules/geocoding/api/api-reference/
 class MapTilerGeocodingControl(Control):
-    """MapTiler Geocoding Control
+    """MapTiler geocoding control
 
     Note:
         See [maptiler-geocoding-api-reference](https://docs.maptiler.com/sdk-js/modules/geocoding/api/api-reference/) for details.
     """
 
-    api_key: str = Field(options.maptiler_api_key, serialization_alias="apiKey")
+    api_key: str = Field(options.maptiler_api_key, serialization_alias="apiKey", validate_default=True, min_length=1)
     api_url: str | None = Field(None, serialization_alias="apiUrl")
     bbox: tuple[float, float, float, float] | None = None
     clear_button_title: str | None = Field("clear", serialization_alias="clearButtonTitle")
