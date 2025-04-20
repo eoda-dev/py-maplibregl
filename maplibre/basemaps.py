@@ -15,7 +15,7 @@ from .types import SourceT
 MAPLIBRE_DEMO_TILES = "https://demotiles.maplibre.org/style.json"
 
 
-class BasemapStyle(BaseModel):
+class Basemap(BaseModel):
     """Basemap style
 
     Note:
@@ -49,7 +49,7 @@ class BasemapStyle(BaseModel):
         return [layer["id"] for layer in self.to_dict()["layers"] if layer["type"] == "symbol"]
 
     @classmethod
-    def background(cls, color: str = "black", opacity: float = 1.0) -> BasemapStyle:
+    def background(cls, color: str = "black", opacity: float = 1.0) -> Basemap:
         opacity = ValidateLayerSpecifications(opacity=opacity).opacity
         layer = Layer(
             type=LayerType.BACKGROUND,
@@ -59,7 +59,7 @@ class BasemapStyle(BaseModel):
         return cls(layers=[layer])
 
     @classmethod
-    def from_url(cls, url: str) -> BasemapStyle:
+    def from_url(cls, url: str) -> Basemap:
         import requests as req
 
         resp = req.get(url)

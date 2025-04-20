@@ -1,7 +1,7 @@
 import os
 
 from maplibre import Map, MapOptions
-from maplibre.basemaps import BasemapStyle, MapTiler
+from maplibre.basemaps import Basemap, MapTiler
 
 # from maplibre.sky import Sky
 # from maplibre.light import Light
@@ -22,7 +22,7 @@ print(options.maptiler_api_key)
 # light = Light(anchor="map", position=[1.5, 90, 80], intensity=0.5)
 
 
-style = BasemapStyle.maptiler_url(MapTiler.SATELLITE)
+style = Basemap.maptiler_url(MapTiler.SATELLITE)
 # print(style)
 
 map_options = MapOptions(style=style)

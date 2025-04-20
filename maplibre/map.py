@@ -11,7 +11,7 @@ from ._core import MapLibreBaseModel
 from ._templates import html_template, js_template
 from ._utils import get_temp_filename, read_internal_file
 from .basemaps import (
-    BasemapStyle,
+    Basemap,
     Carto,
     MapTiler,
     OpenFreeMap,
@@ -78,7 +78,7 @@ class MapOptions(MapLibreBaseModel):
     min_zoom: int = Field(None, serialization_alias="minZoom")
     pitch: Union[int, float] = None
     scroll_zoom: bool = Field(None, serialization_alias="scrollZoom")
-    style: Union[str, Carto, MapTiler, OpenFreeMap, dict, BasemapStyle] = construct_carto_basemap_url(Carto.DARK_MATTER)
+    style: Union[str, Carto, MapTiler, OpenFreeMap, dict, Basemap] = construct_carto_basemap_url(Carto.DARK_MATTER)
     zoom: Union[int, float] = None
 
     @field_validator("style")
@@ -92,7 +92,7 @@ class MapOptions(MapLibreBaseModel):
         if isinstance(v, OpenFreeMap):
             return construct_openfreemap_basemap_url(v)
 
-        if isinstance(v, BasemapStyle):
+        if isinstance(v, Basemap):
             return v.to_dict()
 
         return v
@@ -146,9 +146,9 @@ class Map(object):
     def base_layers(self) -> list:
         style = self.map_options["style"]
         if isinstance(style, str) and style.startswith("http"):
-            style = BasemapStyle.from_url(style)
+            style = Basemap.from_url(style)
         else:
-            style = BasemapStyle(**style)
+            style = Basemap(**style)
 
         return style.layers
 

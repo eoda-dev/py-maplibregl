@@ -1,5 +1,5 @@
 from maplibre.basemaps import (
-    BasemapStyle,
+    Basemap,
     Carto,
     OpenFreeMap,
     background,
@@ -15,7 +15,7 @@ from maplibre.sources import RasterSource, RasterTileSource
 def test_carto_basemaps() -> None:
     # Act
     # basemap_url = construct_carto_basemap_url(Carto.DARK_MATTER)
-    basemap_url = BasemapStyle.carto_url(Carto.DARK_MATTER)
+    basemap_url = Basemap.carto_url(Carto.DARK_MATTER)
 
     # Assert
     assert basemap_url == "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
@@ -46,7 +46,7 @@ def test_openfreemap_style() -> None:
 
 def test_basemap_class() -> None:
     # Act
-    basemap = BasemapStyle(
+    basemap = Basemap(
         sources={
             "osm": RasterSource(
                 tiles=["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"],
