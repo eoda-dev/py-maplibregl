@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import webbrowser
-from typing_extensions import Union
+from typing import Union
 
 from jinja2 import Template
 from pydantic import ConfigDict, Field, field_validator
@@ -10,38 +10,36 @@ from pydantic import ConfigDict, Field, field_validator
 from ._core import MapLibreBaseModel
 from ._templates import html_template, js_template
 from ._utils import get_temp_filename, read_internal_file
-from .basemaps import (
-    Basemap,
-    Carto,
-    MapTiler,
-    OpenFreeMap,
-    construct_carto_basemap_url,
-    construct_maptiler_basemap_url,
-    construct_openfreemap_basemap_url,
-)
+from .basemaps import Basemap, Carto, MapTiler, OpenFreeMap
 from .controls import Control, ControlPosition, Marker
 from .layer import Layer
+from .light import Light
 from .plugins import MapboxDrawOptions
-from .sources import SimpleFeatures, Source
 from .projection import ProjectionType
 from .sky import Sky
-from .light import Light
+from .sources import SimpleFeatures, Source
 from .terrain import Terrain
 
+# TODO: Fix imports
 try:
     from geopandas import GeoDataFrame
+
+    GEOPANDAS = True
 except ImportError:
+    GEOPANDAS = False
     GeoDataFrame = None
 
 try:
-    import pydeck
+    import pydeck as pdk
+
+    PYDECK = True
 except ImportError:
-    pydeck = None
+    PYDECK = False
 
 
-def parse_deck_layers(layers: list[dict | "pydeck.Layer"]) -> list[dict]:
+def parse_deck_layers(layers: list[dict | pdk.Layer]) -> list[dict]:
     for i, layer in enumerate(layers):
-        if pydeck is not None and isinstance(layer, pydeck.Layer):
+        if PYDECK and isinstance(layer, pdk.Layer):
             layers[i] = json.loads(layer.to_json())
 
     return layers
@@ -420,7 +418,7 @@ class Map(object):
     # -------------------------
     # Plugins
     # -------------------------
-    def add_deck_layers(self, layers: list[dict | "pydeck.Layer"], tooltip: str | dict = None) -> None:
+    def add_deck_layers(self, layers: list[dict | pdk.Layer], tooltip: str | dict = None) -> None:
         """Add Deck.GL layers to the layer stack
 
         Args:
@@ -431,7 +429,7 @@ class Map(object):
         layers = parse_deck_layers(layers)
         self.add_call("addDeckOverlay", layers, tooltip)
 
-    def set_deck_layers(self, layers: list[dict | "pydeck.Layer"], tooltip: str | dict = None) -> None:
+    def set_deck_layers(self, layers: list[dict | pdk.Layer], tooltip: str | dict = None) -> None:
         """Update Deck.GL layers
 
         Args:
