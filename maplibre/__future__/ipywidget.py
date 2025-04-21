@@ -2,10 +2,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from maplibre.__future__.GeocoderType import GeocoderType
+from maplibre.__future__.controls import GeocoderType
 
 from ..ipywidget import MapWidget as BaseWidget
-
 
 class MapWidget(BaseWidget):
     _geocoder = GeocoderType.MAPTILTER
