@@ -1,13 +1,15 @@
 from htmltools import Tag
-from shiny.render.renderer import Renderer
+from shiny.render.renderer import Renderer, Jsonifiable
 
 from ..map import Map
 from .ui import output_maplibregl
 
 
-class MapLibreGLRenderer(Renderer[Map]):
+class render_maplibregl(Renderer[Map]):
+    """A decorator for a function that returns a `Map` object"""
+
     def auto_output_ui(self) -> Tag:
         return output_maplibregl(self.output_id, height=600)
 
-    async def transform(self, value: Map) -> dict:
+    async def transform(self, value: Map) -> Jsonifiable:
         return dict(mapData=value.to_dict())

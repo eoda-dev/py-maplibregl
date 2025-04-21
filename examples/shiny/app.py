@@ -2,7 +2,7 @@ from shiny import App, reactive, ui
 
 from maplibre import Map
 from maplibre.controls import Marker, NavigationControl, MapTilerGeocodingControl, ControlPosition, GeocodingControl
-from maplibre.shiny import output_maplibregl, MapLibreGLRenderer, MapContext
+from maplibre.shiny import output_maplibregl, render_maplibregl, MapContext
 from maplibre.__future__.controls import GeocoderType
 
 app_ui = ui.div(
@@ -12,7 +12,7 @@ app_ui = ui.div(
 
 
 def server(input, output, session):
-    @MapLibreGLRenderer
+    @render_maplibregl
     def maplibre_map():
         return Map(
             controls=[

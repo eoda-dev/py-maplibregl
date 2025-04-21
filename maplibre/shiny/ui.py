@@ -8,7 +8,7 @@ from ..__future__.controls import GeocoderType
 
 try:
     import shiny
-except ImportError:
+except ImportError as e:
     print(e)
 
 
@@ -42,6 +42,11 @@ class MyHTMLDependency(BaseModel):
 
 
 def output_maplibregl(id: str, height: int | str = 400, geocoder: GeocoderType | None = None) -> Tag:
+    """Create an output container for a `Map` object
+
+    Args:
+        id (str): An output id of a `Map` object.
+    """
     geocoder = geocoder or GeocoderType.MAPTILTER
 
     js_file = "pywidget.js"
