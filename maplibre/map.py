@@ -78,19 +78,19 @@ class MapOptions(MapLibreBaseModel):
     min_zoom: int = Field(None, serialization_alias="minZoom")
     pitch: Union[int, float] = None
     scroll_zoom: bool = Field(None, serialization_alias="scrollZoom")
-    style: Union[str, Carto, MapTiler, OpenFreeMap, dict, Basemap] = construct_carto_basemap_url(Carto.DARK_MATTER)
+    style: Union[str, Carto, MapTiler, OpenFreeMap, dict, Basemap] = Field(Carto.DARK_MATTER, validate_default=True)
     zoom: Union[int, float] = None
 
     @field_validator("style")
     def validate_style(cls, v):
         if isinstance(v, Carto):
-            return construct_carto_basemap_url(v)
+            return Basemap.carto_url(v)
 
         if isinstance(v, MapTiler):
-            return construct_maptiler_basemap_url(v)
+            return Basemap.maptiler_url(v)
 
         if isinstance(v, OpenFreeMap):
-            return construct_openfreemap_basemap_url(v)
+            return Basemap.openfreemap_url(v)
 
         if isinstance(v, Basemap):
             return v.to_dict()
