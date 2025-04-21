@@ -22,12 +22,11 @@ from .terrain import Terrain
 
 # TODO: Fix imports
 try:
-    from geopandas import GeoDataFrame
+    import geopandas as gpd
 
     GEOPANDAS = True
 except ImportError:
     GEOPANDAS = False
-    GeoDataFrame = None
 
 try:
     import pydeck as pdk
@@ -198,14 +197,14 @@ class Map(object):
             ControlPosition(position).value,
         )
 
-    def add_source(self, id: str, source: Source | dict | GeoDataFrame) -> None:
+    def add_source(self, id: str, source: Source | dict | gpd.GeoDataFrame) -> None:
         """Add a source to the map
 
         Args:
             id (str): The unique ID of the source.
-            source (Source | dict | GeoDataFrame): The source to be added to the map.
+            source (Source | dict | gpd.GeoDataFrame): The source to be added to the map.
         """
-        if GeoDataFrame is not None and isinstance(source, GeoDataFrame):
+        if GEOPANDAS is not None and isinstance(source, gpd.GeoDataFrame):
             source = SimpleFeatures(source).to_source()
 
         if isinstance(source, Source):
@@ -298,14 +297,14 @@ class Map(object):
         """
         self.add_call("setLayoutProperty", layer_id, prop, value)
 
-    def set_data(self, source_id: str, data: dict | GeoDataFrame) -> None:
+    def set_data(self, source_id: str, data: dict | gpd.GeoDataFrame) -> None:
         """Update the data of a GeoJSON source
 
         Args:
             source_id (str): The name of the source to be updated.
-            data (dict): The data of the source.
+            data (dict | gpd.GeoDataFrame): The data of the source.
         """
-        if isinstance(data, GeoDataFrame):
+        if GEOPANDAS and isinstance(data, gpd.GeoDataFrame):
             data = SimpleFeatures(data).to_source().data
 
         self.add_call("setSourceData", source_id, data)
@@ -323,8 +322,8 @@ class Map(object):
     def fit_bounds(
         self,
         bounds: tuple | list = None,
-        data: GeoDataFrame = None,
-        animate=False,
+        data: gpd.GeoDataFrame = None,
+        animate: bool = False,
         **kwargs,
     ) -> None:
         """Pan and zoom the map to contain its visible area within the specified geographical bounds"""
@@ -422,7 +421,7 @@ class Map(object):
         """Add Deck.GL layers to the layer stack
 
         Args:
-            layers (list[dict | "pydeck.Layer"]): A list of dictionaries containing the Deck.GL layers to be added.
+            layers (list[dict | pdk.Layer]): A list of dictionaries containing the Deck.GL layers to be added.
             tooltip (str | dict): Either a single mustache template string applied to all layers
                 or a dictionary where keys are layer ids and values are mustache template strings.
         """
@@ -433,7 +432,7 @@ class Map(object):
         """Update Deck.GL layers
 
         Args:
-            layers (list[dict | "pydeck.Layer"]): A list of dictionaries containing the Deck.GL layers to be updated.
+            layers (list[dict | pdk.Layer]): A list of dictionaries containing the Deck.GL layers to be updated.
                 New layers will be added. Missing layers will be removed.
             tooltip (str | dict): Must be set to keep tooltip even if it did not change.
         """
