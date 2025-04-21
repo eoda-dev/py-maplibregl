@@ -215,6 +215,8 @@ class MapTilerGeocodingControl(Control):
 class GeocodingControl(Control):
     """MapLibre geocoder control
 
+    Experimental
+
     Note:
         See [maplibre-gl-geocoder-options](https://maplibre.org/maplibre-gl-geocoder/types/MaplibreGeocoderOptions.html) for details.
     """

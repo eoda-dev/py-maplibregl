@@ -1,13 +1,10 @@
 from __future__ import annotations
 
-from enum import Enum
 from pathlib import Path
 
-from ..ipywidget import MapWidget as BaseWidget
+from maplibre.__future__.GeocoderType import GeocoderType
 
-class GeocoderType(Enum):
-    MAPTILTER = "maptiler"
-    MAPLIBRE = "maplibre"
+from ..ipywidget import MapWidget as BaseWidget
 
 
 class MapWidget(BaseWidget):

@@ -7,11 +7,12 @@ from typing import Union
 from jinja2 import Template
 from pydantic import ConfigDict, Field, field_validator
 
+from .__future__.controls import GeocoderType
 from ._core import MapLibreBaseModel
 from ._templates import html_template, js_template
 from ._utils import get_temp_filename, read_internal_file
 from .basemaps import Basemap, Carto, MapTiler, OpenFreeMap
-from .controls import Control, ControlPosition, Marker
+from .controls import Control, ControlPosition, GeocodingControl, Marker
 from .layer import Layer
 from .light import Light
 from .plugins import MapboxDrawOptions
@@ -20,7 +21,6 @@ from .sky import Sky
 from .sources import SimpleFeatures, Source
 from .terrain import Terrain
 
-# TODO: Fix imports
 try:
     import geopandas as gpd
 
@@ -115,6 +115,8 @@ class Map(object):
 
     MESSAGE = "not implemented yet"
 
+    _geocoder = GeocoderType.MAPTILTER
+
     def __init__(
         self,
         map_options: MapOptions = MapOptions(),
@@ -174,7 +176,9 @@ class Map(object):
             method_name (str): The name of the map method to be executed.
             *args (any): The arguments to be passed to the map method.
         """
-        # TODO: Pass as dict? {"name": method_name, "args": args}
+        if method_name == "addControl" and args[0] == GeocodingControl().type:
+            self._geocoder = GeocoderType.MAPLIBRE
+
         call = [method_name, args]
         self._message_queue.append(call)
 
@@ -359,7 +363,7 @@ class Map(object):
         """Render to html
 
         Args:
-            title (str): The Title of the HTML document.
+            title (str): The title of the HTML document.
             **kwargs (Any): Additional keyword arguments that are passed to the template.
                 Currently, `style` is the only supported keyword argument.
 
@@ -371,7 +375,8 @@ class Map(object):
         """
         js_lib = read_internal_file("srcjs", "pywidget.js")
         js_snippet = Template(js_template).render(data=json.dumps(self.to_dict()))
-        css = read_internal_file("srcjs", "pywidget.css")
+        css_file = "ipywidget.maplibre-geocoder.css" if self._geocoder == GeocoderType.MAPLIBRE else "pywidget.css"
+        css = read_internal_file("srcjs", css_file)
         headers = [f"<style>{css}</style>"]
 
         # Deck.GL headers
