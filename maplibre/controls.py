@@ -12,7 +12,7 @@ from typing import Literal, Optional, Union
 from pydantic import Field, field_validator
 
 from ._core import MapLibreBaseModel
-from .config import options
+from .config import config
 
 
 class PopupOptions(MapLibreBaseModel):
@@ -178,7 +178,7 @@ class MapTilerGeocodingControl(Control):
         See [maptiler-geocoding-api-reference](https://docs.maptiler.com/sdk-js/modules/geocoding/api/api-reference/) for details.
     """
 
-    api_key: str = Field(options.maptiler_api_key, serialization_alias="apiKey", validate_default=True, min_length=1)
+    api_key: str = Field(config.maptiler_api_key, serialization_alias="apiKey", validate_default=True, min_length=1)
     api_url: str | None = Field(None, serialization_alias="apiUrl")
     bbox: tuple[float, float, float, float] | None = None
     clear_button_title: str | None = Field("clear", serialization_alias="clearButtonTitle")

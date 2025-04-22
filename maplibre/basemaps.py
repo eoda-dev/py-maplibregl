@@ -5,7 +5,7 @@ from enum import Enum
 from pydantic import BaseModel, computed_field
 
 from .abstracts import MaptilerAPI, ValidateLayerSpecifications
-from .config import options
+from .config import config
 from .layer import Layer, LayerType
 from .light import Light
 from .sky import Sky
@@ -77,7 +77,7 @@ class Basemap(BaseModel):
 
     @staticmethod
     def maptiler_url(style_name: str | MapTiler, api_key: str | None = None) -> str:
-        maptiler_api_key = MaptilerAPI(api_key=api_key or options.maptiler_api_key).api_key
+        maptiler_api_key = MaptilerAPI(api_key=api_key or config.maptiler_api_key).api_key
         return f"https://api.maptiler.com/maps/{MapTiler(style_name).value}/style.json?key={maptiler_api_key}"
 
 
@@ -166,7 +166,7 @@ class MapTiler(Enum):
 def construct_maptiler_basemap_url(
     style_name: str | MapTiler = "aquarelle",
 ) -> str:
-    maptiler_api_key = options.maptiler_api_key
+    maptiler_api_key = config.maptiler_api_key
     return f"https://api.maptiler.com/maps/{MapTiler(style_name).value}/style.json?key={maptiler_api_key}"
 
 

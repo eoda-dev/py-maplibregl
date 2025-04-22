@@ -5,7 +5,7 @@ from maplibre.basemaps import Basemap, MapTiler
 
 # from maplibre.sky import Sky
 # from maplibre.light import Light
-from maplibre.config import options
+from maplibre.config import config
 from maplibre.controls import (
     ControlPosition,
     MapTilerGeocodingControl,
@@ -14,9 +14,9 @@ from maplibre.controls import (
     NavigationControl,
 )
 
-print(options.maptiler_api_key_env_var)
+print(config.maptiler_api_key_env_var)
 # os.environ[options.maptiler_api_key_env_var] = "your-api-key"
-print(options.maptiler_api_key)
+print(config.maptiler_api_key)
 
 # sky = Sky(atmosphere_blend=["interpolate", ["linear"], ["zoom"], 0, 1, 5, 1, 7, 0])
 # light = Light(anchor="map", position=[1.5, 90, 80], intensity=0.5)

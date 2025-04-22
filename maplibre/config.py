@@ -4,7 +4,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class Options(BaseModel):
+class Config(BaseModel):
     cmap: Optional[str] = "viridis"
     fallback_color: Optional[str] = "#000000"
 
@@ -63,4 +63,4 @@ class Options(BaseModel):
         os.environ[self.maptiler_api_key_env_var] = api_key
 
 
-options = Options()
+config = Config()

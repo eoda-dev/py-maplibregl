@@ -1,5 +1,5 @@
 import maplibre.express as mx
-from maplibre.config import options
+from maplibre.config import config
 from maplibre.layer import Layer
 from maplibre.sources import SimpleFeatures
 
@@ -21,7 +21,7 @@ def test_circle():
 
 def test_fill():
     # Prepare
-    options.fill_outline_color = None
+    config.fill_outline_color = None
     data_url = "https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_1_states_provinces.geojson"
 
     # Act
