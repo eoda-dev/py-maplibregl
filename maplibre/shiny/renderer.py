@@ -1,5 +1,5 @@
 from htmltools import Tag
-from shiny.render.renderer import Renderer, Jsonifiable
+from shiny.render.renderer import Jsonifiable, Renderer
 
 from ..map import Map
 from .ui import output_maplibregl

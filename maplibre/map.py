@@ -115,7 +115,7 @@ class Map(object):
 
     MESSAGE = "not implemented yet"
 
-    _geocoder = GeocoderType.MAPTILTER
+    _geocoder_type = GeocoderType.MAPTILTER
 
     def __init__(
         self,
@@ -177,7 +177,7 @@ class Map(object):
             *args (any): The arguments to be passed to the map method.
         """
         if method_name == "addControl" and args[0] == GeocodingControl().type:
-            self._geocoder = GeocoderType.MAPLIBRE
+            self._geocoder_type = GeocoderType.MAPLIBRE
 
         call = [method_name, args]
         self._message_queue.append(call)
@@ -343,7 +343,10 @@ class Map(object):
 
     def set_terrain(self, source: str, exaggeration: int | float = 1) -> None:
         """Load a 3d terrain mesh based on a 'raster-dem' source"""
-        self.add_call("setTerrain", Terrain(source=source, exaggeration=exaggeration).to_dict())
+        self.add_call(
+            "setTerrain",
+            Terrain(source=source, exaggeration=exaggeration).to_dict(),
+        )
 
     def set_sky(self, sky: Sky | dict) -> None:
         """Set sky"""
@@ -375,7 +378,7 @@ class Map(object):
         """
         js_lib = read_internal_file("srcjs", "pywidget.js")
         js_snippet = Template(js_template).render(data=json.dumps(self.to_dict()))
-        css_file = "ipywidget.maplibre-geocoder.css" if self._geocoder == GeocoderType.MAPLIBRE else "pywidget.css"
+        css_file = "ipywidget.maplibre-geocoder.css" if self._geocoder_type == GeocoderType.MAPLIBRE else "pywidget.css"
         css = read_internal_file("srcjs", css_file)
         headers = [f"<style>{css}</style>"]
 
@@ -464,7 +467,12 @@ class Map(object):
         if isinstance(options, MapboxDrawOptions):
             options = options.to_dict()
 
-        self.add_call("addMapboxDraw", options or {}, ControlPosition(position).value, geojson)
+        self.add_call(
+            "addMapboxDraw",
+            options or {},
+            ControlPosition(position).value,
+            geojson,
+        )
 
 
 def save_map(m: Map, filename: str = None, preview=True, **kwargs) -> str:

@@ -6,7 +6,7 @@ from maplibre.shiny import output_maplibregl, render_maplibregl, MapContext
 from maplibre.__future__.controls import GeocoderType
 
 app_ui = ui.div(
-    output_maplibregl("maplibre_map", height=600, geocoder=GeocoderType.MAPTILTER),
+    output_maplibregl("maplibre_map", height=600, geocoder_type=GeocoderType.MAPTILTER),
     ui.div("Click on map to set a marker"),
 )
 

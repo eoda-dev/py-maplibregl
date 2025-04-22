@@ -42,5 +42,5 @@ m = Map(
     ],
 )
 # m.set_light(light)
-print(m._geocoder)
+print(m._geocoder_type)
 m.save(preview=True)
