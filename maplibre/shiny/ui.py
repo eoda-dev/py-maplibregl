@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import importlib_metadata
+import importlib.metadata
 from htmltools import HTMLDependency, Tag
 from pydantic import BaseModel
 
@@ -58,7 +58,7 @@ def output_maplibregl(id: str, height: int | str = 400, geocoder: GeocoderType |
     return shiny.ui.div(
         MyHTMLDependency(
             name="maplibre-bindings",
-            version=importlib_metadata.version("maplibre"),
+            version=importlib.metadata.version("maplibre"),
             script=JSScript(src=js_file),
             stylesheet=Stylesheet(href=css_file),
         ).to_HTMLDependency(),
