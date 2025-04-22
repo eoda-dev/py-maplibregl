@@ -4,13 +4,13 @@
 #
 from maplibre import Map, MapOptions, Layer, LayerType
 from maplibre.sources import RasterTileSource, RasterDEMSource
-from maplibre.basemaps import BasemapStyle
+from maplibre.basemaps import Basemap
 from maplibre.controls import NavigationControl, TerrainControl
 from maplibre.sky import Sky
 from maplibre.terrain import Terrain
 
 
-style = BasemapStyle(
+style = Basemap(
     sources=dict(
         osm=RasterTileSource(
             tiles=["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"],

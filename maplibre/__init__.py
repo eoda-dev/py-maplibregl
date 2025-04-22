@@ -11,7 +11,7 @@ WARNING_MESSAGE = """Please install 'maplibre[shiny]' if you want to use maplibr
     Until then, set log level to 'ERROR' to suppress this warning.
 """
 
-from .config import options
+from .config import config
 from .controls import ControlPosition, ControlType
 from .layer import Layer, LayerType
 from .map import Map, MapOptions

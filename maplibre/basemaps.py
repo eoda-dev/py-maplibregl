@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-import warnings
-
 from enum import Enum
 
-from pydantic import BaseModel, computed_field, field_validator
+from pydantic import BaseModel, computed_field
 
-from .config import options
+from .abstracts import MaptilerAPI, ValidateLayerSpecifications
+from .config import config
 from .layer import Layer, LayerType
 from .light import Light
 from .sky import Sky
@@ -16,11 +15,11 @@ from .types import SourceT
 MAPLIBRE_DEMO_TILES = "https://demotiles.maplibre.org/style.json"
 
 
-class BasemapStyle(BaseModel):
+class Basemap(BaseModel):
     """Basemap style
 
     Note:
-        See [maplibre-style-spec/root](https://maplibre.org/maplibre-style-spec/root/) for more details.
+        See [maplibre-style-spec/root](https://maplibre.org/maplibre-style-spec/root/) for details.
     """
 
     _version = 8
@@ -50,7 +49,17 @@ class BasemapStyle(BaseModel):
         return [layer["id"] for layer in self.to_dict()["layers"] if layer["type"] == "symbol"]
 
     @classmethod
-    def from_url(cls, url: str) -> BasemapStyle:
+    def background(cls, color: str = "black", opacity: float = 1.0) -> Basemap:
+        opacity = ValidateLayerSpecifications(opacity=opacity).opacity
+        layer = Layer(
+            type=LayerType.BACKGROUND,
+            id="background",
+            paint={"background-color": color, "background-opacity": opacity},
+        )
+        return cls(layers=[layer])
+
+    @classmethod
+    def from_url(cls, url: str) -> Basemap:
         import requests as req
 
         resp = req.get(url)
@@ -61,18 +70,15 @@ class BasemapStyle(BaseModel):
     @staticmethod
     def carto_url(style_name: str | Carto) -> str:
         return f"https://basemaps.cartocdn.com/gl/{Carto(style_name).value}-gl-style/style.json"
-        # return construct_carto_basemap_url(style_name)
 
     @staticmethod
     def openfreemap_url(style_name: str | OpenFreeMap) -> str:
         return f"https://tiles.openfreemap.org/styles/{OpenFreeMap(style_name).value}"
-        # return construct_openfreemap_basemap_url(style_name)
 
     @staticmethod
-    def maptiler_url(style_name: str | MapTiler) -> str:
-        maptiler_api_key = options.maptiler_api_key
+    def maptiler_url(style_name: str | MapTiler, api_key: str | None = None) -> str:
+        maptiler_api_key = MaptilerAPI(api_key=api_key or config.maptiler_api_key).api_key
         return f"https://api.maptiler.com/maps/{MapTiler(style_name).value}/style.json?key={maptiler_api_key}"
-        # return construct_maptiler_basemap_url(style_name)
 
 
 class Carto(Enum):
@@ -160,7 +166,7 @@ class MapTiler(Enum):
 def construct_maptiler_basemap_url(
     style_name: str | MapTiler = "aquarelle",
 ) -> str:
-    maptiler_api_key = options.maptiler_api_key
+    maptiler_api_key = config.maptiler_api_key
     return f"https://api.maptiler.com/maps/{MapTiler(style_name).value}/style.json?key={maptiler_api_key}"
 
 

@@ -1,8 +1,8 @@
 from maplibre import express as mx
 from maplibre.__future__ import datasets
-from maplibre.config import options
+from maplibre.config import config
 
-options.fallback_color = "steelblue"
+config.fallback_color = "steelblue"
 
 data = datasets.DataSets.earthquakes.url
 # data = "/home/stefan/tmp/vancouver-blocks.json"

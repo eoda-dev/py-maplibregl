@@ -2,46 +2,43 @@ from __future__ import annotations
 
 import json
 import webbrowser
-from typing_extensions import Union
+from typing import Union
 
 from jinja2 import Template
 from pydantic import ConfigDict, Field, field_validator
 
+from .__future__.controls import GeocoderType, GeocodingControl
 from ._core import MapLibreBaseModel
 from ._templates import html_template, js_template
 from ._utils import get_temp_filename, read_internal_file
-from .basemaps import (
-    BasemapStyle,
-    Carto,
-    MapTiler,
-    OpenFreeMap,
-    construct_carto_basemap_url,
-    construct_maptiler_basemap_url,
-    construct_openfreemap_basemap_url,
-)
+from .basemaps import Basemap, Carto, MapTiler, OpenFreeMap
 from .controls import Control, ControlPosition, Marker
 from .layer import Layer
+from .light import Light
 from .plugins import MapboxDrawOptions
-from .sources import SimpleFeatures, Source
 from .projection import ProjectionType
 from .sky import Sky
-from .light import Light
+from .sources import SimpleFeatures, Source
 from .terrain import Terrain
 
 try:
-    from geopandas import GeoDataFrame
+    import geopandas as gpd
+
+    GEOPANDAS = True
 except ImportError:
-    GeoDataFrame = None
+    GEOPANDAS = False
 
 try:
-    import pydeck
+    import pydeck as pdk
+
+    PYDECK = True
 except ImportError:
-    pydeck = None
+    PYDECK = False
 
 
-def parse_deck_layers(layers: list[dict | "pydeck.Layer"]) -> list[dict]:
+def parse_deck_layers(layers: list[dict | pdk.Layer]) -> list[dict]:
     for i, layer in enumerate(layers):
-        if pydeck is not None and isinstance(layer, pydeck.Layer):
+        if PYDECK and isinstance(layer, pdk.Layer):
             layers[i] = json.loads(layer.to_json())
 
     return layers
@@ -78,21 +75,21 @@ class MapOptions(MapLibreBaseModel):
     min_zoom: int = Field(None, serialization_alias="minZoom")
     pitch: Union[int, float] = None
     scroll_zoom: bool = Field(None, serialization_alias="scrollZoom")
-    style: Union[str, Carto, MapTiler, OpenFreeMap, dict, BasemapStyle] = construct_carto_basemap_url(Carto.DARK_MATTER)
+    style: Union[str, Carto, MapTiler, OpenFreeMap, dict, Basemap] = Field(Carto.DARK_MATTER, validate_default=True)
     zoom: Union[int, float] = None
 
     @field_validator("style")
     def validate_style(cls, v):
         if isinstance(v, Carto):
-            return construct_carto_basemap_url(v)
+            return Basemap.carto_url(v)
 
         if isinstance(v, MapTiler):
-            return construct_maptiler_basemap_url(v)
+            return Basemap.maptiler_url(v)
 
         if isinstance(v, OpenFreeMap):
-            return construct_openfreemap_basemap_url(v)
+            return Basemap.openfreemap_url(v)
 
-        if isinstance(v, BasemapStyle):
+        if isinstance(v, Basemap):
             return v.to_dict()
 
         return v
@@ -117,6 +114,8 @@ class Map(object):
     """
 
     MESSAGE = "not implemented yet"
+
+    _geocoder_type = GeocoderType.MAPTILTER
 
     def __init__(
         self,
@@ -146,9 +145,9 @@ class Map(object):
     def base_layers(self) -> list:
         style = self.map_options["style"]
         if isinstance(style, str) and style.startswith("http"):
-            style = BasemapStyle.from_url(style)
+            style = Basemap.from_url(style)
         else:
-            style = BasemapStyle(**style)
+            style = Basemap(**style)
 
         return style.layers
 
@@ -177,7 +176,9 @@ class Map(object):
             method_name (str): The name of the map method to be executed.
             *args (any): The arguments to be passed to the map method.
         """
-        # TODO: Pass as dict? {"name": method_name, "args": args}
+        if method_name == "addControl" and args[0] == GeocodingControl().type:
+            self._geocoder_type = GeocoderType.MAPLIBRE
+
         call = [method_name, args]
         self._message_queue.append(call)
 
@@ -200,14 +201,14 @@ class Map(object):
             ControlPosition(position).value,
         )
 
-    def add_source(self, id: str, source: Source | dict | GeoDataFrame) -> None:
+    def add_source(self, id: str, source: Source | dict | gpd.GeoDataFrame) -> None:
         """Add a source to the map
 
         Args:
             id (str): The unique ID of the source.
-            source (Source | dict | GeoDataFrame): The source to be added to the map.
+            source (Source | dict | gpd.GeoDataFrame): The source to be added to the map.
         """
-        if GeoDataFrame is not None and isinstance(source, GeoDataFrame):
+        if GEOPANDAS is not None and isinstance(source, gpd.GeoDataFrame):
             source = SimpleFeatures(source).to_source()
 
         if isinstance(source, Source):
@@ -300,14 +301,14 @@ class Map(object):
         """
         self.add_call("setLayoutProperty", layer_id, prop, value)
 
-    def set_data(self, source_id: str, data: dict | GeoDataFrame) -> None:
+    def set_data(self, source_id: str, data: dict | gpd.GeoDataFrame) -> None:
         """Update the data of a GeoJSON source
 
         Args:
             source_id (str): The name of the source to be updated.
-            data (dict): The data of the source.
+            data (dict | gpd.GeoDataFrame): The data of the source.
         """
-        if isinstance(data, GeoDataFrame):
+        if GEOPANDAS and isinstance(data, gpd.GeoDataFrame):
             data = SimpleFeatures(data).to_source().data
 
         self.add_call("setSourceData", source_id, data)
@@ -325,8 +326,8 @@ class Map(object):
     def fit_bounds(
         self,
         bounds: tuple | list = None,
-        data: GeoDataFrame = None,
-        animate=False,
+        data: gpd.GeoDataFrame = None,
+        animate: bool = False,
         **kwargs,
     ) -> None:
         """Pan and zoom the map to contain its visible area within the specified geographical bounds"""
@@ -342,7 +343,10 @@ class Map(object):
 
     def set_terrain(self, source: str, exaggeration: int | float = 1) -> None:
         """Load a 3d terrain mesh based on a 'raster-dem' source"""
-        self.add_call("setTerrain", Terrain(source=source, exaggeration=exaggeration).to_dict())
+        self.add_call(
+            "setTerrain",
+            Terrain(source=source, exaggeration=exaggeration).to_dict(),
+        )
 
     def set_sky(self, sky: Sky | dict) -> None:
         """Set sky"""
@@ -362,7 +366,7 @@ class Map(object):
         """Render to html
 
         Args:
-            title (str): The Title of the HTML document.
+            title (str): The title of the HTML document.
             **kwargs (Any): Additional keyword arguments that are passed to the template.
                 Currently, `style` is the only supported keyword argument.
 
@@ -374,7 +378,8 @@ class Map(object):
         """
         js_lib = read_internal_file("srcjs", "pywidget.js")
         js_snippet = Template(js_template).render(data=json.dumps(self.to_dict()))
-        css = read_internal_file("srcjs", "pywidget.css")
+        css_file = "ipywidget.maplibre-geocoder.css" if self._geocoder_type == GeocoderType.MAPLIBRE else "pywidget.css"
+        css = read_internal_file("srcjs", css_file)
         headers = [f"<style>{css}</style>"]
 
         # Deck.GL headers
@@ -420,22 +425,22 @@ class Map(object):
     # -------------------------
     # Plugins
     # -------------------------
-    def add_deck_layers(self, layers: list[dict | "pydeck.Layer"], tooltip: str | dict = None) -> None:
+    def add_deck_layers(self, layers: list[dict | pdk.Layer], tooltip: str | dict = None) -> None:
         """Add Deck.GL layers to the layer stack
 
         Args:
-            layers (list[dict | "pydeck.Layer"]): A list of dictionaries containing the Deck.GL layers to be added.
+            layers (list[dict | pdk.Layer]): A list of dictionaries containing the Deck.GL layers to be added.
             tooltip (str | dict): Either a single mustache template string applied to all layers
                 or a dictionary where keys are layer ids and values are mustache template strings.
         """
         layers = parse_deck_layers(layers)
         self.add_call("addDeckOverlay", layers, tooltip)
 
-    def set_deck_layers(self, layers: list[dict | "pydeck.Layer"], tooltip: str | dict = None) -> None:
+    def set_deck_layers(self, layers: list[dict | pdk.Layer], tooltip: str | dict = None) -> None:
         """Update Deck.GL layers
 
         Args:
-            layers (list[dict | "pydeck.Layer"]): A list of dictionaries containing the Deck.GL layers to be updated.
+            layers (list[dict | pdk.Layer]): A list of dictionaries containing the Deck.GL layers to be updated.
                 New layers will be added. Missing layers will be removed.
             tooltip (str | dict): Must be set to keep tooltip even if it did not change.
         """
@@ -462,7 +467,12 @@ class Map(object):
         if isinstance(options, MapboxDrawOptions):
             options = options.to_dict()
 
-        self.add_call("addMapboxDraw", options or {}, ControlPosition(position).value, geojson)
+        self.add_call(
+            "addMapboxDraw",
+            options or {},
+            ControlPosition(position).value,
+            geojson,
+        )
 
 
 def save_map(m: Map, filename: str = None, preview=True, **kwargs) -> str:

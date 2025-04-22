@@ -12,18 +12,6 @@ from ._constants import _shiny_output_class
 
 MAPLIBREGL_VERSION = "5.3.0"
 
-# TODO: Obsolete, now included in maplibregl-bindings
-"""
-maplibregl_dep = HTMLDependency(
-    "maplibregl",
-    version=MAPLIBREGL_VERSION,
-    source={"package": "maplibre", "subdir": "srcjs"},
-    script={"src": "maplibre-gl.js", "type": "module"},
-    stylesheet={"href": "maplibre-gl.css"},
-    all_files=False,
-)
-"""
-
 # TODO: Rename to maplibregl-bindings
 pymaplibregl_dep = HTMLDependency(
     "pymaplibregl",
