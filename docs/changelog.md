@@ -1,11 +1,23 @@
 # Changelog for MapLibre for Python
 
+## maplibre v0.3.4 (unreleased)
+
+* Rename `basemap.BasemapStyle` to `basemap.Basemap`
+* Move _Shiny_ bindings to `maplibre.shiny`
+* Add
+  - `maplibre.__future.__.controls.GeocodingControl`
+  - `maplibre.__future.__.ipywidget.MapWidget`.
+
+to test [maplibre-gl-geocoder](https://maplibre.org/maplibre-gl-js/docs/examples/geocoder/maplibre).
+
+_Note:_ `maplibre-geocoder-css` overwrites `maptiler-geocoder-css`
+
 ## maplibre v0.3.3
 
 * Switch to [MapLibre GL JS v5.3.1](https://github.com/maplibre/maplibre-gl-js/releases/tag/v5.3.1) 
 * Bundle `maplibregl-js` with bindings
 * Add [MapTiler Geocoding Control](https://docs.maptiler.com/sdk-js/modules/geocoding/api/usage/maplibre-gl-js/) (#138): `maplibre.controls.MapTilerGeocodingControl`
-** Add `Map.base_layers` property
+* Add `Map.base_layers` property
 
 ## maplibre v0.3.2
 
