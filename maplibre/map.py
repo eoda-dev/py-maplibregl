@@ -7,12 +7,12 @@ from typing import Union
 from jinja2 import Template
 from pydantic import ConfigDict, Field, field_validator
 
-from .__future__.controls import GeocoderType
+from .__future__.controls import GeocoderType, GeocodingControl
 from ._core import MapLibreBaseModel
 from ._templates import html_template, js_template
 from ._utils import get_temp_filename, read_internal_file
 from .basemaps import Basemap, Carto, MapTiler, OpenFreeMap
-from .controls import Control, ControlPosition, GeocodingControl, Marker
+from .controls import Control, ControlPosition, Marker
 from .layer import Layer
 from .light import Light
 from .plugins import MapboxDrawOptions

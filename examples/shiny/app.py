@@ -1,9 +1,9 @@
 from shiny import App, reactive, ui
 
 from maplibre import Map
-from maplibre.controls import Marker, NavigationControl, MapTilerGeocodingControl, ControlPosition, GeocodingControl
+from maplibre.controls import Marker, NavigationControl, MapTilerGeocodingControl, ControlPosition
 from maplibre.shiny import output_maplibregl, render_maplibregl, MapContext
-from maplibre.__future__.controls import GeocoderType
+from maplibre.__future__.controls import GeocoderType, GeocodingControl
 
 app_ui = ui.div(
     output_maplibregl("maplibre_map", height=600, geocoder_type=GeocoderType.MAPTILTER),

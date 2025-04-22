@@ -1,6 +1,7 @@
 import os
 
 from maplibre import Map, MapOptions
+from maplibre.__future__.controls import GeocodingControl
 from maplibre.basemaps import Basemap, MapTiler
 
 # from maplibre.sky import Sky
@@ -9,7 +10,6 @@ from maplibre.config import config
 from maplibre.controls import (
     ControlPosition,
     MapTilerGeocodingControl,
-    GeocodingControl,
     GlobeControl,
     NavigationControl,
 )

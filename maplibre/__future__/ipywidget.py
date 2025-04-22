@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from maplibre.__future__.controls import GeocoderType
+from .controls import GeocoderType
 
 from ..ipywidget import MapWidget as BaseWidget
 
 class MapWidget(BaseWidget):
-    _geocoder = GeocoderType.MAPTILTER
+    _geocoder_type = GeocoderType.MAPTILTER
 
     def _set_css(self, path: str | Path) -> None:
         with open(path, "r") as f:
@@ -20,6 +20,6 @@ class MapWidget(BaseWidget):
     def add_call(self, method_name: str, *args) -> None:
         if method_name == "addControl" and args[0] == "GeocodingControl":
             self.set_maplibre_geocoder_css()
-            self._geocoder = GeocoderType.MAPLIBRE
+            self._geocoder_type = GeocoderType.MAPLIBRE
 
         super().add_call(method_name, *args)
