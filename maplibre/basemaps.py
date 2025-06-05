@@ -32,7 +32,7 @@ class Basemap(BaseModel):
     light: dict | Light | None = None
     glyphs: str | None = None
     sprite: str | None = None
-    center: tuple[float, float] | list[float, float] | None = None
+    center: tuple[float, float] | list[float] | None = None
     zoom: int | float | None = None
     bearing: int | float | None = None
     pitch: int | float | None = None
