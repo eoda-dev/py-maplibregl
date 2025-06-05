@@ -2,13 +2,13 @@
 
 ## maplibre v0.3.4 (unreleased)
 
+* Fix pydantic list bug in `basemaps.py` and `light.py` (#144)
 * Rename `basemap.BasemapStyle` to `basemap.Basemap`
 * Move _Shiny_ bindings to `maplibre.shiny`
 * Add
   - `maplibre.__future.__.controls.GeocodingControl`
   - `maplibre.__future.__.ipywidget.MapWidget`.
-
-to test [maplibre-gl-geocoder](https://maplibre.org/maplibre-gl-js/docs/examples/geocoder/maplibre).
+  - See also [maplibre-gl-geocoder](https://maplibre.org/maplibre-gl-js/docs/examples/geocoder/maplibre).
 
 _Note:_ `maplibre-geocoder-css` overwrites `maptiler-geocoder-css`
 
