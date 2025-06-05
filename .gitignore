@@ -293,3 +293,5 @@ cython_debug/
 #.idea/
 
 *.ipynb
+
+playground/
