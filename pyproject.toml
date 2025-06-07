@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "maplibre"
-version = "0.3.4"
-description = "Python bindings for MapLibre GL JS"
+version = "0.4.0-rc.1"
+description = "Python Bindings for MapLibre GL JS"
 authors = ["Stefan Kuethe <stefan.kuethe@eoda.de>"]
 readme = "README.md"
 license = "MIT"
