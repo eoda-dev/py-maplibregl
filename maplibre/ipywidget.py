@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import logging
-from os.path import join
 from pathlib import Path
 
 logging.basicConfig()
@@ -12,8 +11,6 @@ try:
     import traitlets
     from anywidget import AnyWidget
 except ImportError as e:
-    # traitlets = None
-    # AnyWidget = None
     logger.error(e)
     logger.error("Please install 'maplibre[anywidget]' if you want to use maplibre in 'marimo' or 'jupyter' notebooks.")
 
