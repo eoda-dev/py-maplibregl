@@ -1,0 +1,65 @@
+name: Build and deploy docs
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install package
+        run: pip install .
+
+      - name: Install dependencies
+        run: pip install -r requirements.docs.txt
+
+      - name: Build docs
+        run: mkdocs build -d dist
+
+      - name: Build jupyterlite
+        run: |
+          cd jupyterlite
+          pip install -r requirements.txt
+          jupyter lite build --contents contents --output-dir ../dist/jupyterlite
+
+      - name: Build marimo
+        run: |
+          cd marimo
+          pip install marimo
+          ./export-notebooks.sh ../dist/marimo
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
