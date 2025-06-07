@@ -27,20 +27,20 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.docs.txt
 
-      - name: Build docs
-        run: mkdocs build -d dist
+      # - name: Build docs
+      #   run: mkdocs build -d dist
 
-      - name: Build jupyterlite
-        run: |
-          cd jupyterlite
-          pip install -r requirements.txt
-          jupyter lite build --contents contents --output-dir ../dist/jupyterlite
+      # - name: Build jupyterlite
+      #   run: |
+      #     cd jupyterlite
+      #     pip install -r requirements.txt
+      #     jupyter lite build --contents contents --output-dir ../dist/jupyterlite
 
-      - name: Build marimo
-        run: |
-          cd marimo
-          pip install marimo
-          ./export-notebooks.sh ../dist/marimo
+      # - name: Build marimo
+      #   run: |
+      #     cd marimo
+      #     pip install marimo
+      #     ./export-notebooks.sh ../dist/marimo
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
