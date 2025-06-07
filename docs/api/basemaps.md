@@ -10,7 +10,7 @@
     options:
         docstring_section_style: list
 
-::: maplibre.basemaps.BasemapStyle
+::: maplibre.basemaps.Basemap
 
 ::: maplibre.sky.Sky
 
