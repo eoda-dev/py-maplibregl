@@ -1,8 +1,6 @@
 import importlib.metadata
 import logging
 
-__version__ = importlib.metadata.version(__package__)
-
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
@@ -25,3 +23,13 @@ try:
 except ImportError as e:
     logger.warning(e)
     logger.warning(WARNING_MESSAGE)
+
+# New imports
+try:
+    from .anywidget import MapWidget
+except ImportError as e:
+    print(e)
+
+__version__ = importlib.metadata.version(__package__)
+
+__all__ = ["Map", "MapOptions", "Layer", "LayerType", "ControlPosition"]

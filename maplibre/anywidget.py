@@ -31,11 +31,11 @@ class MapWidget(AnyWidget, Map):
         >>> m # doctest: +SKIP
     """
 
-    # _esm = join(Path(__file__).parent, "srcjs", "ipywidget.js")
-    # _css = join(Path(__file__).parent, "srcjs", "ipywidget.css")
+    # _esm = Path(__file__).parent / "srcjs" / "ipywidget.js"
+    # _css = Path(__file__).parent / "srcjs" / "ipywidget.css"
 
-    _esm = Path(__file__).parent / "srcjs" / "ipywidget.js"
-    _css = Path(__file__).parent / "srcjs" / "ipywidget.css"
+    _esm = Path(__file__).parent / "srcjs" / "maplibre.anywidget.js"
+    _css = Path(__file__).parent / "srcjs" / "maplibre.anywidget.css"
 
     _use_message_queue = True
     _rendered = traitlets.Bool(False).tag(config=True).tag(sync=True)
