@@ -27,8 +27,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.docs.txt
 
-      # - name: Build docs
-      #   run: mkdocs build -d dist
+      - name: Build docs
+        run: mkdocs build -d dist
 
       # - name: Build jupyterlite
       #   run: |
