@@ -205,4 +205,4 @@ class SimpleFeatures(object):
     def to_sources_dict(self, **kwargs) -> dict:
         return {self.source_id: self.to_source(**kwargs)}
 
-__all__ = ["GeoJSONSource", "RasterSource", "RasterDEMSource"]
+__all__ = ["GeoJSONSource", "RasterSource", "RasterDEMSource", "VectorSource"]
