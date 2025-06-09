@@ -77,9 +77,7 @@ MAPBOXGL_DRAW_VERSION = "1.4.3"
 mapboxgl_draw_dep = HTMLDependency(
     name="mapbox-gl-draw-plugin",
     version=MAPBOXGL_DRAW_VERSION,
-    source={
-        "href": f"https://www.unpkg.com/@mapbox/mapbox-gl-draw@{MAPBOXGL_DRAW_VERSION}/dist/"
-    },
+    source={"href": f"https://www.unpkg.com/@mapbox/mapbox-gl-draw@{MAPBOXGL_DRAW_VERSION}/dist/"},
     script={"src": "mapbox-gl-draw.js", "type": "module"},
     stylesheet={"href": "mapbox-gl-draw.css"},
 )

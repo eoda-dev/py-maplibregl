@@ -42,9 +42,7 @@ class MyHTMLDependency(BaseModel):
         return HTMLDependency(**self.model_dump(exclude_none=True))
 
 
-def output_maplibregl(
-    id: str, height: int | str = 400, geocoder_type: GeocoderType | None = None
-) -> Tag:
+def output_maplibregl(id: str, height: int | str = 400, geocoder_type: GeocoderType | None = None) -> Tag:
     """Create an output container for a `Map` object
 
     Args:
@@ -53,11 +51,7 @@ def output_maplibregl(
     geocoder_type = geocoder_type or GeocoderType.MAPTILTER
 
     js_file = "pywidget.js"
-    css_file = (
-        "ipywidget.maplibre-geocoder.css"
-        if geocoder_type == GeocoderType.MAPLIBRE
-        else "pywidget.css"
-    )
+    css_file = "ipywidget.maplibre-geocoder.css" if geocoder_type == GeocoderType.MAPLIBRE else "pywidget.css"
 
     if isinstance(height, int):
         height = f"{height}px"

@@ -27,30 +27,20 @@ def geometry_type_filter(geom_type: GeometryType | str) -> list:
     return ["==", get_geometry_type(), GeometryType(geom_type).value]
 
 
-def interpolate(
-    property: str | list, stops: list, outputs: list, type: list = ["linear"]
-) -> list:
+def interpolate(property: str | list, stops: list, outputs: list, type: list = ["linear"]) -> list:
     assert len(stops) == len(outputs)
     return [
         "interpolate",
         type,
         get_column(property) if isinstance(property, str) else property,
-    ] + list(
-        itertools.chain.from_iterable(
-            [[stop, output] for stop, output in zip(stops, outputs)]
-        )
-    )
+    ] + list(itertools.chain.from_iterable([[stop, output] for stop, output in zip(stops, outputs)]))
 
 
 def match_expr(column: str, categories: list, outputs: list[T], fallback: T) -> list:
     assert len(categories) == len(outputs)
     return (
         ["match", get_column(column)]
-        + list(
-            itertools.chain.from_iterable(
-                [[category, output] for category, output in zip(categories, outputs)]
-            )
-        )
+        + list(itertools.chain.from_iterable([[category, output] for category, output in zip(categories, outputs)]))
         + [fallback]
     )
 
@@ -70,18 +60,12 @@ def step_expr(
             "step",
             get_column(property) if isinstance(property, str) else property,
         ]
-        + list(
-            itertools.chain.from_iterable(
-                [[output, stop] for output, stop in zip(outputs, stops)]
-            )
-        )
+        + list(itertools.chain.from_iterable([[output, stop] for output, stop in zip(outputs, stops)]))
         + [fallback]
     )
 
 
-def quantile_step_expr(
-    column: str, probs: list, outputs: list[T], fallback: T, values: list
-) -> list:
+def quantile_step_expr(column: str, probs: list, outputs: list[T], fallback: T, values: list) -> list:
     assert len(probs) == len(outputs)
     try:
         import numpy as np
@@ -98,14 +82,10 @@ def quantile_step_expr(
 # -----
 
 
-def color_quantile_step_expr(
-    column: str, probs: list, values: Any, cmap="viridis"
-) -> list:
+def color_quantile_step_expr(column: str, probs: list, values: Any, cmap="viridis") -> list:
     n = len(probs)
     colors = color_brewer(cmap, n + 1)
-    return quantile_step_expr(
-        column, probs, outputs=colors[0:n], fallback=colors[-1], values=values
-    )
+    return quantile_step_expr(column, probs, outputs=colors[0:n], fallback=colors[-1], values=values)
 
 
 def color_step_expr(column: str, stops: list, cmap="viridis") -> list:
@@ -143,8 +123,6 @@ def filter_expr(column: str, operator: str, value: Any) -> list:
     return [operator, get_column(column), value]
 
 
-def range_filter(
-    column, values: tuple | list, operators: tuple | list = (">=", "<=")
-) -> list:
+def range_filter(column, values: tuple | list, operators: tuple | list = (">=", "<=")) -> list:
     assert len(values) == len(operators) == 2
     return ["all"] + [[operators[i], get_column(column), values[i]] for i in range(2)]

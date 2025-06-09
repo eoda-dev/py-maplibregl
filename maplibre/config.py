@@ -26,9 +26,7 @@ class Config(BaseModel):
 
     maptiler_api_key_env_var: Optional[str] = "MAPTILER_API_KEY"
 
-    layer_types: Optional[dict] = dict(
-        Polygon="fill", LineString="line", Point="circle"
-    )
+    layer_types: Optional[dict] = dict(Polygon="fill", LineString="line", Point="circle")
 
     @property
     def maptiler_api_key(self) -> str:

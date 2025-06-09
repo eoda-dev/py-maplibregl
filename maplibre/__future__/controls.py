@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from enum import Enum
 
-from ..controls import Control
-
 from pydantic import Field
+
+from ..controls import Control
 
 
 class GeocoderType(Enum):

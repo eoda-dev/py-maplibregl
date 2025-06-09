@@ -1,18 +1,26 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing_extensions import Optional, Union, Literal
 from uuid import uuid4
 
 from pydantic import Field, computed_field
+from typing_extensions import Literal, Optional, Union
 
 from ._core import MapLibreBaseModel
 from .utils import geopandas_to_geojson
 
+# try:
+#     from geopandas import GeoDataFrame, read_file
+# except ImportError:
+#     GeoDataFrame, read_file = None, None
+
 try:
-    from geopandas import GeoDataFrame, read_file
+    import geopandas as gpd
+
+    GEOPANDAS = True
 except ImportError:
-    GeoDataFrame, read_file = None, None
+    GEOPANDAS = False
+
 
 CRS = "EPSG:4326"
 
@@ -159,10 +167,10 @@ class VectorSource(VectorTileSource): ...
 
 
 class SimpleFeatures(object):
-    def __init__(self, data: GeoDataFrame | str, source_id: str = None):
+    def __init__(self, data: gpd.GeoDataFrame | str, source_id: str = None):
         self._path = data if isinstance(data, str) else None
         if self._path is not None:
-            data = read_file(self._path)
+            data = gpd.read_file(self._path)
 
         if str(data.crs) != CRS:
             data = data.to_crs(CRS)
@@ -187,7 +195,7 @@ class SimpleFeatures(object):
         return self._source_id
 
     @property
-    def data(self) -> GeoDataFrame:
+    def data(self) -> gpd.GeoDataFrame:
         return self._data
 
     def to_source(self, **kwargs) -> GeoJSONSource:

@@ -19,8 +19,6 @@ class MapboxDrawControls(MapLibreBaseModel):
 class MapboxDrawOptions(MapLibreBaseModel):
     """MapboxDraw Options"""
 
-    display_controls_default: bool = Field(
-        True, serialization_alias="displayControlsDefault"
-    )
+    display_controls_default: bool = Field(True, serialization_alias="displayControlsDefault")
     controls: MapboxDrawControls = None
     box_select: bool = Field(True, serialization_alias="boxSelect")

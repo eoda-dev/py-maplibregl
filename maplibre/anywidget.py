@@ -38,9 +38,11 @@ class MapWidget(AnyWidget, Map):
     _css = Path(__file__).parent / "srcjs" / "maplibre.anywidget.css"
 
     _use_message_queue = True
-    _rendered = traitlets.Bool(False).tag(config=True).tag(sync=True)
+    # _rendered = traitlets.Bool(False).tag(config=True).tag(sync=True)
+    load = traitlets.Bool(False).tag(sync=True)
     map_options = traitlets.Dict().tag(sync=True)
     calls = traitlets.List().tag(sync=True)
+    msg = traitlets.List().tag(sync=True)
     height = traitlets.Union([traitlets.Int(), traitlets.Unicode()]).tag(sync=True)
 
     # Interactions Map
@@ -63,8 +65,8 @@ class MapWidget(AnyWidget, Map):
         height: int | str = 400,
         **kwargs,
     ) -> None:
-        self._rendered = False
-        self.calls = []
+        # self._rendered = False
+        # self.calls = []
         AnyWidget.__init__(self, height=height, **kwargs)
         Map.__init__(self, map_options, sources, layers, controls, **kwargs)
 
@@ -76,15 +78,33 @@ class MapWidget(AnyWidget, Map):
 
         return height
 
+    """
     @traitlets.observe("_rendered")
     def _on_rendered(self, change):
         self.send({"calls": self._message_queue, "msg": "init"})
         self._message_queue = []
+    """
 
+    """ 
     def use_message_queue(self, value: bool = True) -> None:
         self._use_message_queue = value
+    """
+
+    # @traitlets.observe("load")
+    # def _(self, change) -> None:
+    #    self.send({"calls": self.calls, "msg": "observe load"})
 
     def add_call(self, method_name: str, *args) -> None:
+        call = [method_name, args]
+        if self.load:
+            # self.send({"calls": [call], "msg": "custom call"})
+            self.msg = call
+            return
+
+        # Initial calls
+        self.calls = self.calls + [call]
+
+    def _add_call(self, method_name: str, *args) -> None:
         call = [method_name, args]
         if not self._rendered:
             if not self._use_message_queue:

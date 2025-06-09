@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from typing_extensions import Literal
 from pydantic import Field
+from typing_extensions import Literal
 
 from ._core import MapLibreBaseModel
 

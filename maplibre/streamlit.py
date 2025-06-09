@@ -16,9 +16,7 @@ def st_maplibre(map: Map, height: int = 500, width: int = None) -> None:
     if st_components is None:
         return
 
-    html_b64 = base64.b64encode(
-        map.to_html(style=f"height: {height}px;").encode("utf-8")
-    ).decode("utf-8")
+    html_b64 = base64.b64encode(map.to_html(style=f"height: {height}px;").encode("utf-8")).decode("utf-8")
     st_components.iframe(
         src=f"data:text/html;base64,{html_b64}",
         height=height + 16,

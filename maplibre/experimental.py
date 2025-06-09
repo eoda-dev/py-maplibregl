@@ -5,14 +5,7 @@ from __future__ import annotations
 from typing import Literal
 
 from geopandas import GeoDataFrame
-from pydantic import (
-    BaseModel,
-    ConfigDict,
-    Field,
-    computed_field,
-    field_validator,
-    model_serializer,
-)
+from pydantic import BaseModel, ConfigDict, Field, computed_field, field_validator, model_serializer
 
 from maplibre import Layer, LayerType
 from maplibre.utils import geopandas_to_geojson

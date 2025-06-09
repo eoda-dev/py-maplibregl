@@ -25,17 +25,13 @@ PMTILES_HEADER_LENGTH = 127
 
 
 class DemoPMTiles(object):
-    data_source_coop_openstreetmap = (
-        "https://data.source.coop/protomaps/openstreetmap/tiles/v3.pmtiles"
-    )
+    data_source_coop_openstreetmap = "https://data.source.coop/protomaps/openstreetmap/tiles/v3.pmtiles"
     pmtiles_io_stamen = "https://pmtiles.io/stamen_toner(raster)CC-BY+ODbL_z3.pmtiles"
-    r2_public_protomaps_com_us_zcta = "https://r2-public.protomaps.com/protomaps-sample-datasets/cb_2018_us_zcta510_500k.pmtiles"
-    pmtiles_io_ugs_mt_whitney = (
-        "https://pmtiles.io/usgs-mt-whitney-8-15-webp-512.pmtiles"
+    r2_public_protomaps_com_us_zcta = (
+        "https://r2-public.protomaps.com/protomaps-sample-datasets/cb_2018_us_zcta510_500k.pmtiles"
     )
-    pmtiles_io_vector_firenze_base_layer = (
-        "https://pmtiles.io/protomaps(vector)ODbL_firenze.pmtiles"
-    )
+    pmtiles_io_ugs_mt_whitney = "https://pmtiles.io/usgs-mt-whitney-8-15-webp-512.pmtiles"
+    pmtiles_io_vector_firenze_base_layer = "https://pmtiles.io/protomaps(vector)ODbL_firenze.pmtiles"
 
 
 class PMTilesHeader(BaseModel):
@@ -104,9 +100,7 @@ def get_pmtiles_header(path: str) -> dict:
 
     with open(path, "rb") as f:
         get_bytes = MmapSource(f)
-        header = deserialize_header(
-            get_bytes(PMTILES_HEADER_OFFSET, PMTILES_HEADER_LENGTH)
-        )
+        header = deserialize_header(get_bytes(PMTILES_HEADER_OFFSET, PMTILES_HEADER_LENGTH))
 
     return header
 
@@ -114,9 +108,7 @@ def get_pmtiles_header(path: str) -> dict:
 def get_pmtiles_metadata(path: str) -> tuple:
     header = get_pmtiles_header(path)
     if path.startswith("http"):
-        response = range_request(
-            path, header["metadata_offset"], header["metadata_length"]
-        )
+        response = range_request(path, header["metadata_offset"], header["metadata_length"])
         get_bytes = MemorySource(response.content)
         metadata = get_bytes(0, header["metadata_length"])
     else:
@@ -196,6 +188,4 @@ class PMTiles(object):
                 )
             )
 
-        return construct_basemap_style(
-            sources={source_id: self.to_source()}, layers=layers
-        )
+        return construct_basemap_style(sources={source_id: self.to_source()}, layers=layers)

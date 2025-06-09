@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pydantic import Field
+
 from ._core import MapLibreBaseModel
 from ._utils import fix_keys
 

@@ -77,15 +77,11 @@ class SimpleLayer(Layer):
         probs: list = [0.1, 0.25, 0.5, 0.75],
         cmap: str = config.cmap,
     ) -> Self:
-        expr = color_quantile_step_expr(
-            column, probs, values=self.sf.data[column], cmap=cmap
-        )
+        expr = color_quantile_step_expr(column, probs, values=self.sf.data[column], cmap=cmap)
         self._set_paint_property("color", expr)
         return self
 
-    def color_bin(
-        self, column: str, stops: list = None, n: int = None, cmap=config.cmap
-    ) -> Self:
+    def color_bin(self, column: str, stops: list = None, n: int = None, cmap=config.cmap) -> Self:
         if stops is None and n is None:
             pass
 
@@ -93,9 +89,7 @@ class SimpleLayer(Layer):
         self._set_paint_property("color", expr)
         return self
 
-    def interpolate_color(
-        self, column: str, stops=None, colors=("yellow", "red")
-    ) -> Self:
+    def interpolate_color(self, column: str, stops=None, colors=("yellow", "red")) -> Self:
         stops = stops or [f(self.sf.data[column]) for f in [min, max]]
         expr = interpolate(column, stops, colors)
         self._set_paint_property("color", expr)
@@ -164,9 +158,7 @@ def fill_extrusion(
     **kwargs,
 ) -> SimpleLayer:
     if "paint" not in kwargs:
-        kwargs["paint"] = config.paint_props[
-            LayerType.FILL_EXTRUSION.value.replace("-", "_")
-        ]
+        kwargs["paint"] = config.paint_props[LayerType.FILL_EXTRUSION.value.replace("-", "_")]
 
     if fill_extrusion_base is not None:
         kwargs["paint"]["fill-extrusion-base"] = fill_extrusion_base
@@ -190,9 +182,7 @@ def fill_line_circle(source_id: str, colors: list = None) -> list:
         type=LayerType.FILL,
         source=source_id,
         filter=geometry_type_filter(GeometryType.POLYGON),
-    ).set_paint_props(
-        fill_color=fill_color, fill_outline_color=config.fill_outline_color
-    )
+    ).set_paint_props(fill_color=fill_color, fill_outline_color=config.fill_outline_color)
 
     line_layer = Layer(
         type=LayerType.LINE,

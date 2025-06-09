@@ -1,10 +1,10 @@
 from typing import Optional, Union
 
 import geopandas as gpd
+from pydantic import BaseModel
 
 # from geopandas import read_file
 from maplibre.sources import GeoJSONSource
-from pydantic import BaseModel
 
 
 class DataSet(BaseModel):
