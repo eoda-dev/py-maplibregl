@@ -104,6 +104,7 @@ class MapWidget(AnyWidget, Map):
         # Initial calls
         self.calls = self.calls + [call]
 
+    """
     def _add_call(self, method_name: str, *args) -> None:
         call = [method_name, args]
         if not self._rendered:
@@ -115,3 +116,7 @@ class MapWidget(AnyWidget, Map):
             return
 
         self.send({"calls": [call], "msg": "custom call"})
+    """
+
+    def add_tooltip(self, layer_id, template = None) -> None:
+        return self.add_call("addTooltip", layer_id, template)

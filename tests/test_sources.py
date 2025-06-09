@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from geopandas import GeoDataFrame, read_file
-from maplibre.sources import *
+from maplibre.sources import GeoJSONSource, SimpleFeatures, VectorTileSource
 
 
 def test_geojson_source():

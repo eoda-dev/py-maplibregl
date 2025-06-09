@@ -30,6 +30,8 @@ try:
 except ImportError as e:
     print(e)
 
+from .sources import *
+
 __version__ = importlib.metadata.version(__package__)
 
 __all__ = ["Map", "MapOptions", "Layer", "LayerType", "ControlPosition"]
