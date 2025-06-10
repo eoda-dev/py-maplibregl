@@ -22,7 +22,7 @@ def _():
         "getColorWeight": "@@=SPACES",
         "getElevationWeight": "@@=SPACES",
         "elevationScale": 4,
-        "cellSize": 100,
+        "cellSize": 200,
         "pickable": True,
     }
     return (grid,)
@@ -34,7 +34,7 @@ def _(mlb):
         # style=mlb.Carto.POSITRON,
         center=(-122.4, 37.74),
         zoom=12,
-        hash=True,
+        # hash=True,
         pitch=40,
     )
     return (map_options,)
