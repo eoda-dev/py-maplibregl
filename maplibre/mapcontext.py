@@ -18,8 +18,8 @@ class MapContext(Map):
     """
 
     def __init__(self, id: str, session: Session = None) -> None:
-        self.id = id
         self._session = require_active_session(session)
+        self.id = id if self._session.ns == "" else f"{self._session.ns}-{id}"
         self.map_options = {}
         self._message_queue = []
 
