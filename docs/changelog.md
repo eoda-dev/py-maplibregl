@@ -1,5 +1,9 @@
 # Changelog for MapLibre for Python
 
+## maplibre v0.3.5
+
+* Fix #142 (thx to @nuayge)
+
 ## maplibre v0.3.4
 
 * Fix pydantic list bug in `basemaps.py` and `light.py` (#144)
