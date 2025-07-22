@@ -46,7 +46,7 @@ def _(mlb):
 
 @app.cell
 def _(m, source):
-    # m.add_call("setCenterFromPMTiles", "https://pmtiles.io/protomaps(vector)ODbL_firenze.pmtiles")
+    # m.add_call("setCenterFromPMTiles", "https://pmtiles.io/protomaps(vector)ODbL_firenze.pmtiles", 6)
     m.add_source("pmtiles", source)
     return
 
@@ -60,7 +60,8 @@ def _(l, m):
 @app.cell
 def _(m):
     # m.add_call("setCenterFromPMTiles", "https://pmtiles.io/protomaps(vector)ODbL_firenze.pmtiles")
-    m.fit_bounds((11.154026, 43.7270125, 11.3289395, 43.8325455))
+    # m.fit_bounds((11.154026, 43.7270125, 11.3289395, 43.8325455))
+    m.add_call("fitBoundsFromPMTiles", "https://pmtiles.io/protomaps(vector)ODbL_firenze.pmtiles")
     return
 
 
@@ -92,6 +93,37 @@ def _(m):
 @app.cell
 def _(m):
     m.add_call("setCenter", [0, 0])
+    return
+
+
+@app.cell
+def _(m):
+    m.add_call("fitBoundsFromPMTiles", "https://pmtiles.io/protomaps(vector)ODbL_firenze.pmtiles")
+    return
+
+
+@app.cell
+def _():
+    s = {
+            "id": "gl-draw-line",
+            "type": "line",
+            "filter": ["all", ["==", "$type", "LineString"]],
+            "layout": {
+              "line-cap": "round",
+              "line-join": "round"
+            },
+            "paint": {
+              "line-color": "#D20C0C",
+              # "line-dasharray": [0.2, 2],
+              "line-width": 2
+            }
+        }
+    return (s,)
+
+
+@app.cell
+def _(m, s):
+    m.add_call("addControl", "MapboxDraw", dict(displayControlsDefault=True, styles=[s]), "top-left")
     return
 
 
