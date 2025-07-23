@@ -13,6 +13,10 @@ Furthermore, [Deck.GL Layers](https://deck.gl/docs/api-reference/layers) can be 
 
 It integrates seamlessly into [Shiny for Python](https://github.com/posit-dev/py-shiny), [Marimo](https://marimo.io/), [Jupyter](https://jupyter.org/) and [JupyterLite](https://github.com/jupyter-widgets-contrib/anywidget-lite).
 
+## Join the conversation
+
+Join us on [Slack](https://join.slack.com/t/eoda-dev/shared_invite/zt-39s73mev7-smKDIphRkDJ9jMV24N1omw).
+
 ## Installation
 
 ```bash
