@@ -1,5 +1,7 @@
 # MapLibre for Python
 
+[Docs](https://eoda-dev.github.io/py-maplibregl/) | [Discord](https://discord.gg/YzGnHdZHVA) | [Examples](https://eoda-dev.github.io/py-maplibregl/examples/every_person_in_manhattan/) | [Slack](https://join.slack.com/t/eoda-dev/shared_invite/zt-39s73mev7-smKDIphRkDJ9jMV24N1omw)
+
 [![Release](https://img.shields.io/github/v/release/eoda-dev/py-maplibregl)](https://img.shields.io/github/v/release/eoda-dev/py-maplibregl)
 [![pypi](https://img.shields.io/pypi/v/maplibre.svg)](https://pypi.python.org/pypi/maplibre)
 [![Conda recipe](https://img.shields.io/badge/recipe-maplibre-green.svg)](https://github.com/conda-forge/maplibre-feedstock)
@@ -15,7 +17,7 @@ It integrates seamlessly into [Shiny for Python](https://github.com/posit-dev/py
 
 ## Join the conversation
 
-Join us on [Slack](https://join.slack.com/t/eoda-dev/shared_invite/zt-39s73mev7-smKDIphRkDJ9jMV24N1omw).
+Join us on [Discord](https://discord.gg/YzGnHdZHVA).
 
 ## Installation
 
